@@ -1,0 +1,21 @@
+node_modules/**/*
+.expo/*
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+web-report/
+.env
+*.keystore
+
+.yalc
+yalc.lock
+.next
+dist
+
+# macOS
+.DS_Store
