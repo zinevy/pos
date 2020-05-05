@@ -15,7 +15,7 @@ export const AppContext = createContext()
 const MainApp = memo(() => {
     const [activeTheme, toggleTheme] = useDarkMode()
     const [appState, authContext, dispatch] = useAppReducer()
-    const { items, addToCart } = useShop()
+    const { items, addToCart } = useShop({ token: appState.userToken })
 
     const values = useMemo(
         () => ({
