@@ -4,7 +4,10 @@ import styled from "@emotion/native"
 import { useSafeArea } from "react-native-safe-area-context"
 
 import Header from "../../src/components/Header"
-import { useTheme } from "emotion-theming"
+
+const ScreenView = styled.View(({ theme }) => ({
+    backgroundColor: theme.main.backgroundColor,
+}))
 
 const ScrollViewContainer = styled(ScrollView)({
     flex: 1,
@@ -16,16 +19,15 @@ const styles = StyleSheet.create({
 
 const withScreen = ({ header = true } = {}) => (InnerComponent) => {
     const HomeScreen = memo((props) => {
-        const theme = useTheme()
         const insets = useSafeArea()
 
         return (
-            <View style={{ flex: 1, backgroundColor: theme.main.backgroundColor, paddingTop: insets.top }}>
+            <ScreenView style={{ flex: 1, paddingTop: insets.top }}>
                 {header && <Header navigation={props.navigation} />}
                 <ScrollViewContainer contentContainerStyle={styles.contentContainer}>
                     <InnerComponent {...props} />
                 </ScrollViewContainer>
-            </View>
+            </ScreenView>
         )
     })
 
