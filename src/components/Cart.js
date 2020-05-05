@@ -1,10 +1,10 @@
 import React, { useContext, memo } from "react"
-import { View, Text } from "react-native"
+import { View } from "react-native"
 import styled from "@emotion/native"
 
 import { AppContext } from "../Main"
 
-const StyledText = styled(Text)(({ theme }) => ({
+const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
 }))
 
@@ -13,7 +13,7 @@ const Cart = memo(() => {
 
     return (
         <View>
-            <StyledText>Cart: {items.length}</StyledText>
+            <Text>Cart: {items.length}</Text>
         </View>
     )
 })

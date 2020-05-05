@@ -1,11 +1,11 @@
 import React, { memo } from "react"
-import { View, Text, TouchableOpacity } from "react-native"
+import { View, TouchableOpacity } from "react-native"
 import { useRoute } from "@react-navigation/native"
 import styled from "@emotion/native"
 
 import Cart from "./Cart"
 
-const StyledText = styled(Text)(({ theme }) => ({
+const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
 }))
 
@@ -19,8 +19,8 @@ const Header = memo(({ navigation }) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 width: "100%",
-                paddingTop: 20,
-                paddingBottom: 20,
+                paddingTop: 10,
+                paddingBottom: 10,
             }}>
             <View>
                 {navigation.canGoBack() && (
@@ -28,12 +28,12 @@ const Header = memo(({ navigation }) => {
                         onPress={() => {
                             navigation.goBack()
                         }}>
-                        <StyledText>Back</StyledText>
+                        <Text>Back</Text>
                     </TouchableOpacity>
                 )}
             </View>
             <View>
-                <StyledText>{route.name}</StyledText>
+                <Text>{route.name}</Text>
             </View>
             <View>
                 <Cart />

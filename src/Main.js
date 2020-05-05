@@ -2,7 +2,6 @@ import React, { memo, createContext, Fragment, useMemo } from "react"
 import { Platform, StatusBar } from "react-native"
 import { ThemeProvider } from "emotion-theming"
 import { SafeAreaProvider } from "react-native-safe-area-context"
-import { useIsFocused } from "@react-navigation/native"
 
 import useDarkMode from "../utils/hooks/useDarkMode"
 import useAppReducer from "./App/useAppReducer"

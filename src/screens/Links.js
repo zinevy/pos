@@ -1,14 +1,17 @@
 import React, { useContext, useEffect, memo } from "react"
-import { Text, View } from "react-native"
+import { View } from "react-native"
 import styled from "@emotion/native"
 
 import withScreen from "../../utils/hoc/createScreen"
 import { AppContext } from "../Main"
 
-const Title = styled(Text)(({ theme }) => ({
-    fontSize: 20,
+const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
 }))
+
+const Title = styled(Text)({
+    fontSize: 20,
+})
 
 const Wrapper = styled(View)({
     alignItems: "center",
@@ -16,10 +19,6 @@ const Wrapper = styled(View)({
 
 const Links = memo(() => {
     const { appState } = useContext(AppContext)
-
-    useEffect(() => {
-        console.log("appState", appState)
-    }, [appState])
 
     return (
         <Wrapper>

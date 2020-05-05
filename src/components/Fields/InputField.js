@@ -1,6 +1,15 @@
 import React from "react"
-import { ErrorMessage, useField } from "formik"
-import { View, Text, TextInput } from "react-native"
+import { useField } from "formik"
+import { View } from "react-native"
+import styled from "@emotion/native"
+
+const Text = styled.Text(({ theme }) => ({
+    color: theme.main.color,
+}))
+
+const TextInput = styled.TextInput(({ theme }) => ({
+    color: theme.main.color,
+}))
 
 const InputField = ({ label, type, description, ...props }) => {
     const [field, meta] = useField(props)
