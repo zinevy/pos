@@ -6,9 +6,26 @@ const useShop = () => {
 
     const addToCart = useCallback(
         async (item) => {
+            const token = await AsyncStorage.getItem("@token")
+            let cartItems = await AsyncStorage.getItem("@items")
+
             const items = [...state.items, item]
+
             try {
-                await AsyncStorage.setItem("@items", JSON.stringify(items))
+                cartItems = JSON.parse(cartItems)
+
+                const userItems = {
+                    [token]: {
+                        items,
+                    },
+                }
+
+                cartItems = {
+                    ...cartItems,
+                    ...userItems,
+                }
+
+                await AsyncStorage.setItem("@items", JSON.stringify(cartItems))
             } catch (err) {
                 // eslint-disable-next-line no-console
                 console.fatal(err)
@@ -21,17 +38,21 @@ const useShop = () => {
 
     useEffect(() => {
         const bootstrapAsync = async () => {
-            let items
+            const token = await AsyncStorage.getItem("@token")
+            let userItems
+
             try {
-                items = await AsyncStorage.getItem("@items")
+                userItems = await AsyncStorage.getItem("@items")
+                userItems = JSON.parse(userItems)
+
+                if (userItems && userItems[token]) {
+                    const items = userItems[token].items
+
+                    setState({ items })
+                }
             } catch (e) {
                 // eslint-disable-next-line no-console
                 console.log("ERROR", e)
-            } finally {
-                items = items && JSON.parse(items)
-                if (items) {
-                    setState({ items })
-                }
             }
         }
 
