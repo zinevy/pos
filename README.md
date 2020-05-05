@@ -41,9 +41,9 @@ npm ci or yarn
 
 ```
 API_URL=https://reqres.in/api/
-GH_TOKEN=
 CHANNEL=canary
-APP_SECRET_KEY=
+APP_SECRET_KEY
+FB_APP_ID
 ```
 
 #### Run the app
