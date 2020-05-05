@@ -1,8 +1,14 @@
 import React, { memo } from "react"
 import { Formik } from "formik"
-import { View, Button, Text } from "react-native"
+import { View, Button } from "react-native"
 import { object, string } from "yup"
+import styled from "@emotion/native"
+
 import InputField from "../Fields/InputField"
+
+const Text = styled.Text(({ theme }) => ({
+    color: theme.main.color,
+}))
 
 const validationSchema = object().shape({
     name: string().label("Name").required(),

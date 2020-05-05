@@ -1,5 +1,5 @@
 import React, { Suspense, useContext, memo, useMemo } from "react"
-import { Text, View, Image, TouchableOpacity, FlatList, Button } from "react-native"
+import { View, Image, TouchableOpacity, FlatList, Button } from "react-native"
 import styled from "@emotion/native"
 import * as Updates from "expo-updates"
 import useSWR from "swr"
@@ -8,25 +8,23 @@ import { AppContext } from "../Main"
 import { requests } from "../../utils/httpClient"
 import withScreen from "../../utils/hoc/createScreen"
 
-const Title = styled(Text)(({ theme }) => ({
-    fontSize: 30,
+const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
 }))
 
-const Wrapper = styled(View)({
-    alignItems: "center",
+const Title = styled(Text)({
+    fontSize: 30,
 })
 
 const List = styled(View)({
     flex: 1,
 })
 
-const ListTitle = styled(Text)(({ theme }) => ({
+const ListTitle = styled(Text)({
     fontSize: 20,
-    color: theme.main.color,
     paddingTop: 20,
     paddingBottom: 20,
-}))
+})
 
 const ListButton = styled(TouchableOpacity)({
     paddingTop: 20,
@@ -111,27 +109,25 @@ const Home = memo(({ navigation }) => {
 
     return useMemo(() => {
         return (
-            <Wrapper>
-                <Suspense fallback={<Title>Loading...</Title>}>
-                    <Text>{Updates.manifest.version}</Text>
-                    {appState.profile && (
-                        <Title>
-                            Welcome {appState.profile.first_name} {appState.profile.last_name}
-                        </Title>
-                    )}
+            <Suspense fallback={<Title>Loading...</Title>}>
+                <Text>{Updates.manifest.version}</Text>
+                {appState.profile && (
+                    <Title>
+                        Welcome {appState.profile.first_name} {appState.profile.last_name}
+                    </Title>
+                )}
 
-                    <Button title={activeTheme === "light" ? "Dark Mode" : "Light Mode"} onPress={toggleTheme} />
-                    <Products navigation={navigation} />
-                    {appState.userToken && (
-                        <TouchableOpacity
-                            onPress={() => {
-                                authContext.signOut()
-                            }}>
-                            <Text>Sign out</Text>
-                        </TouchableOpacity>
-                    )}
-                </Suspense>
-            </Wrapper>
+                <Button title={activeTheme === "light" ? "Dark Mode" : "Light Mode"} onPress={toggleTheme} />
+                <Products navigation={navigation} />
+                {appState.userToken && (
+                    <TouchableOpacity
+                        onPress={() => {
+                            authContext.signOut()
+                        }}>
+                        <Text>Sign out</Text>
+                    </TouchableOpacity>
+                )}
+            </Suspense>
         )
     }, [activeTheme, appState])
 })

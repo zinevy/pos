@@ -1,8 +1,14 @@
 import React, { useContext, useCallback, memo, useEffect } from "react"
-import { TouchableOpacity, SafeAreaView, Text } from "react-native"
+import { TouchableOpacity, SafeAreaView } from "react-native"
+import styled from "@emotion/native"
 
 import { AppContext } from "../Main"
 import LoginForm from "../components/Forms/Login"
+import withScreen from "../../utils/hoc/createScreen"
+
+const Text = styled.Text(({ theme }) => ({
+    color: theme.main.color,
+}))
 
 const SignInScreen = memo(({ navigation }) => {
     const { appState, authContext, dispatch } = useContext(AppContext)
@@ -35,4 +41,4 @@ const SignInScreen = memo(({ navigation }) => {
     )
 })
 
-export default SignInScreen
+export default withScreen({ header: false })(SignInScreen)
