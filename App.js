@@ -9,6 +9,8 @@ import UpdateModal from "./src/components/UpdateModal"
 
 const SpaceMono = require("./assets/fonts/SpaceMono-Regular.ttf")
 
+console.disableYellowBox = true
+
 const App = ({ skipLoadingScreen }) => {
     const [isLoadingComplete, setLoadingComplete] = useState(false)
 
