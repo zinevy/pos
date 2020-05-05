@@ -31,7 +31,6 @@ const useAppReducer = () => {
                 if (values["@profile"]) {
                     // values["@profile"] = JSON.parse(Storage.decrypt(values["@profile"], SECRET_KEY))
                     values["@profile"] = JSON.parse(values["@profile"])
-                    console.log(values["@profile"])
                 }
             } catch (e) {
                 console.warn("e", e)

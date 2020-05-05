@@ -1,50 +1,71 @@
 import { useEffect, useState, useCallback, useMemo } from "react"
 import { AsyncStorage } from "react-native"
 
-const useShop = () => {
-    const [state, setState] = useState({ items: [] })
+const useShop = ({ token }) => {
+    const [state, setState] = useState({})
 
     const addToCart = useCallback(
         async (item) => {
-            const items = [...state.items, item]
+            let userItems
             try {
-                await AsyncStorage.setItem("@items", JSON.stringify(items))
+                if (state && state[token]) {
+                    userItems = {
+                        ...state,
+                        [token]: {
+                            items: [...state[token].items, item],
+                        },
+                    }
+                } else {
+                    userItems = {
+                        ...state,
+                        [token]: {
+                            items: [item],
+                        },
+                    }
+                }
+
+                await AsyncStorage.setItem("@items", JSON.stringify(userItems))
+                // const ITEMS = await AsyncStorage.getItem("@items")
+                // console.log("ITEMS", ITEMS)
             } catch (err) {
-                // eslint-disable-next-line no-console
-                console.fatal(err)
+                console.warn(err)
             } finally {
-                setState({ items })
+                setState({ ...userItems })
             }
         },
-        [state.items]
+        [state, token]
     )
 
     useEffect(() => {
         const bootstrapAsync = async () => {
-            let items
+            let userItems
+
             try {
-                items = await AsyncStorage.getItem("@items")
+                userItems = await AsyncStorage.getItem("@items")
+                userItems = JSON.parse(userItems)
+
+                setState(userItems)
             } catch (e) {
                 // eslint-disable-next-line no-console
                 console.log("ERROR", e)
-            } finally {
-                items = items && JSON.parse(items)
-                if (items) {
-                    setState({ items })
-                }
             }
         }
 
         bootstrapAsync()
-    }, [])
+    }, [token])
 
-    return useMemo(
-        () => ({
-            items: state.items,
+    return useMemo(() => {
+        let items = []
+
+        if (token && state && state[token]) {
+            items = state[token].items
+        }
+
+        return {
+            items,
             addToCart,
-        }),
-        [state]
-    )
+        }
+    }, [state, token])
 }
 
 export default useShop
