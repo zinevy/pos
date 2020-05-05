@@ -70,7 +70,7 @@ const SignInScreen = memo(({ navigation }) => {
                 <Text>Register here</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={facebookLogIn}>
-                <Text>Login with FB</Text>
+                <Text>Login using facebook</Text>
             </TouchableOpacity>
         </SafeAreaView>
     )
