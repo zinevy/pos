@@ -1,6 +1,6 @@
 {
     "name": "one-palengke",
-    "version": "1.0.0-canary.2",
+    "version": "1.0.0-canary.3",
     "main": "node_modules/expo/AppEntry.js",
     "scripts": {
         "start": "expo start",
