@@ -42,13 +42,19 @@ const ListButtonText = styled(Text)({
     fontWeight: "bold",
 })
 
-const fetchFormDetails = async () => {
+const fetchProducts = async () => {
     const res = await requests.get("users?per_page=10")
     if (res.ok) {
-        const { data } = res
+        const { data: products } = res
+
+        const items = products.data.map((item) => ({
+            id: item.id,
+            name: item.first_name,
+            image: item.avatar,
+        }))
 
         return {
-            ...data,
+            products: items,
         }
     }
 
@@ -56,7 +62,7 @@ const fetchFormDetails = async () => {
 }
 
 const Products = ({ navigation }) => {
-    const { data: users, error } = useSWR(1, fetchFormDetails, { suspense: true })
+    const { data, error } = useSWR(1, fetchProducts, { suspense: true })
     const { addToCart } = useContext(AppContext)
 
     if (error) {
@@ -65,7 +71,7 @@ const Products = ({ navigation }) => {
 
     return (
         <FlatList
-            data={users.data}
+            data={data.products}
             keyExtractor={(user) => user.id.toString()}
             horizontal
             bounces={false}
@@ -85,14 +91,14 @@ const Products = ({ navigation }) => {
                         }}>
                         <List>
                             <Image
-                                source={{ uri: item.avatar }}
+                                source={{ uri: item.image }}
                                 style={{
                                     width: 200,
                                     height: 200,
                                     resizeMode: "contain",
                                 }}
                             />
-                            <ListTitle>{item.first_name}</ListTitle>
+                            <ListTitle>{item.name}</ListTitle>
                             <ListButton onPress={() => addToCart(item)}>
                                 <ListButtonText>Add to cart</ListButtonText>
                             </ListButton>
@@ -105,7 +111,7 @@ const Products = ({ navigation }) => {
 }
 
 const Home = memo(({ navigation }) => {
-    const { activeTheme, toggleTheme, authContext, appState } = useContext(AppContext)
+    const { activeTheme, toggleTheme, actions, appState } = useContext(AppContext)
 
     return useMemo(() => {
         return (
@@ -122,7 +128,7 @@ const Home = memo(({ navigation }) => {
                 {appState.userToken && (
                     <TouchableOpacity
                         onPress={() => {
-                            authContext.signOut()
+                            actions.signOut()
                         }}>
                         <Text>Sign out</Text>
                     </TouchableOpacity>

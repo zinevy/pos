@@ -16,7 +16,7 @@ const Product = ({ route }) => {
 
     return (
         <View>
-            <Text>Hello {item.first_name}</Text>
+            <Text>{item.name}</Text>
             <TouchableOpacity
                 onPress={() => {
                     addToCart(item)

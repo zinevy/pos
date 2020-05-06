@@ -14,20 +14,21 @@ export const AppContext = createContext()
 
 const MainApp = memo(() => {
     const [activeTheme, toggleTheme] = useDarkMode()
-    const [appState, authContext, dispatch] = useAppReducer()
-    const { items, addToCart } = useShop({ token: appState.userToken })
+    const [appState, actions, dispatch] = useAppReducer()
+    const { items, addToCart, removeItem } = useShop({ token: appState.userToken })
 
     const values = useMemo(
         () => ({
             appState,
-            authContext,
+            actions,
             activeTheme,
             toggleTheme,
             items,
             addToCart,
+            removeItem,
             dispatch,
         }),
-        [appState, authContext, activeTheme, items]
+        [appState, actions, activeTheme, items]
     )
 
     return useMemo(() => {
@@ -45,7 +46,7 @@ const MainApp = memo(() => {
                 </ThemeProvider>
             </AppContext.Provider>
         )
-    }, [appState, authContext, activeTheme, items])
+    }, [appState, actions, activeTheme, items])
 })
 
 export default MainApp

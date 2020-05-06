@@ -12,7 +12,7 @@ const Text = styled.Text(({ theme }) => ({
 }))
 
 const Registration = memo(({ navigation }) => {
-    const { appState, authContext, dispatch } = useContext(AppContext)
+    const { appState, actions, dispatch } = useContext(AppContext)
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -20,7 +20,7 @@ const Registration = memo(({ navigation }) => {
     }, [isFocused])
 
     const onSubmit = useCallback((values) => {
-        authContext.register(values)
+        actions.register(values)
     }, [])
 
     return (

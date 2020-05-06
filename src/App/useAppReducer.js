@@ -3,7 +3,7 @@ import { AsyncStorage } from "react-native"
 import { SplashScreen } from "expo"
 
 import appReducer from "./reducer"
-import actions from "./actions"
+import appActions from "./actions"
 
 const useAppReducer = () => {
     const [state, dispatch] = useReducer(appReducer, {
@@ -47,9 +47,9 @@ const useAppReducer = () => {
         bootstrapAsync()
     }, [])
 
-    const authContext = useMemo(() => actions(dispatch), [])
+    const actions = useMemo(() => appActions(dispatch), [])
 
-    return [state, authContext, dispatch]
+    return [state, actions, dispatch]
 }
 
 export default useAppReducer

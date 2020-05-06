@@ -13,7 +13,7 @@ const Text = styled.Text(({ theme }) => ({
 }))
 
 const SignInScreen = memo(({ navigation }) => {
-    const { appState, authContext, dispatch } = useContext(AppContext)
+    const { appState, actions, dispatch } = useContext(AppContext)
     const { FB_APP_ID } = Constants.manifest.extra
 
     useEffect(() => {
@@ -32,7 +32,7 @@ const SignInScreen = memo(({ navigation }) => {
     }, [])
 
     const onSubmit = useCallback((values) => {
-        authContext.signIn(values)
+        actions.signIn(values)
     }, [])
 
     const facebookLogIn = useCallback(async () => {
@@ -44,7 +44,7 @@ const SignInScreen = memo(({ navigation }) => {
                 fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,picture.height(500)`)
                     .then((response) => response.json())
                     .then((data) => {
-                        authContext.fbSignIn(data)
+                        actions.fbSignIn(data)
                     })
                     .catch((e) => console.log(e))
             } else {

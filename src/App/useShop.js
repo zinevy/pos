@@ -4,6 +4,35 @@ import { AsyncStorage } from "react-native"
 const useShop = ({ token }) => {
     const [state, setState] = useState({})
 
+    const removeItem = useCallback(
+        async (index) => {
+            let items = getUserItems()
+
+            items = items.filter((item, cartItemIndex) => cartItemIndex !== index)
+
+            const userItems = {
+                ...state,
+                [token]: {
+                    items,
+                },
+            }
+
+            await AsyncStorage.setItem("@items", JSON.stringify(userItems))
+
+            setState(userItems)
+        },
+        [state, token]
+    )
+
+    const getUserItems = useCallback(() => {
+        let items = []
+        if (token && state && state[token]) {
+            items = state[token].items
+        }
+
+        return items
+    }, [state, token])
+
     const addToCart = useCallback(
         async (item) => {
             let userItems
@@ -55,15 +84,12 @@ const useShop = ({ token }) => {
     }, [token])
 
     return useMemo(() => {
-        let items = []
-
-        if (token && state && state[token]) {
-            items = state[token].items
-        }
+        const items = getUserItems()
 
         return {
             items,
             addToCart,
+            removeItem,
         }
     }, [state, token])
 }
