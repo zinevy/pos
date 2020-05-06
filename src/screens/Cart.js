@@ -1,10 +1,10 @@
-import React, { useContext, memo } from "react"
-import { View, TouchableOpacity, Image } from "react-native"
+import React, { memo, useMemo } from "react"
+import { View, TouchableOpacity, Image, ScrollView } from "react-native"
 import styled from "@emotion/native"
-import { useNavigation } from "@react-navigation/native"
 
 import withScreen from "../../utils/hoc/createScreen"
-import { AppContext } from "../Main"
+import { formatCurrency } from "../../utils/formatter"
+import withAppContext from "../../utils/hoc/withAppContext"
 
 const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
@@ -14,13 +14,11 @@ const Title = styled(Text)({
     fontSize: 20,
 })
 
-const Cart = memo(() => {
-    const { items, removeItem } = useContext(AppContext)
-    const navigation = useNavigation()
-
+const Cart = memo(({ items, removeItem, navigation }) => {
     const renderItems = (item, index) => {
         return (
             <View
+                key={`item-${index}`}
                 style={{
                     display: "flex",
                     flexDirection: "row",
@@ -44,7 +42,9 @@ const Cart = memo(() => {
                     />
                     <View style={{ marginLeft: 10 }}>
                         <Text style={{ fontWeight: "bold", fontSize: 17 }}>{item.name}</Text>
-                        <Text>Description</Text>
+                        <Text>
+                            Description | {formatCurrency(item.price)} | {item.quantity}x
+                        </Text>
                     </View>
                 </TouchableOpacity>
 
@@ -58,12 +58,43 @@ const Cart = memo(() => {
         )
     }
 
-    return (
-        <View>
-            {!items.length && <Title>Cart is empty</Title>}
-            {items && items.map(renderItems)}
-        </View>
-    )
+    const calculateTotal = (items) => {
+        const total = items.reduce((total, item) => total + item.price, 0)
+
+        return formatCurrency(total)
+    }
+
+    return useMemo(() => {
+        return (
+            <View style={{ flex: 1 }}>
+                <ScrollView>
+                    {!items.length && <Title>Cart is empty</Title>}
+                    <View style={{ marginBottom: 100 }}>{items && items.map(renderItems)}</View>
+                </ScrollView>
+                <View style={{ position: "absolute", bottom: 0, width: "100%" }}>
+                    <View
+                        style={{
+                            margin: 5,
+                            backgroundColor: "rgba(255,255,255,0.9)",
+                            padding: 20,
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            borderRadius: 10,
+                        }}>
+                        <Text style={{ color: "#000" }}>Total</Text>
+                        <Text style={{ color: "#000" }}>{calculateTotal(items)}</Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }, [items])
 })
 
-export default withScreen({ cart: false })(Cart)
+const mapContext = ({ items, removeItem }) => ({
+    items,
+    removeItem,
+})
+
+const withScreenCart = withScreen({ cart: false })(Cart)
+
+export default withAppContext(mapContext)(withScreenCart)

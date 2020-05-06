@@ -1,24 +1,23 @@
-/* eslint-disable react/prop-types */
-import React, { useContext } from "react"
+import React from "react"
 import { View, TouchableOpacity } from "react-native"
 import styled from "@emotion/native"
 
 import withScreen from "../../../utils/hoc/createScreen"
-import { AppContext } from "../../Main"
+import withAppContext from "../../../utils/hoc/withAppContext"
 
 const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
 }))
 
-const Product = ({ route }) => {
+const Product = ({ route, addToCart }) => {
     const item = route.params
-    const { addToCart } = useContext(AppContext)
 
     return (
         <View>
             <Text>{item.name}</Text>
             <TouchableOpacity
                 onPress={() => {
+                    item.quantity = 1
                     addToCart(item)
                 }}>
                 <Text>Add to cart</Text>
@@ -26,5 +25,9 @@ const Product = ({ route }) => {
         </View>
     )
 }
+const mapContext = ({ addToCart }) => ({
+    addToCart,
+})
+const withAppContextProduct = withAppContext(mapContext)(Product)
 
-export default withScreen()(Product)
+export default withScreen()(withAppContextProduct)

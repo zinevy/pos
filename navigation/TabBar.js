@@ -54,7 +54,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
                         display: "flex",
                         alignItems: "center",
                     }}>
-                    <Text style={{ color: theme.main.color }}>Icon</Text>
+                    {/* <Text style={{ color: theme.main.color }}>Icon</Text> */}
                     <Text style={{ color: isFocused ? "#673ab7" : theme.main.color }}>{label}</Text>
                 </View>
             </TouchableOpacity>
