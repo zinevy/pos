@@ -1,5 +1,5 @@
 import React, { Suspense, useContext, memo, useMemo } from "react"
-import { View, Image, TouchableOpacity, FlatList, Button } from "react-native"
+import { View, Image, TouchableOpacity, FlatList, Button, ScrollView } from "react-native"
 import styled from "@emotion/native"
 import * as Updates from "expo-updates"
 import useSWR from "swr"
@@ -7,6 +7,8 @@ import useSWR from "swr"
 import { AppContext } from "../Main"
 import { requests } from "../../utils/httpClient"
 import withScreen from "../../utils/hoc/createScreen"
+import { formatCurrency } from "../../utils/formatter"
+import withAppContext from "../../utils/hoc/withAppContext"
 
 const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
@@ -23,7 +25,6 @@ const List = styled(View)({
 const ListTitle = styled(Text)({
     fontSize: 20,
     paddingTop: 20,
-    paddingBottom: 20,
 })
 
 const ListButton = styled(TouchableOpacity)({
@@ -51,6 +52,7 @@ const fetchProducts = async () => {
             id: item.id,
             name: item.first_name,
             image: item.avatar,
+            price: 50,
         }))
 
         return {
@@ -99,7 +101,12 @@ const Products = ({ navigation }) => {
                                 }}
                             />
                             <ListTitle>{item.name}</ListTitle>
-                            <ListButton onPress={() => addToCart(item)}>
+                            <Text>{formatCurrency(item.price)}</Text>
+                            <ListButton
+                                onPress={() => {
+                                    item.quantity = 1
+                                    addToCart(item)
+                                }}>
                                 <ListButtonText>Add to cart</ListButtonText>
                             </ListButton>
                         </List>
@@ -110,32 +117,41 @@ const Products = ({ navigation }) => {
     )
 }
 
-const Home = memo(({ navigation }) => {
-    const { activeTheme, toggleTheme, actions, appState } = useContext(AppContext)
-
+const Home = memo(({ navigation, activeTheme, toggleTheme, actions, appState }) => {
     return useMemo(() => {
         return (
-            <Suspense fallback={<Title>Loading...</Title>}>
-                <Text>{Updates.manifest.version}</Text>
-                {appState.profile && (
-                    <Title>
-                        Welcome {appState.profile.first_name} {appState.profile.last_name}
-                    </Title>
-                )}
+            <ScrollView>
+                <Suspense fallback={<Title>Loading...</Title>}>
+                    <Text>{Updates.manifest.version}</Text>
+                    {appState.profile && (
+                        <Title>
+                            Welcome {appState.profile.first_name} {appState.profile.last_name}
+                        </Title>
+                    )}
 
-                <Button title={activeTheme === "light" ? "Dark Mode" : "Light Mode"} onPress={toggleTheme} />
-                <Products navigation={navigation} />
-                {appState.userToken && (
-                    <TouchableOpacity
-                        onPress={() => {
-                            actions.signOut()
-                        }}>
-                        <Text>Sign out</Text>
-                    </TouchableOpacity>
-                )}
-            </Suspense>
+                    <Button title={activeTheme === "light" ? "Dark Mode" : "Light Mode"} onPress={toggleTheme} />
+                    <Products navigation={navigation} />
+                    {appState.userToken && (
+                        <TouchableOpacity
+                            onPress={() => {
+                                actions.signOut()
+                            }}>
+                            <Text>Sign out</Text>
+                        </TouchableOpacity>
+                    )}
+                </Suspense>
+            </ScrollView>
         )
     }, [activeTheme, appState])
 })
 
-export default withScreen()(Home)
+const mapContext = ({ activeTheme, toggleTheme, actions, appState }) => ({
+    activeTheme,
+    toggleTheme,
+    actions,
+    appState,
+})
+
+const withContextHome = withAppContext(mapContext)(Home)
+
+export default withScreen()(withContextHome)

@@ -2,8 +2,10 @@ import React, { memo } from "react"
 import { View, TouchableOpacity, StyleSheet } from "react-native"
 import { useRoute } from "@react-navigation/native"
 import styled from "@emotion/native"
+import { useTheme } from "emotion-theming"
 
 import Cart from "./Cart"
+import hexToRGB from "../../utils/hexToRGBA"
 
 const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
@@ -19,17 +21,18 @@ const styles = StyleSheet.create({
 
 const Header = memo(({ navigation, withCart }) => {
     const route = useRoute()
+    const theme = useTheme()
 
     return (
         <View
             style={{
-                display: "flex",
                 alignItems: "center",
                 flexDirection: "row",
                 justifyContent: "space-between",
                 width: "100%",
-                paddingTop: 10,
-                paddingBottom: 10,
+                padding: 15,
+                backgroundColor: hexToRGB(theme.main.backgroundColor, 0.8),
+                zIndex: 9,
             }}>
             <View style={{ ...styles.header, alignItems: "flex-start" }}>
                 {navigation.canGoBack() ? (

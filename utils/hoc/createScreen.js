@@ -9,12 +9,10 @@ const ScreenView = styled.View(({ theme }) => ({
     backgroundColor: theme.main.backgroundColor,
 }))
 
-const ScrollViewContainer = styled(ScrollView)({
-    flex: 1,
-})
-
 const styles = StyleSheet.create({
-    contentContainer: {},
+    contentContainer: {
+        flex: 1,
+    },
 })
 
 const withScreen = ({ header = true, cart = true } = {}) => (InnerComponent) => {
@@ -24,9 +22,7 @@ const withScreen = ({ header = true, cart = true } = {}) => (InnerComponent) => 
         return (
             <ScreenView style={{ flex: 1, paddingTop: insets.top }}>
                 {header && <Header navigation={props.navigation} withCart={cart} />}
-                <ScrollViewContainer contentContainerStyle={styles.contentContainer}>
-                    <InnerComponent {...props} />
-                </ScrollViewContainer>
+                <InnerComponent {...props} />
             </ScreenView>
         )
     })
