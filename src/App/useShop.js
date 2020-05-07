@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useMemo } from "react"
 import { AsyncStorage } from "react-native"
 
-const useShop = ({ token }) => {
+const useShop = ({ key }) => {
     const [state, setState] = useState({})
 
     const removeItem = useCallback(
@@ -12,7 +12,7 @@ const useShop = ({ token }) => {
 
             const userItems = {
                 ...state,
-                [token]: {
+                [key]: {
                     items,
                 },
             }
@@ -21,33 +21,33 @@ const useShop = ({ token }) => {
 
             setState(userItems)
         },
-        [state, token]
+        [state, key]
     )
 
     const getUserItems = useCallback(() => {
         let items = []
-        if (token && state && state[token]) {
-            items = state[token].items
+        if (key && state && state[key]) {
+            items = state[key].items
         }
 
         return items
-    }, [state, token])
+    }, [state, key])
 
     const addToCart = useCallback(
         async (item) => {
             let userItems
             try {
-                if (state && state[token]) {
+                if (state && state[key]) {
                     userItems = {
                         ...state,
-                        [token]: {
-                            items: [...state[token].items, item],
+                        [key]: {
+                            items: [...state[key].items, item],
                         },
                     }
                 } else {
                     userItems = {
                         ...state,
-                        [token]: {
+                        [key]: {
                             items: [item],
                         },
                     }
@@ -62,7 +62,7 @@ const useShop = ({ token }) => {
                 setState({ ...userItems })
             }
         },
-        [state, token]
+        [state, key]
     )
 
     useEffect(() => {
@@ -81,7 +81,7 @@ const useShop = ({ token }) => {
         }
 
         bootstrapAsync()
-    }, [token])
+    }, [key])
 
     return useMemo(() => {
         const items = getUserItems()
@@ -91,7 +91,7 @@ const useShop = ({ token }) => {
             addToCart,
             removeItem,
         }
-    }, [state, token])
+    }, [state, key])
 }
 
 export default useShop

@@ -16,13 +16,13 @@ const Cart = memo(({ navigation, withCart }) => {
     }
 
     if (!withCart) {
-        return <Text>{withCart ? `Cart: ${items.length}` : items.length}</Text>
+        return <Text />
     }
 
     return (
         <TouchableOpacity
             onPress={() => {
-                navigation.navigate("Cart")
+                navigation.navigate("CartPage")
             }}>
             <Text>Cart: {items.length}</Text>
         </TouchableOpacity>

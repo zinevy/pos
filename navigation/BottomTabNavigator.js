@@ -5,7 +5,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import TabBar from "./TabBar"
 
 import Home from "../src/screens/Home"
-import Cart from "../src/screens/Cart"
+import Settings from "../src/screens/Settings"
+import TabCart from "../src/screens/TabCart"
 
 const Tab = createBottomTabNavigator()
 
@@ -13,7 +14,8 @@ const BottomTabNavigator = () => {
     return (
         <Tab.Navigator tabBarOptions={{}} initialRouteName="Home" tabBar={(props) => <TabBar {...props} />}>
             <Tab.Screen name="Home" component={Home} />
-            <Tab.Screen name="Cart" component={Cart} />
+            <Tab.Screen name="Cart" component={TabCart} />
+            <Tab.Screen name="Settings" component={Settings} />
         </Tab.Navigator>
     )
 }

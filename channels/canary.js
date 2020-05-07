@@ -9,6 +9,9 @@ module.exports = {
         versionCode: parseInt(process.env[channel]),
     },
     ios: {
+        config: {
+            ...options.ios.config,
+        },
         supportsTablet: true,
         buildNumber: process.env[channel].toString(),
     },

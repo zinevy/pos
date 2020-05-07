@@ -1,7 +1,10 @@
 import React, { useContext, useCallback, memo, useEffect } from "react"
 import { TouchableOpacity, SafeAreaView } from "react-native"
 import styled from "@emotion/native"
+
 import * as Facebook from "expo-facebook"
+import * as Google from "expo-google-app-auth"
+
 import Constants from "expo-constants"
 
 import { AppContext } from "../Main"
@@ -14,7 +17,7 @@ const Text = styled.Text(({ theme }) => ({
 
 const SignInScreen = memo(({ navigation }) => {
     const { appState, actions, dispatch } = useContext(AppContext)
-    const { FB_APP_ID } = Constants.manifest.extra
+    const { FB_APP_ID, ANDROID_CLIENT_ID, IOS_CLIENT_ID } = Constants.manifest.extra
 
     useEffect(() => {
         const initFbSdk = async () => {
@@ -35,7 +38,7 @@ const SignInScreen = memo(({ navigation }) => {
         actions.signIn(values)
     }, [])
 
-    const facebookLogIn = useCallback(async () => {
+    const signInWithFacebook = useCallback(async () => {
         try {
             const { type, token } = await Facebook.logInWithReadPermissionsAsync({
                 permissions: ["public_profile"],
@@ -44,7 +47,7 @@ const SignInScreen = memo(({ navigation }) => {
                 fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,picture.height(500)`)
                     .then((response) => response.json())
                     .then((data) => {
-                        actions.fbSignIn(data)
+                        actions.signInWithFacebook(data)
                     })
                     .catch((e) => console.log(e))
             } else {
@@ -52,6 +55,27 @@ const SignInScreen = memo(({ navigation }) => {
             }
         } catch ({ message }) {
             alert(`Facebook Login Error: ${message}`)
+        }
+    }, [])
+
+    const signInWithGoogle = useCallback(async () => {
+        try {
+            const result = await Google.logInAsync({
+                iosClientId: IOS_CLIENT_ID,
+                androidClientId: ANDROID_CLIENT_ID,
+                scopes: ["profile", "email"],
+            })
+
+            if (result.type === "success") {
+                actions.signInWithGoogle(result)
+
+                return
+            } else {
+                return { cancelled: true }
+            }
+        } catch (e) {
+            console.log("LoginScreen.js.js 30 | Error with login", e)
+            return { error: true }
         }
     }, [])
 
@@ -67,10 +91,13 @@ const SignInScreen = memo(({ navigation }) => {
                 onPress={() => {
                     navigation.navigate("Registration")
                 }}>
-                <Text>Register here</Text>
+                <Text>Continue with Email</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={facebookLogIn}>
-                <Text>Login using facebook</Text>
+            <TouchableOpacity onPress={signInWithFacebook}>
+                <Text>Continue with Facebook</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={signInWithGoogle}>
+                <Text>Continue with Google</Text>
             </TouchableOpacity>
         </SafeAreaView>
     )

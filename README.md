@@ -44,6 +44,8 @@ API_URL=https://reqres.in/api/
 CHANNEL=canary
 APP_SECRET_KEY
 FB_APP_ID
+IOS_CLIENT_ID
+ANDROID_CLIENT_ID
 ```
 
 #### Run the app

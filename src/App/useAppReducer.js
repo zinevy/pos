@@ -20,7 +20,7 @@ const useAppReducer = () => {
             let values = {}
 
             try {
-                response = await AsyncStorage.multiGet(["@token", "@profile"])
+                response = await AsyncStorage.multiGet(["@token", "@key", "@profile"])
 
                 for (let key of response) {
                     if (key[0]) {
@@ -39,6 +39,7 @@ const useAppReducer = () => {
                     type: "RESTORE_TOKEN",
                     token: values["@token"],
                     profile: values["@profile"],
+                    key: values["@key"],
                 })
                 SplashScreen.hide()
             }

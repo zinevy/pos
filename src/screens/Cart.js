@@ -1,10 +1,10 @@
-import React, { memo, useMemo } from "react"
+import React, { memo, useMemo, useContext } from "react"
 import { View, TouchableOpacity, Image, ScrollView } from "react-native"
 import styled from "@emotion/native"
 
 import withScreen from "../../utils/hoc/createScreen"
 import { formatCurrency } from "../../utils/formatter"
-import withAppContext from "../../utils/hoc/withAppContext"
+import { AppContext } from "../Main"
 
 const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
@@ -14,7 +14,9 @@ const Title = styled(Text)({
     fontSize: 20,
 })
 
-const Cart = memo(({ items, removeItem, navigation }) => {
+const Cart = memo(({ navigation }) => {
+    const { items, removeItem } = useContext(AppContext)
+
     const renderItems = (item, index) => {
         return (
             <View
@@ -90,11 +92,4 @@ const Cart = memo(({ items, removeItem, navigation }) => {
     }, [items])
 })
 
-const mapContext = ({ items, removeItem }) => ({
-    items,
-    removeItem,
-})
-
-const withScreenCart = withScreen({ cart: false })(Cart)
-
-export default withAppContext(mapContext)(withScreenCart)
+export default Cart

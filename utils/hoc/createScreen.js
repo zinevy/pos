@@ -15,13 +15,13 @@ const styles = StyleSheet.create({
     },
 })
 
-const withScreen = ({ header = true, cart = true } = {}) => (InnerComponent) => {
+const withScreen = ({ header = true, cart = true, back = true } = {}) => (InnerComponent) => {
     const HomeScreen = memo((props) => {
         const insets = useSafeArea()
 
         return (
             <ScreenView style={{ flex: 1, paddingTop: insets.top }}>
-                {header && <Header navigation={props.navigation} withCart={cart} />}
+                {header && <Header navigation={props.navigation} withBack={back} withCart={cart} />}
                 <InnerComponent {...props} />
             </ScreenView>
         )
