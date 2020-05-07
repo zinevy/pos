@@ -1,5 +1,5 @@
 import React, { Suspense, useContext, memo, useMemo } from "react"
-import { View, Image, TouchableOpacity, FlatList, Button, ScrollView } from "react-native"
+import { View, Image, TouchableOpacity, FlatList, ScrollView } from "react-native"
 import styled from "@emotion/native"
 import * as Updates from "expo-updates"
 import useSWR from "swr"
@@ -8,7 +8,6 @@ import { AppContext } from "../Main"
 import { requests } from "../../utils/httpClient"
 import withScreen from "../../utils/hoc/createScreen"
 import { formatCurrency } from "../../utils/formatter"
-import withAppContext from "../../utils/hoc/withAppContext"
 
 const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
@@ -18,28 +17,17 @@ const Title = styled(Text)({
     fontSize: 30,
 })
 
-const List = styled(View)({
-    flex: 1,
-})
-
-const ListTitle = styled(Text)({
-    fontSize: 20,
-    paddingTop: 20,
-})
-
 const ListButton = styled(TouchableOpacity)({
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
     backgroundColor: "#1E6738",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#fff",
+    borderRadius: 4,
 })
 
 const ListButtonText = styled(Text)({
     color: "#fff",
     textAlign: "center",
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: "bold",
 })
 
@@ -91,17 +79,21 @@ const Products = ({ navigation }) => {
                         onPress={() => {
                             navigation.navigate("ProductDetails", { ...item })
                         }}>
-                        <List>
+                        <View style={{ margin: 5 }}>
                             <Image
                                 source={{ uri: item.image }}
                                 style={{
-                                    width: 200,
-                                    height: 200,
+                                    width: 150,
+                                    height: 150,
                                     resizeMode: "contain",
+                                    borderRadius: 2,
+                                    marginBottom: 10,
                                 }}
                             />
-                            <ListTitle>{item.name}</ListTitle>
-                            <Text>{formatCurrency(item.price)}</Text>
+                            <View style={{ alignItems: "center" }}>
+                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{item.name}</Text>
+                                <Text style={{ marginBottom: 10 }}>{formatCurrency(item.price)}</Text>
+                            </View>
                             <ListButton
                                 onPress={() => {
                                     item.quantity = 1
@@ -109,7 +101,7 @@ const Products = ({ navigation }) => {
                                 }}>
                                 <ListButtonText>Add to cart</ListButtonText>
                             </ListButton>
-                        </List>
+                        </View>
                     </TouchableOpacity>
                 )
             }}
@@ -117,41 +109,52 @@ const Products = ({ navigation }) => {
     )
 }
 
-const Home = memo(({ navigation, activeTheme, toggleTheme, actions, appState }) => {
+const Home = memo(({ navigation }) => {
+    const { activeTheme, toggleTheme, actions, appState } = useContext(AppContext)
+
     return useMemo(() => {
         return (
             <ScrollView>
                 <Suspense fallback={<Title>Loading...</Title>}>
-                    <Text>{Updates.manifest.version}</Text>
                     {appState.profile && (
-                        <Title>
-                            Welcome {appState.profile.first_name} {appState.profile.last_name}
-                        </Title>
+                        <View
+                            style={{
+                                marginBottom: 20,
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}>
+                            <Image
+                                source={{ uri: appState.profile.image_url }}
+                                style={{
+                                    borderRadius: 50,
+                                    width: 50,
+                                    height: 50,
+                                    resizeMode: "contain",
+                                }}
+                            />
+                            <Text style={{ marginLeft: 10, fontWeight: "bold" }}>
+                                {appState.profile.first_name} {appState.profile.last_name}
+                            </Text>
+                        </View>
                     )}
 
-                    <Button title={activeTheme === "light" ? "Dark Mode" : "Light Mode"} onPress={toggleTheme} />
                     <Products navigation={navigation} />
-                    {appState.userToken && (
-                        <TouchableOpacity
-                            onPress={() => {
-                                actions.signOut()
-                            }}>
-                            <Text>Sign out</Text>
-                        </TouchableOpacity>
-                    )}
+                    <View style={{ marginTop: 60, justifyContent: "center", alignItems: "center" }}>
+                        {appState.userToken && (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    actions.signOut()
+                                }}>
+                                <Text>Sign out</Text>
+                            </TouchableOpacity>
+                        )}
+                        <Text>{Updates.manifest.version}</Text>
+                    </View>
                 </Suspense>
             </ScrollView>
         )
     }, [activeTheme, appState])
 })
 
-const mapContext = ({ activeTheme, toggleTheme, actions, appState }) => ({
-    activeTheme,
-    toggleTheme,
-    actions,
-    appState,
-})
-
-const withContextHome = withAppContext(mapContext)(Home)
-
-export default withScreen()(withContextHome)
+export default withScreen({ back: false })(Home)

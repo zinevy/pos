@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     },
 })
 
-const Header = memo(({ navigation, withCart }) => {
+const Header = memo(({ navigation, withCart, withBack }) => {
     const route = useRoute()
     const theme = useTheme()
 
@@ -30,12 +30,13 @@ const Header = memo(({ navigation, withCart }) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 width: "100%",
-                padding: 15,
+                padding: 20,
+                paddingTop: 40,
                 backgroundColor: hexToRGB(theme.main.backgroundColor, 0.8),
                 zIndex: 9,
             }}>
             <View style={{ ...styles.header, alignItems: "flex-start" }}>
-                {navigation.canGoBack() ? (
+                {withBack && navigation.canGoBack() ? (
                     <TouchableOpacity
                         onPress={() => {
                             navigation.goBack()

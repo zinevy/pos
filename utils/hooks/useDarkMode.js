@@ -14,15 +14,15 @@ const useDarkMode = () => {
         }
     }
 
-    const pullFromStorage = async () => {
-        const localTheme = await AsyncStorage.getItem("@theme")
-
-        if (localTheme) {
-            setTheme(localTheme)
-        }
-    }
-
     useEffect(() => {
+        const pullFromStorage = async () => {
+            const localTheme = await AsyncStorage.getItem("@theme")
+
+            if (localTheme) {
+                setTheme(localTheme)
+            }
+        }
+
         pullFromStorage()
 
         return () => {}

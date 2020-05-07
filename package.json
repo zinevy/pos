@@ -36,6 +36,7 @@
         "expo-crypto": "^8.1.0",
         "expo-facebook": "^8.1.0",
         "expo-font": "~8.1.0",
+        "expo-google-app-auth": "^8.1.0",
         "expo-updates": "^0.1.2",
         "expo-web-browser": "~8.2.0",
         "formik": "^2.1.4",

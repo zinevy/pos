@@ -1,16 +1,17 @@
-import React from "react"
+import React, { useContext } from "react"
 import { View, TouchableOpacity } from "react-native"
 import styled from "@emotion/native"
 
 import withScreen from "../../../utils/hoc/createScreen"
-import withAppContext from "../../../utils/hoc/withAppContext"
+import { AppContext } from "../../Main"
 
 const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
 }))
 
-const Product = ({ route, addToCart }) => {
+const Product = ({ route }) => {
     const item = route.params
+    const { addToCart } = useContext(AppContext)
 
     return (
         <View>
@@ -25,9 +26,5 @@ const Product = ({ route, addToCart }) => {
         </View>
     )
 }
-const mapContext = ({ addToCart }) => ({
-    addToCart,
-})
-const withAppContextProduct = withAppContext(mapContext)(Product)
 
-export default withScreen()(withAppContextProduct)
+export default withScreen()(Product)
