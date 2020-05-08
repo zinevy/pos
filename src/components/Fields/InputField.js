@@ -1,13 +1,13 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { useField } from "formik"
-import { View } from "react-native"
+import { View, TextInput } from "react-native"
 import styled from "@emotion/native"
 
 const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
 }))
 
-const TextInput = styled.TextInput(({ theme }) => ({
+const TextInputField = styled(TextInput)(({ theme }) => ({
     color: theme.main.color,
     borderLeftWidth: 1,
     borderTopWidth: 1,
@@ -23,12 +23,12 @@ const InputField = ({ label, type, description, ...props }) => {
     const [field, meta] = useField(props)
 
     return (
-        <View>
-            <Text>{label}</Text>
-            <Text>{description && description}</Text>
-            <TextInput {...field} {...props} />
+        <Fragment>
+            {label && <Text>{label}</Text>}
+            {description && <Text>{description}</Text>}
+            <TextInputField {...field} {...props} />
             <View style={{ marginTop: 5 }}>{meta.touched && meta.error && <Text>{meta.error}</Text>}</View>
-        </View>
+        </Fragment>
     )
 }
 

@@ -35,16 +35,16 @@ const LoginForm = memo(({ onSubmit, disabled, loading, hasError, error }) => {
     return (
         <Formik validationSchema={validationSchema} initialValues={initialValues} onSubmit={onSubmit}>
             {({ handleChange, handleBlur, handleSubmit, values }) => (
-                <View>
+                <View style={{}}>
                     {error && (
                         <View style={{ alignItems: "center", marginBottom: 20 }}>
                             <Text>{error}</Text>
                         </View>
                     )}
 
-                    <View style={{ marginBottom: 20 }}>
+                    <View style={{ marginBottom: 0 }}>
                         <InputField
-                            style={{ marginBottom: 0 }}
+                            style={{ marginBottom: 10 }}
                             name="email"
                             placeholder="Email"
                             onChangeText={handleChange("email")}
@@ -52,7 +52,7 @@ const LoginForm = memo(({ onSubmit, disabled, loading, hasError, error }) => {
                             value={values.email}
                         />
                         <InputField
-                            style={{ marginBottom: 0 }}
+                            style={{ marginBottom: 10 }}
                             name="password"
                             placeholder="Password"
                             onChangeText={handleChange("password")}
