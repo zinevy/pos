@@ -3,9 +3,23 @@ import { AsyncStorage } from "react-native"
 import { requests } from "../../utils/httpClient"
 
 const actions = (dispatch) => {
-    const signIn = async (data) => {
-        dispatch({ type: "REQUEST_SIGN_IN" })
+    const init = () => {
+        return dispatch({ type: "INIT" })
+    }
 
+    const requestSignIn = ({ client }) => {
+        return dispatch({ type: "REQUEST_SIGN_IN", client })
+    }
+
+    const requestProcessing = () => {
+        return dispatch({ type: "REQUEST_PROCESSING" })
+    }
+
+    const signInError = (error) => {
+        return dispatch({ type: "SIGN_IN_ERROR", error })
+    }
+
+    const signIn = async (data) => {
         try {
             const signInRes = await requests.post("/login", data)
 
@@ -50,8 +64,6 @@ const actions = (dispatch) => {
     }
 
     const signInWithFacebook = async (data) => {
-        dispatch({ type: "REQUEST_SIGN_IN" })
-
         try {
             if (data.id) {
                 try {
@@ -87,8 +99,6 @@ const actions = (dispatch) => {
     }
 
     const signInWithGoogle = async (data) => {
-        dispatch({ type: "REQUEST_SIGN_IN" })
-
         try {
             if (data.type === "success" && data.accessToken) {
                 try {
@@ -154,8 +164,6 @@ const actions = (dispatch) => {
                     image_url: avatar,
                 }
 
-                console.log("USERDATA", userData)
-
                 try {
                     const keys = [
                         ["@profile", JSON.stringify(userData)],
@@ -177,9 +185,13 @@ const actions = (dispatch) => {
     }
 
     return {
+        init,
+        requestSignIn,
         signIn,
+        signInError,
         signInWithFacebook,
         signInWithGoogle,
+        requestProcessing,
         signOut,
         register,
     }

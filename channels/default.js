@@ -14,13 +14,6 @@ module.exports = {
         fallbackToCacheTimeout: 0,
     },
     assetBundlePatterns: ["**/*"],
-    ios: {
-        config: {
-            googleSignIn: {
-                reservedClientId: process.env.IOS_CLIENT_ID,
-            },
-        },
-    },
     extra: {
         test: 1,
     },

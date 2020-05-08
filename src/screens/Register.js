@@ -16,8 +16,10 @@ const Registration = memo(({ navigation }) => {
     const isFocused = useIsFocused()
 
     useEffect(() => {
-        // dispatch({ type: "INIT" })
-    }, [isFocused])
+        dispatch({ type: "INIT" })
+
+        return () => {}
+    }, [])
 
     const onSubmit = useCallback((values) => {
         actions.register(values)

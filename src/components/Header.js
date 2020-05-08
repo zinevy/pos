@@ -31,7 +31,7 @@ const Header = memo(({ navigation, withCart, withBack }) => {
                 justifyContent: "space-between",
                 width: "100%",
                 padding: 20,
-                paddingTop: 40,
+                paddingTop: 10,
                 backgroundColor: hexToRGB(theme.main.backgroundColor, 0.8),
                 zIndex: 9,
             }}>

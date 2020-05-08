@@ -1,7 +1,7 @@
-import React, { useContext, useCallback, memo, useEffect } from "react"
-import { TouchableOpacity, SafeAreaView } from "react-native"
+import React, { Fragment, useContext, useCallback, memo, useEffect } from "react"
+import { TouchableOpacity, View, SafeAreaView } from "react-native"
 import styled from "@emotion/native"
-
+import * as Updates from "expo-updates"
 import * as Facebook from "expo-facebook"
 import * as Google from "expo-google-app-auth"
 
@@ -10,14 +10,34 @@ import Constants from "expo-constants"
 import { AppContext } from "../Main"
 import LoginForm from "../components/Forms/Login"
 import withScreen from "../../utils/hoc/createScreen"
+import Button from "../components/Button"
 
-const Text = styled.Text(({ theme }) => ({
-    color: theme.main.color,
-}))
+const Text = styled.Text(({ theme }) => ({}))
+
+const LoginButton = styled.TouchableOpacity({
+    backgroundColor: "#000",
+    marginTop: 5,
+    marginBottom: 5,
+    borderRadius: 10,
+    touchAction: "none",
+})
+
+const LoginText = styled(Text)({
+    padding: 15,
+    color: "#FFF",
+    textAlign: "center",
+})
 
 const SignInScreen = memo(({ navigation }) => {
     const { appState, actions, dispatch } = useContext(AppContext)
-    const { FB_APP_ID, ANDROID_CLIENT_ID, IOS_CLIENT_ID } = Constants.manifest.extra
+    const {
+        FB_APP_ID,
+        ANDROID_CLIENT_ID,
+        ANDROID_CLIENT_ID_EXPO,
+        IOS_CLIENT_ID,
+        IOS_CLIENT_ID_EXPO,
+    } = Constants.manifest.extra
+    const { client, isLoading, isProcessing, isError } = appState
 
     useEffect(() => {
         const initFbSdk = async () => {
@@ -34,71 +54,102 @@ const SignInScreen = memo(({ navigation }) => {
         return () => {}
     }, [])
 
-    const onSubmit = useCallback((values) => {
+    const signIn = useCallback((values) => {
+        actions.requestSignIn({ client: "email" })
         actions.signIn(values)
     }, [])
 
     const signInWithFacebook = useCallback(async () => {
         try {
+            actions.requestSignIn({ client: "facebook" })
             const { type, token } = await Facebook.logInWithReadPermissionsAsync({
                 permissions: ["public_profile"],
             })
             if (type === "success") {
+                actions.requestProcessing()
                 fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,picture.height(500)`)
                     .then((response) => response.json())
                     .then((data) => {
                         actions.signInWithFacebook(data)
                     })
-                    .catch((e) => console.log(e))
+                    .catch((e) => {
+                        actions.signInError("Login error")
+                    })
             } else {
                 // type === 'cancel'
+                actions.init()
             }
         } catch ({ message }) {
-            alert(`Facebook Login Error: ${message}`)
+            actions.signInError(`Facebook Login Error: ${message}`)
         }
     }, [])
 
     const signInWithGoogle = useCallback(async () => {
         try {
+            actions.requestSignIn({ client: "google" })
             const result = await Google.logInAsync({
-                iosClientId: IOS_CLIENT_ID,
-                androidClientId: ANDROID_CLIENT_ID,
+                iosClientId: IOS_CLIENT_ID_EXPO,
+                androidClientId: ANDROID_CLIENT_ID_EXPO,
+                androidStandaloneAppClientId: ANDROID_CLIENT_ID,
+                iosStandaloneAppClientId: IOS_CLIENT_ID,
                 scopes: ["profile", "email"],
             })
 
-            if (result.type === "success") {
-                actions.signInWithGoogle(result)
+            actions.requestProcessing()
 
-                return
+            if (result.type === "success") {
+                return actions.signInWithGoogle(result)
             } else {
-                return { cancelled: true }
+                console.log("CANCELLED")
+                // Cancelled
+                actions.init()
             }
         } catch (e) {
-            console.log("LoginScreen.js.js 30 | Error with login", e)
-            return { error: true }
+            actions.signInError(e.message)
+            console.log("Error with login", e)
         }
     }, [])
 
     return (
-        <SafeAreaView>
-            <LoginForm
-                onSubmit={onSubmit}
-                error={appState.error}
-                hasError={appState.isError}
-                loading={appState.isLoading}
-            />
-            <TouchableOpacity
-                onPress={() => {
-                    navigation.navigate("Registration")
-                }}>
-                <Text>Continue with Email</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={signInWithFacebook}>
-                <Text>Continue with Facebook</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={signInWithGoogle}>
-                <Text>Continue with Google</Text>
-            </TouchableOpacity>
+        <SafeAreaView style={{ flex: 1, justifyContent: "center", margin: 20 }}>
+            {!appState.userToken && (
+                <Fragment>
+                    <View>
+                        <View style={{ alignItems: "center", marginBottom: 10 }}>
+                            <Text style={{ fontSize: 30, fontWeight: "bold", marginBottom: 10 }}>Login</Text>
+                            <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit</Text>
+                        </View>
+                        <LoginForm
+                            onSubmit={signIn}
+                            error={appState.error}
+                            hasError={isError}
+                            disabled={isLoading}
+                            loading={isLoading && client === "email"}
+                            processing={isProcessing}
+                        />
+                        <View style={{ alignItems: "center", margin: 20 }}>
+                            <Text>OR</Text>
+                        </View>
+                        <Button title="Continue with Email" onPress={() => navigation.navigate("Registration")} />
+                        <Button
+                            title="Continue with Facebook"
+                            processing={isProcessing}
+                            loading={isLoading && client === "facebook"}
+                            onPress={signInWithFacebook}
+                        />
+                        <Button
+                            disabled={isLoading}
+                            title="Continue with Google"
+                            loading={isLoading && client === "google"}
+                            processing={isProcessing}
+                            onPress={signInWithGoogle}
+                        />
+                    </View>
+                    <View style={{ alignItems: "center", marginTop: 10 }}>
+                        <Text style={{ fontSize: 13 }}>v{Updates.manifest.version}</Text>
+                    </View>
+                </Fragment>
+            )}
         </SafeAreaView>
     )
 })
