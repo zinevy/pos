@@ -1,9 +1,10 @@
 import React, { memo, useMemo, useContext } from "react"
-import { View, TouchableOpacity, Image, ScrollView } from "react-native"
+import { View, TouchableOpacity, Image, ScrollView, Dimensions } from "react-native"
 import styled from "@emotion/native"
 
-import withScreen from "../../utils/hoc/createScreen"
 import { formatCurrency } from "../../utils/formatter"
+import Button from "../components/Button"
+
 import { AppContext } from "../Main"
 
 const Text = styled.Text(({ theme }) => ({
@@ -54,7 +55,7 @@ const Cart = memo(({ navigation }) => {
                     onPress={() => {
                         removeItem(index)
                     }}>
-                    <Text>Remove</Text>
+                    <Text>Delete</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -71,9 +72,9 @@ const Cart = memo(({ navigation }) => {
             <View style={{ flex: 1 }}>
                 <ScrollView>
                     {!items.length && <Title>Cart is empty</Title>}
-                    <View style={{ marginBottom: 100 }}>{items && items.map(renderItems)}</View>
+                    <View style={{ marginBottom: 200 }}>{items && items.map(renderItems)}</View>
                 </ScrollView>
-                <View style={{ position: "absolute", bottom: 0, width: "100%" }}>
+                <View style={{ bottom: 0, width: "100%", position: "absolute" }}>
                     <View
                         style={{
                             margin: 5,

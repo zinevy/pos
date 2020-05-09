@@ -1,9 +1,10 @@
 import React, { useContext, memo } from "react"
-import { View, Button } from "react-native"
+import { View } from "react-native"
 import styled from "@emotion/native"
 
 import withScreen from "../../utils/hoc/createScreen"
 import { AppContext } from "../Main"
+import Button from "../components/Button"
 
 const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,

@@ -1,4 +1,4 @@
-import React, { Suspense, useContext, memo, useMemo } from "react"
+import React, { Suspense, useContext, memo, useMemo, Fragment } from "react"
 import { View, Image, TouchableOpacity, FlatList, ScrollView } from "react-native"
 import styled from "@emotion/native"
 import * as Updates from "expo-updates"
@@ -8,6 +8,7 @@ import { AppContext } from "../Main"
 import { requests } from "../../utils/httpClient"
 import withScreen from "../../utils/hoc/createScreen"
 import { formatCurrency } from "../../utils/formatter"
+import Button from "../components/Button"
 
 const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
@@ -75,34 +76,34 @@ const Products = ({ navigation }) => {
             }}
             renderItem={({ item }) => {
                 return (
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigation.navigate("ProductDetails", { ...item })
-                        }}>
-                        <View style={{ margin: 5 }}>
+                    <View style={{ margin: 5 }}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate("ProductDetails", { ...item })
+                            }}>
                             <Image
                                 source={{ uri: item.image }}
                                 style={{
                                     width: 150,
                                     height: 150,
                                     resizeMode: "contain",
-                                    borderRadius: 2,
+                                    borderRadius: 10,
                                     marginBottom: 10,
                                 }}
                             />
-                            <View style={{ alignItems: "center" }}>
+                            <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
                                 <Text style={{ fontSize: 15, fontWeight: "bold" }}>{item.name}</Text>
                                 <Text style={{ marginBottom: 10 }}>{formatCurrency(item.price)}</Text>
                             </View>
-                            <ListButton
-                                onPress={() => {
-                                    item.quantity = 1
-                                    addToCart(item)
-                                }}>
-                                <ListButtonText>Add to cart</ListButtonText>
-                            </ListButton>
-                        </View>
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                        <Button
+                            onPress={() => {
+                                item.quantity = 1
+                                addToCart(item)
+                            }}
+                            title="Add to cart"
+                        />
+                    </View>
                 )
             }}
         />

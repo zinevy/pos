@@ -60,7 +60,8 @@ const RootNavigator = memo(({ app }) => {
                     component={BottomTabNavigator}
                 />
                 <Stack.Screen label="Product Details" name="ProductDetails" component={ProductDetails} />
-                <Stack.Screen label="Cart" name="CartPage" component={CartPage} />
+                <Stack.Screen name="CartPage" component={CartPage} />
+                <Stack.Screen name="CheckoutPage" component={CartPage} />
             </Stack.Navigator>
         </NavigationContainer>
     )
