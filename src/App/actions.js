@@ -55,11 +55,12 @@ const actions = (dispatch) => {
                     // throw err
                 }
             } else {
-                dispatch({ type: "SIGN_IN_ERROR", error: signInRes.data.error })
+                console.log("signInRes", signInRes)
+                dispatch({ type: "SIGN_IN_ERROR", error: "Error" })
             }
         } catch (error) {
             console.warn(error)
-            // throw error
+            dispatch({ type: "SIGN_IN_ERROR", error })
         }
     }
 

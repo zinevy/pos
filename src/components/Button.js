@@ -1,30 +1,30 @@
 import React, { memo } from "react"
 import styled from "@emotion/native"
-import { View } from "react-native"
 
-const Text = styled.Text(({ theme }) => ({}))
+const Text = styled.Text(({ theme }) => ({
+    color: theme.login.button.color,
+}))
 
-const ButtonLayout = styled.TouchableOpacity({
-    backgroundColor: "#000",
+const ButtonLayout = styled.TouchableOpacity(({ theme }) => ({
+    backgroundColor: theme.login.button.backgroundColor,
     marginTop: 5,
     marginBottom: 5,
     borderRadius: 24,
     touchAction: "none",
-})
+}))
 
 const Container = styled.View({
     padding: 17,
 })
 const ButtonText = styled(Text)({
-    color: "#FFF",
     fontSize: 16,
     textAlign: "center",
     fontWeight: "bold",
 })
 
-const Button = memo(({ loading, onPress, processing, title }) => {
+const Button = memo(({ disabled, loading, onPress, processing, title }) => {
     return (
-        <ButtonLayout disabled={loading} onPress={onPress}>
+        <ButtonLayout disabled={disabled} onPress={onPress}>
             <Container>
                 {loading && !processing && <ButtonText>Loading...</ButtonText>}
                 {loading && processing && <ButtonText>Processing</ButtonText>}

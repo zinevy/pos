@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useCallback, memo, useEffect } from "react"
-import { TouchableOpacity, View, SafeAreaView } from "react-native"
+import { View, SafeAreaView } from "react-native"
 import styled from "@emotion/native"
 import * as Updates from "expo-updates"
 import * as Facebook from "expo-facebook"
@@ -11,6 +11,7 @@ import { AppContext } from "../Main"
 import LoginForm from "../components/Forms/Login"
 import withScreen from "../../utils/hoc/createScreen"
 import Button from "../components/Button"
+import device from "../../utils/device"
 
 const Text = styled.Text(({ theme }) => ({}))
 
@@ -98,14 +99,14 @@ const SignInScreen = memo(({ navigation }) => {
             actions.requestProcessing()
 
             if (result.type === "success") {
-                return actions.signInWithGoogle(result)
+                actions.signInWithGoogle(result)
             } else {
                 console.log("CANCELLED")
                 // Cancelled
                 actions.init()
             }
         } catch (e) {
-            actions.signInError(e.message)
+            actions.init()
             console.log("Error with login", e)
         }
     }, [])
@@ -130,24 +131,35 @@ const SignInScreen = memo(({ navigation }) => {
                         <View style={{ alignItems: "center", margin: 20 }}>
                             <Text>OR</Text>
                         </View>
-                        <Button title="Continue with Email" onPress={() => navigation.navigate("Registration")} />
-                        <Button
-                            title="Continue with Facebook"
-                            processing={isProcessing}
-                            loading={isLoading && client === "facebook"}
-                            onPress={signInWithFacebook}
-                        />
                         <Button
                             disabled={isLoading}
-                            title="Continue with Google"
-                            loading={isLoading && client === "google"}
-                            processing={isProcessing}
-                            onPress={signInWithGoogle}
+                            title="Continue with Email"
+                            onPress={() => navigation.navigate("Registration")}
                         />
+                        {device(["android", "ios"]) && (
+                            <Fragment>
+                                <Button
+                                    disabled={isLoading}
+                                    title="Continue with Facebook"
+                                    processing={isProcessing}
+                                    loading={isLoading && client === "facebook"}
+                                    onPress={signInWithFacebook}
+                                />
+                                <Button
+                                    disabled={isLoading}
+                                    title="Continue with Google"
+                                    loading={isLoading && client === "google"}
+                                    processing={isProcessing}
+                                    onPress={signInWithGoogle}
+                                />
+                            </Fragment>
+                        )}
                     </View>
-                    <View style={{ alignItems: "center", marginTop: 10 }}>
-                        <Text style={{ fontSize: 13 }}>v{Updates.manifest.version}</Text>
-                    </View>
+                    {device(["android", "ios"]) && (
+                        <View style={{ alignItems: "center", marginTop: 10 }}>
+                            <Text style={{ fontSize: 13 }}>v{Updates.manifest.version}</Text>
+                        </View>
+                    )}
                 </Fragment>
             )}
         </SafeAreaView>
