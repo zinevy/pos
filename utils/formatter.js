@@ -1,3 +1,8 @@
 export const formatCurrency = (value) => {
-    return value && value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+    if (value) {
+        value = parseFloat(value)
+        return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+    }
+
+    return
 }

@@ -13,7 +13,9 @@ import withScreen from "../../utils/hoc/createScreen"
 import Button from "../components/Button"
 import device from "../../utils/device"
 
-const Text = styled.Text(({ theme }) => ({}))
+const Text = styled.Text(({ theme }) => ({
+    color: theme.main.color,
+}))
 
 const LoginButton = styled.TouchableOpacity({
     backgroundColor: "#000",
@@ -22,6 +24,23 @@ const LoginButton = styled.TouchableOpacity({
     borderRadius: 10,
     touchAction: "none",
 })
+
+const Divider = styled(View)(({ theme }) => ({
+    content: `''`,
+    position: "absolute",
+    width: "100%",
+    height: 1,
+    backgroundColor: theme.main.color,
+    left: 0,
+    top: " 50%",
+}))
+
+const DividerText = styled(Text)(({ theme }) => ({
+    backgroundColor: theme.main.backgroundColor,
+    zIndex: 9,
+    paddingLeft: 10,
+    paddingRight: 10,
+}))
 
 const LoginText = styled(Text)({
     padding: 15,
@@ -128,8 +147,17 @@ const SignInScreen = memo(({ navigation }) => {
                             loading={isLoading && client === "email"}
                             processing={isProcessing}
                         />
-                        <View style={{ alignItems: "center", margin: 20 }}>
-                            <Text>OR</Text>
+                        <View
+                            style={{
+                                alignItems: "center",
+                                marginLeft: 10,
+                                marginRight: 10,
+                                marginTop: 20,
+                                marginBottom: 20,
+                                position: "relative",
+                            }}>
+                            <Divider />
+                            <DividerText>OR</DividerText>
                         </View>
                         <Button
                             disabled={isLoading}

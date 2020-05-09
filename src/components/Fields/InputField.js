@@ -28,7 +28,7 @@ const InputField = ({ label, type, description, ...props }) => {
             {label && <Text>{label}</Text>}
             {description && <Text>{description}</Text>}
             <TextInputField {...field} {...props} />
-            <View style={{ marginTop: 5 }}>{meta.touched && meta.error && <Text>{meta.error}</Text>}</View>
+            <View style={{ marginBottom: 10 }}>{meta.touched && meta.error && <Text>{meta.error}</Text>}</View>
         </Fragment>
     )
 }

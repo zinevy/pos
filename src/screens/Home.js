@@ -33,15 +33,17 @@ const ListButtonText = styled(Text)({
 })
 
 const fetchProducts = async () => {
-    const res = await requests.get("users?per_page=10")
-    if (res.ok) {
-        const { data: products } = res
+    const response = await requests.fetchSampleProducts(24)
+    const jsonResponse = await response.json()
 
-        const items = products.data.map((item) => ({
+    if (response.ok) {
+        const products = jsonResponse
+
+        const items = products.map((item) => ({
             id: item.id,
-            name: item.first_name,
-            image: item.avatar,
-            price: 50,
+            name: item.name,
+            image: item.images[0].src,
+            price: item.price,
         }))
 
         return {
@@ -76,7 +78,7 @@ const Products = ({ navigation }) => {
             }}
             renderItem={({ item }) => {
                 return (
-                    <View style={{ margin: 5 }}>
+                    <View style={{ margin: 5, width: 200, justifyContent: "space-between" }}>
                         <TouchableOpacity
                             onPress={() => {
                                 navigation.navigate("ProductDetails", { ...item })
@@ -84,15 +86,20 @@ const Products = ({ navigation }) => {
                             <Image
                                 source={{ uri: item.image }}
                                 style={{
-                                    width: 150,
+                                    width: "100%",
                                     height: 150,
-                                    resizeMode: "contain",
+                                    resizeMode: "cover",
                                     borderRadius: 10,
                                     marginBottom: 10,
                                 }}
                             />
-                            <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{item.name}</Text>
+                            <View>
+                                <Text
+                                    numberOfLines={2}
+                                    ellipsizeMode="tail"
+                                    style={{ fontSize: 15, fontWeight: "bold", marginBottom: 10 }}>
+                                    {item.name}
+                                </Text>
                                 <Text style={{ marginBottom: 10 }}>{formatCurrency(item.price)}</Text>
                             </View>
                         </TouchableOpacity>
