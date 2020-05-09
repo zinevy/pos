@@ -12,7 +12,7 @@ const Tab = createBottomTabNavigator()
 
 const BottomTabNavigator = () => {
     return (
-        <Tab.Navigator tabBarOptions={{}} initialRouteName="Cart" tabBar={(props) => <TabBar {...props} />}>
+        <Tab.Navigator tabBarOptions={{}} initialRouteName="Home" tabBar={(props) => <TabBar {...props} />}>
             <Tab.Screen name="Home" component={Home} />
             <Tab.Screen name="Cart" component={TabCart} />
             <Tab.Screen name="Settings" component={Settings} />

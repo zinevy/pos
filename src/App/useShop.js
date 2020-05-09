@@ -2,96 +2,66 @@ import { useEffect, useState, useCallback, useMemo } from "react"
 import { AsyncStorage } from "react-native"
 
 const useShop = ({ key }) => {
-    const [state, setState] = useState({})
+    const [items, setItems] = useState([])
 
     const removeItem = useCallback(
         async (index) => {
-            let items = getUserItems()
+            let userItems
 
-            items = items.filter((item, cartItemIndex) => cartItemIndex !== index)
+            userItems = items.filter((item, cartItemIndex) => cartItemIndex !== index)
 
-            const userItems = {
-                ...state,
-                [key]: {
-                    items,
-                },
-            }
-
-            await AsyncStorage.setItem("@items", JSON.stringify(userItems))
-
-            setState(userItems)
+            try {
+                await AsyncStorage.setItem(key, JSON.stringify(userItems))
+                setItems(userItems)
+            } catch (error) {}
         },
-        [state, key]
+        [items, key]
     )
-
-    const getUserItems = useCallback(() => {
-        let items = []
-        if (key && state && state[key]) {
-            items = state[key].items
-        }
-
-        return items
-    }, [state, key])
 
     const addToCart = useCallback(
         async (item) => {
             let userItems
             try {
-                if (state && state[key]) {
-                    userItems = {
-                        ...state,
-                        [key]: {
-                            items: [...state[key].items, item],
-                        },
-                    }
-                } else {
-                    userItems = {
-                        ...state,
-                        [key]: {
-                            items: [item],
-                        },
-                    }
-                }
-
-                await AsyncStorage.setItem("@items", JSON.stringify(userItems))
-                // const ITEMS = await AsyncStorage.getItem("@items")
-                // console.log("ITEMS", ITEMS)
+                userItems = [...items, item]
+                await AsyncStorage.setItem(key, JSON.stringify(userItems))
             } catch (err) {
                 console.warn(err)
             } finally {
-                setState({ ...userItems })
+                setItems(userItems)
             }
         },
-        [state, key]
+        [items, key]
     )
 
     useEffect(() => {
         const bootstrapAsync = async () => {
             let userItems
+            if (key) {
+                console.log("KEY", key)
+                try {
+                    userItems = await AsyncStorage.getItem(key)
+                    userItems = JSON.parse(userItems)
 
-            try {
-                userItems = await AsyncStorage.getItem("@items")
-                userItems = JSON.parse(userItems)
-
-                setState(userItems)
-            } catch (e) {
-                // eslint-disable-next-line no-console
-                console.log("ERROR", e)
+                    if (userItems) {
+                        setItems(userItems)
+                    }
+                } catch (e) {
+                    console.log("ERROR", e)
+                }
             }
         }
 
         bootstrapAsync()
     }, [key])
 
-    return useMemo(() => {
-        const items = getUserItems()
-
-        return {
+    return useMemo(
+        () => ({
             items,
             addToCart,
             removeItem,
-        }
-    }, [state, key])
+        }),
+        [items, key]
+    )
 }
 
 export default useShop

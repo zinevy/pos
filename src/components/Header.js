@@ -49,8 +49,6 @@ const Header = memo(({ navigation, withCart, withBack }) => {
     //     }
     // }, [])
 
-    console.log("RENDER")
-
     return (
         <Container>
             <View style={{ ...styles.header, alignItems: "flex-start" }}>
