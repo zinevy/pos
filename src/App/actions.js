@@ -52,7 +52,7 @@ const actions = (dispatch) => {
                     }
                 } catch (error) {
                     console.warn(error)
-                    // throw err
+                    // console.log(err)
                 }
             } else {
                 console.log("signInRes", signInRes)
@@ -89,13 +89,13 @@ const actions = (dispatch) => {
                         dispatch({ type: "SIGN_IN_SUCCESS", token, profile: userData, key: userData.id })
                     }
                 } catch (err) {
-                    throw err
+                    console.log(err)
                 }
             } else {
                 dispatch({ type: "SIGN_IN_ERROR", error: signInRes.data.error })
             }
         } catch (error) {
-            throw error
+            console.log(error)
         }
     }
 
@@ -125,13 +125,13 @@ const actions = (dispatch) => {
                         dispatch({ type: "SIGN_IN_SUCCESS", token, profile: userData, key: userData.id })
                     }
                 } catch (err) {
-                    throw err
+                    console.log(err)
                 }
             } else {
                 dispatch({ type: "SIGN_IN_ERROR", error: signInRes.data.error })
             }
         } catch (error) {
-            throw error
+            console.log(error)
         }
     }
 
@@ -181,7 +181,7 @@ const actions = (dispatch) => {
                 dispatch({ type: "REGISTER_ERROR", error: res.data.error })
             }
         } catch (error) {
-            throw error
+            console.log(error)
         }
     }
 

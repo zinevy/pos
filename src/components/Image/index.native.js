@@ -11,7 +11,7 @@ const LazyImage = ({ source, ...rest }) => {
                     <Text>...</Text>
                 </View>
             )}
-            <View style={{ display: loading ? "none" : "block" }}>
+            <View>
                 <Image
                     source={source}
                     {...rest}
