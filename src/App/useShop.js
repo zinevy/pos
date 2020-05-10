@@ -37,7 +37,6 @@ const useShop = ({ key }) => {
         const bootstrapAsync = async () => {
             let userItems
             if (key) {
-                console.log("KEY", key)
                 try {
                     userItems = await AsyncStorage.getItem(key)
                     userItems = JSON.parse(userItems)

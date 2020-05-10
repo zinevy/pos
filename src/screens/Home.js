@@ -1,5 +1,5 @@
-import React, { Suspense, useContext, memo, useMemo, Fragment } from "react"
-import { View, Image, TouchableOpacity, FlatList, ScrollView } from "react-native"
+import React, { Suspense, useContext, memo, useMemo } from "react"
+import { View, TouchableOpacity, FlatList, ScrollView } from "react-native"
 import styled from "@emotion/native"
 import * as Updates from "expo-updates"
 import useSWR from "swr"
@@ -8,11 +8,8 @@ import { AppContext } from "../Main"
 import { requests } from "../../utils/httpClient"
 import withScreen from "../../utils/hoc/createScreen"
 import { formatCurrency } from "../../utils/formatter"
-import Button from "../components/Button"
 
-const Text = styled.Text(({ theme }) => ({
-    color: theme.main.color,
-}))
+import { Button, Text, LazyImage } from "../components/"
 
 const Title = styled(Text)({
     fontSize: 30,
@@ -33,7 +30,7 @@ const ListButtonText = styled(Text)({
 })
 
 const fetchProducts = async () => {
-    const response = await requests.fetchSampleProducts(24)
+    const response = await requests.fetchSampleProducts(12)
     const jsonResponse = await response.json()
 
     if (response.ok) {
@@ -44,6 +41,7 @@ const fetchProducts = async () => {
             name: item.name,
             image: item.images[0].src,
             price: item.price,
+            description: item.short_description,
         }))
 
         return {
@@ -83,23 +81,17 @@ const Products = ({ navigation }) => {
                             onPress={() => {
                                 navigation.navigate("ProductDetails", { ...item })
                             }}>
-                            <Image
+                            <LazyImage
                                 source={{ uri: item.image }}
                                 style={{
                                     width: "100%",
                                     height: 150,
-                                    resizeMode: "cover",
                                     borderRadius: 10,
                                     marginBottom: 10,
                                 }}
                             />
                             <View>
-                                <Text
-                                    numberOfLines={2}
-                                    ellipsizeMode="tail"
-                                    style={{ fontSize: 15, fontWeight: "bold", marginBottom: 10 }}>
-                                    {item.name}
-                                </Text>
+                                <Text style={{ fontSize: 15, fontWeight: "bold", marginBottom: 10 }}>{item.name}</Text>
                                 <Text style={{ marginBottom: 10 }}>{formatCurrency(item.price)}</Text>
                             </View>
                         </TouchableOpacity>
@@ -132,14 +124,13 @@ const Home = memo(({ navigation }) => {
                                 alignItems: "center",
                                 justifyContent: "center",
                             }}>
-                            <Image
-                                source={{ uri: appState.profile.image_url }}
+                            <LazyImage
                                 style={{
-                                    borderRadius: 50,
                                     width: 50,
                                     height: 50,
-                                    resizeMode: "contain",
+                                    borderRadius: 50,
                                 }}
+                                source={{ uri: appState.profile.image_url }}
                             />
                             <Text style={{ marginLeft: 10, fontWeight: "bold" }}>
                                 {appState.profile.first_name} {appState.profile.last_name}

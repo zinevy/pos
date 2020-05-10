@@ -17,7 +17,6 @@ const TextInputField = styled.TextInput(({ theme }) => ({
     padding: 20,
     borderRadius: 20,
     margin: 0,
-    outline: "none",
 }))
 
 const InputField = ({ label, type, description, ...props }) => {

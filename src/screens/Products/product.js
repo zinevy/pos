@@ -1,30 +1,45 @@
-import React, { useContext } from "react"
-import { View, TouchableOpacity } from "react-native"
-import styled from "@emotion/native"
+import React, { useContext, memo } from "react"
+import { View } from "react-native"
+import { WebView } from "react-native-webview"
 
 import withScreen from "../../../utils/hoc/createScreen"
 import { AppContext } from "../../Main"
 
-const Text = styled.Text(({ theme }) => ({
-    color: theme.main.color,
-}))
+import { Text, LazyImage, Button } from "../../components"
 
-const Product = ({ route }) => {
+const Product = memo(({ route }) => {
     const item = route.params
     const { addToCart } = useContext(AppContext)
 
     return (
-        <View>
-            <Text>{item.name}</Text>
-            <TouchableOpacity
+        <View style={{ margin: 20 }}>
+            <View style={{ marginBottom: 20 }}>
+                <Text style={{ fontSize: 20 }}>{item.name}</Text>
+            </View>
+            <View style={{ marginBottom: 20 }}>
+                <LazyImage
+                    style={{
+                        width: "100%",
+                        height: 400,
+                        borderRadius: 10,
+                        resizeMode: "cover",
+                    }}
+                    source={{ uri: item.image }}
+                />
+            </View>
+            <View>
+                <WebView originWhitelist={["*"]} source={{ html: item.description }} />
+                {/* <Text>{item.description}</Text> */}
+            </View>
+            <Button
+                title="Add to cart"
                 onPress={() => {
                     item.quantity = 1
                     addToCart(item)
-                }}>
-                <Text>Add to cart</Text>
-            </TouchableOpacity>
+                }}
+            />
         </View>
     )
-}
+})
 
 export default withScreen()(Product)

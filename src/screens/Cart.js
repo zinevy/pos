@@ -1,19 +1,9 @@
-import React, { memo, useMemo, useContext } from "react"
-import { View, TouchableOpacity, Image, ScrollView, Dimensions } from "react-native"
-import styled from "@emotion/native"
+import React, { memo, useMemo, useContext, useCallback, useState, useEffect } from "react"
+import { View, TouchableOpacity, ScrollView, Dimensions } from "react-native"
 
 import { formatCurrency } from "../../utils/formatter"
-import Button from "../components/Button"
-
+import { Text, LazyImage } from "../components"
 import { AppContext } from "../Main"
-
-const Text = styled.Text(({ theme }) => ({
-    color: theme.main.color,
-}))
-
-const Title = styled(Text)({
-    fontSize: 20,
-})
 
 const Cart = memo(({ navigation }) => {
     const { items, removeItem } = useContext(AppContext)
@@ -23,55 +13,59 @@ const Cart = memo(({ navigation }) => {
             <View
                 key={`item-${index}`}
                 style={{
-                    display: "flex",
                     flexDirection: "row",
-                    padding: 10,
                     alignItems: "center",
                     justifyContent: "space-between",
+                    marginBottom: 10,
                 }}>
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.navigate("ProductDetails", { ...item })
-                    }}
-                    style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                    <Image
-                        source={{ uri: item.image }}
-                        style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 50,
-                            resizeMode: "contain",
-                        }}
-                    />
-                    <View style={{ marginLeft: 10 }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 17 }}>{item.name}</Text>
-                        <Text>
-                            Description | {formatCurrency(item.price)} | {item.quantity}x
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={() => {
-                        removeItem(index)
-                    }}>
-                    <Text>Delete</Text>
-                </TouchableOpacity>
+                <View style={{ width: "60%", alignItems: "flex-start" }}>
+                    <TouchableOpacity
+                        style={{ flexDirection: "row", alignItems: "flex-start" }}
+                        onPress={() => {
+                            navigation.navigate("ProductDetails", { ...item })
+                        }}>
+                        <LazyImage
+                            source={{ uri: item.image }}
+                            style={{
+                                width: 70,
+                                height: 70,
+                                borderRadius: 10,
+                                resizeMode: "cover",
+                            }}
+                        />
+                        <View style={{ marginLeft: 10 }}>
+                            <Text lines={2} style={{ fontWeight: "bold", fontSize: 15, marginBottom: 5 }}>
+                                {item.name}
+                            </Text>
+                            <Text>
+                                {formatCurrency(item.price)} ({item.quantity}x)
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            removeItem(index)
+                        }}>
+                        <Text>Delete</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }
 
     const calculateTotal = (items) => {
-        const total = items.reduce((total, item) => total + item.price, 0)
+        const total = items.reduce((total, item) => +total + +item.price, 0)
 
         return formatCurrency(total)
     }
 
     return useMemo(() => {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, margin: 20 }}>
                 <ScrollView>
-                    {!items.length && <Title>Cart is empty</Title>}
+                    {!items.length && <Text>Cart is empty</Text>}
                     <View style={{ marginBottom: 200 }}>{items && items.map(renderItems)}</View>
                 </ScrollView>
                 <View style={{ bottom: 0, width: "100%", position: "absolute" }}>
