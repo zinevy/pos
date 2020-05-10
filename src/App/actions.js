@@ -21,6 +21,7 @@ const actions = (dispatch) => {
 
     const signIn = async (data) => {
         try {
+            dispatch({ type: "REQUEST_SIGN_IN", client: "email" })
             const signInRes = await requests.post("/login", data)
 
             if (signInRes.ok) {
@@ -44,11 +45,10 @@ const actions = (dispatch) => {
                             ["@key", JSON.stringify(userData.id)],
                         ]
                         await AsyncStorage.multiSet(keys)
+
+                        dispatch({ type: "SIGN_IN_SUCCESS", token, profile: userData, key: userData.id })
                     } catch (error) {
                         console.warn(error)
-                        // Restoring token failed
-                    } finally {
-                        dispatch({ type: "SIGN_IN_SUCCESS", token, profile: userData, key: userData.id })
                     }
                 } catch (error) {
                     console.warn(error)

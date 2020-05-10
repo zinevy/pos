@@ -11,7 +11,7 @@ const useShop = ({ key }) => {
             userItems = items.filter((item, cartItemIndex) => cartItemIndex !== index)
 
             try {
-                await AsyncStorage.setItem(key, JSON.stringify(userItems))
+                await AsyncStorage.setItem(JSON.stringify(key), JSON.stringify(userItems))
                 setItems(userItems)
             } catch (error) {}
         },
@@ -23,7 +23,7 @@ const useShop = ({ key }) => {
             let userItems
             try {
                 userItems = [...items, item]
-                await AsyncStorage.setItem(key, JSON.stringify(userItems))
+                await AsyncStorage.setItem(JSON.stringify(key), JSON.stringify(userItems))
             } catch (err) {
                 console.warn(err)
             } finally {
@@ -38,7 +38,7 @@ const useShop = ({ key }) => {
             let userItems
             if (key) {
                 try {
-                    userItems = await AsyncStorage.getItem(key)
+                    userItems = await AsyncStorage.getItem(JSON.stringify(key))
                     userItems = JSON.parse(userItems)
 
                     if (userItems) {

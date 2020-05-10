@@ -75,7 +75,6 @@ const SignInScreen = memo(({ navigation }) => {
     }, [])
 
     const signIn = useCallback((values) => {
-        actions.requestSignIn({ client: "email" })
         actions.signIn(values)
     }, [])
 
