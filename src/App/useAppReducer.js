@@ -2,17 +2,19 @@ import { useReducer, useEffect, useMemo } from "react"
 import { AsyncStorage } from "react-native"
 import { SplashScreen } from "expo"
 
-import appReducer from "./reducer"
+import reducer from "./reducer"
 import appActions from "./actions"
 
+const initialState = {
+    isLoading: true,
+    isSignout: false,
+    isError: false,
+    error: null,
+    profile: null,
+}
+
 const useAppReducer = () => {
-    const [state, dispatch] = useReducer(appReducer, {
-        isLoading: true,
-        isSignout: false,
-        isError: false,
-        error: null,
-        profile: null,
-    })
+    const [state, dispatch] = useReducer(reducer, initialState)
 
     useEffect(() => {
         const bootstrapAsync = async () => {

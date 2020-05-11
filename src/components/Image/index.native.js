@@ -19,7 +19,9 @@ const LazyImage = ({ source, ...rest }) => {
             await loadImage(filesystemURI, source.uri)
         }
 
-        getImage()
+        timer.current = setTimeout(() => {
+            getImage()
+        }, 500)
     }, [source])
 
     const loadImage = async (filesystemURI, remoteURI) => {

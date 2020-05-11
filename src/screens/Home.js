@@ -10,6 +10,7 @@ import withScreen from "../../utils/hoc/createScreen"
 import { formatCurrency } from "../../utils/formatter"
 
 import { Button, Text, LazyImage } from "../components/"
+import { normalize } from "../../utils/scale"
 
 const Title = styled(Text)({
     fontSize: 30,
@@ -41,7 +42,6 @@ const fetchProducts = async () => {
             name: item.name,
             image: item.images[0].src,
             price: item.price,
-            description: item.short_description,
         }))
 
         return {
@@ -76,7 +76,7 @@ const Products = ({ navigation }) => {
             }}
             renderItem={({ item }) => {
                 return (
-                    <View style={{ margin: 5, width: 200, justifyContent: "space-between" }}>
+                    <View style={{ margin: normalize(5), width: normalize(200), justifyContent: "space-between" }}>
                         <TouchableOpacity
                             onPress={() => {
                                 navigation.navigate("ProductDetails", { ...item })
@@ -85,14 +85,23 @@ const Products = ({ navigation }) => {
                                 source={{ uri: item.image }}
                                 style={{
                                     width: "100%",
-                                    height: 150,
-                                    borderRadius: 10,
+                                    height: normalize(150),
+                                    borderRadius: normalize(10),
                                     marginBottom: 10,
                                 }}
                             />
                             <View>
-                                <Text style={{ fontSize: 15, fontWeight: "bold", marginBottom: 10 }}>{item.name}</Text>
-                                <Text style={{ marginBottom: 10 }}>{formatCurrency(item.price)}</Text>
+                                <Text
+                                    style={{
+                                        fontSize: normalize(18),
+                                        fontWeight: "bold",
+                                        marginBottom: normalize(10),
+                                    }}>
+                                    {item.name}
+                                </Text>
+                                <Text style={{ marginBottom: normalize(10), fontSize: normalize(14) }}>
+                                    {formatCurrency(item.price)}
+                                </Text>
                             </View>
                         </TouchableOpacity>
                         <Button
@@ -100,6 +109,7 @@ const Products = ({ navigation }) => {
                                 item.quantity = 1
                                 addToCart(item)
                             }}
+                            containerStyle={{ padding: normalize(14) }}
                             title="Add to cart"
                         />
                     </View>

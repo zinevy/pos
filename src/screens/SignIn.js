@@ -26,7 +26,6 @@ const LoginButton = styled.TouchableOpacity({
 })
 
 const Divider = styled(View)(({ theme }) => ({
-    content: `''`,
     position: "absolute",
     width: "100%",
     height: 1,
@@ -60,16 +59,19 @@ const SignInScreen = memo(({ navigation }) => {
     const { client, isLoading, isProcessing, isError } = appState
 
     useEffect(() => {
-        const initFbSdk = async () => {
-            try {
-                await Facebook.initializeAsync(FB_APP_ID)
-            } catch (error) {
-                console.warn(error)
+        if (device(["ios", "android"])) {
+            const initFbSdk = async () => {
+                try {
+                    await Facebook.initializeAsync(FB_APP_ID)
+                } catch (error) {
+                    console.warn(error)
+                }
             }
+
+            initFbSdk()
         }
 
         dispatch({ type: "INIT" })
-        initFbSdk()
 
         return () => {}
     }, [])

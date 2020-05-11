@@ -5,12 +5,13 @@ const LazyImage = ({ source, ...rest }) => {
     const [loading, setLoading] = useState()
 
     return (
-        <View style={{ ...rest.style, backgroundColor: "#CCC" }}>
+        <View style={{ ...rest.style, backgroundColor: "#CCC", position: "relative" }}>
             {loading && (
-                <View style={{ ...rest.style, alignItems: "center", justifyContent: "center" }}>
+                <View style={{ ...rest.style, alignItems: "center", justifyContent: "center", position: "absolute" }}>
                     <Text>Loading...</Text>
                 </View>
             )}
+
             <View>
                 <Image
                     source={source}

@@ -44,7 +44,6 @@ const LoginForm = memo(({ onSubmit, disabled, loading, hasError, error }) => {
 
                     <View style={{ marginBottom: 0 }}>
                         <InputField
-                            style={{ marginBottom: 10 }}
                             name="email"
                             placeholder="Email"
                             onChangeText={handleChange("email")}
@@ -52,7 +51,6 @@ const LoginForm = memo(({ onSubmit, disabled, loading, hasError, error }) => {
                             value={values.email}
                         />
                         <InputField
-                            style={{ marginBottom: 10 }}
                             name="password"
                             placeholder="Password"
                             onChangeText={handleChange("password")}

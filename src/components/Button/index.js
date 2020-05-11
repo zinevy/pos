@@ -1,5 +1,6 @@
 import React, { memo } from "react"
 import styled from "@emotion/native"
+import { normalize } from "../../../utils/scale"
 
 const Text = styled.Text(({ theme }) => ({
     color: theme.login.button.color,
@@ -7,28 +8,28 @@ const Text = styled.Text(({ theme }) => ({
 
 const ButtonLayout = styled.TouchableOpacity(({ theme }) => ({
     backgroundColor: theme.login.button.backgroundColor,
-    marginTop: 5,
-    marginBottom: 5,
-    borderRadius: 24,
+    marginTop: normalize(5),
+    marginBottom: normalize(5),
+    borderRadius: normalize(10),
     touchAction: "none",
 }))
 
 const Container = styled.View({
-    padding: 17,
+    padding: normalize(17),
 })
 const ButtonText = styled(Text)({
-    fontSize: 16,
+    fontSize: normalize(14),
     textAlign: "center",
     fontWeight: "bold",
 })
 
-const Button = memo(({ disabled, loading, onPress, processing, title }) => {
+const Button = memo(({ disabled, loading, onPress, processing, title, ...rest }) => {
     return (
         <ButtonLayout disabled={disabled} onPress={onPress}>
-            <Container>
-                {loading && !processing && <ButtonText>Loading...</ButtonText>}
-                {loading && processing && <ButtonText>Processing</ButtonText>}
-                {!loading && <ButtonText>{title}</ButtonText>}
+            <Container style={{ ...rest.containerStyle }}>
+                {loading && !processing && <ButtonText style={{ ...rest.textStyle }}>Loading...</ButtonText>}
+                {loading && processing && <ButtonText style={{ ...rest.textStyle }}>Processing</ButtonText>}
+                {!loading && <ButtonText style={{ ...rest.textStyle }}>{title}</ButtonText>}
             </Container>
         </ButtonLayout>
     )
