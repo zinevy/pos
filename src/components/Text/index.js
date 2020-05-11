@@ -1,5 +1,6 @@
 import React from "react"
 import styled from "@emotion/native"
+import { normalize } from "../../../utils/scale"
 
 const defaultProps = {
     lines: 2,
@@ -7,6 +8,7 @@ const defaultProps = {
 
 const RNText = styled.Text(({ theme }) => ({
     color: theme.main.color,
+    fontSize: normalize(14),
 }))
 
 const Text = ({ children, lines, ...rest }) => {

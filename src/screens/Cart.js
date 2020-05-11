@@ -4,6 +4,7 @@ import { View, TouchableOpacity, ScrollView, Dimensions } from "react-native"
 import { formatCurrency } from "../../utils/formatter"
 import { Text, LazyImage } from "../components"
 import { AppContext } from "../Main"
+import { normalize, normalizeHeight } from "../../utils/scale"
 
 const Cart = memo(({ navigation }) => {
     const { items, removeItem } = useContext(AppContext)
@@ -16,7 +17,7 @@ const Cart = memo(({ navigation }) => {
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    marginBottom: 10,
+                    marginBottom: normalize(10),
                 }}>
                 <View style={{ width: "60%", alignItems: "flex-start" }}>
                     <TouchableOpacity
@@ -27,14 +28,14 @@ const Cart = memo(({ navigation }) => {
                         <LazyImage
                             source={{ uri: item.image }}
                             style={{
-                                width: 70,
-                                height: 70,
-                                borderRadius: 10,
+                                width: normalize(70),
+                                height: normalizeHeight(70),
+                                borderRadius: normalize(10),
                                 resizeMode: "cover",
                             }}
                         />
-                        <View style={{ marginLeft: 10 }}>
-                            <Text lines={2} style={{ fontWeight: "bold", fontSize: 15, marginBottom: 5 }}>
+                        <View style={{ marginLeft: normalize(10) }}>
+                            <Text style={{ fontWeight: "bold", fontSize: normalize(15), marginBottom: normalize(5) }}>
                                 {item.name}
                             </Text>
                             <Text>
@@ -63,10 +64,10 @@ const Cart = memo(({ navigation }) => {
 
     return useMemo(() => {
         return (
-            <View style={{ flex: 1, margin: 20 }}>
+            <View style={{ flex: 1, margin: normalize(20) }}>
                 <ScrollView>
                     {!items.length && <Text>Cart is empty</Text>}
-                    <View style={{ marginBottom: 200 }}>{items && items.map(renderItems)}</View>
+                    <View style={{ marginBottom: normalize(100) }}>{items && items.map(renderItems)}</View>
                 </ScrollView>
                 <View style={{ bottom: 0, width: "100%", position: "absolute" }}>
                     <View

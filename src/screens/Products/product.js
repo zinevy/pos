@@ -6,6 +6,7 @@ import withScreen from "../../../utils/hoc/createScreen"
 import { AppContext } from "../../Main"
 
 import { Text, LazyImage, Button } from "../../components"
+import { normalizeHeight } from "../../../utils/scale"
 
 const Product = memo(({ route }) => {
     const item = route.params
@@ -20,7 +21,7 @@ const Product = memo(({ route }) => {
                 <LazyImage
                     style={{
                         width: "100%",
-                        height: 400,
+                        height: normalizeHeight(200),
                         borderRadius: 10,
                         resizeMode: "cover",
                     }}

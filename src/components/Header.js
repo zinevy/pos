@@ -2,10 +2,11 @@ import React, { memo, useState, useEffect, useMemo } from "react"
 import { View, TouchableOpacity, StyleSheet } from "react-native"
 import { useRoute } from "@react-navigation/native"
 import styled from "@emotion/native"
-import { useTheme } from "emotion-theming"
 
+import { Text } from "../components"
 import Counter from "./Cart/Counter"
 import hexToRGB from "../../utils/hexToRGBA"
+import { normalize } from "../../utils/scale"
 
 const routes = {
     Home: "Home",
@@ -20,14 +21,11 @@ const Container = styled.View(({ theme }) => ({
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
-    padding: 20,
-    paddingTop: 10,
+    paddingTop: normalize(20),
+    paddingLeft: normalize(20),
+    paddingRight: normalize(20),
     backgroundColor: hexToRGB(theme.main.backgroundColor, 0.8),
     zIndex: 9,
-}))
-
-const Text = styled.Text(({ theme }) => ({
-    color: theme.main.color,
 }))
 
 const styles = {
@@ -40,14 +38,6 @@ const styles = {
 
 const Header = memo(({ navigation, withCart, withBack }) => {
     const route = useRoute()
-    // const theme = useTheme()
-    // const [title, setTitle] = useState(routes[route.name])
-
-    // useEffect(() => {
-    //     if (route.params && route.params.title) {
-    //         setTitle(route.params.title)
-    //     }
-    // }, [])
 
     return (
         <Container>

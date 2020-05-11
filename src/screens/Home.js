@@ -10,10 +10,10 @@ import withScreen from "../../utils/hoc/createScreen"
 import { formatCurrency } from "../../utils/formatter"
 
 import { Button, Text, LazyImage } from "../components/"
-import { normalize } from "../../utils/scale"
+import { normalize, normalizeHeight } from "../../utils/scale"
 
 const Title = styled(Text)({
-    fontSize: 30,
+    fontSize: normalize(20),
 })
 
 const ListButton = styled(TouchableOpacity)({
@@ -31,7 +31,7 @@ const ListButtonText = styled(Text)({
 })
 
 const fetchProducts = async () => {
-    const response = await requests.fetchSampleProducts(12)
+    const response = await requests.fetchSampleProducts(24)
     const jsonResponse = await response.json()
 
     if (response.ok) {
@@ -85,9 +85,10 @@ const Products = ({ navigation }) => {
                                 source={{ uri: item.image }}
                                 style={{
                                     width: "100%",
-                                    height: normalize(150),
+                                    height: normalize(200),
                                     borderRadius: normalize(10),
                                     marginBottom: 10,
+                                    resizeMode: "cover",
                                 }}
                             />
                             <View>
@@ -124,7 +125,7 @@ const Home = memo(({ navigation }) => {
 
     return useMemo(() => {
         return (
-            <ScrollView>
+            <ScrollView style={{ marginTop: normalize(20) }}>
                 <Suspense fallback={<Title>Loading...</Title>}>
                     {appState.profile && (
                         <View

@@ -13,9 +13,7 @@ import withScreen from "../../utils/hoc/createScreen"
 import Button from "../components/Button"
 import device from "../../utils/device"
 
-const Text = styled.Text(({ theme }) => ({
-    color: theme.main.color,
-}))
+import { Text } from "../components"
 
 const LoginButton = styled.TouchableOpacity({
     backgroundColor: "#000",
