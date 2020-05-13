@@ -28,8 +28,8 @@ const Cart = memo(({ navigation }) => {
                         <LazyImage
                             source={{ uri: item.image }}
                             style={{
-                                width: normalize(70),
-                                height: normalizeHeight(70),
+                                width: normalize(50),
+                                height: normalize(50),
                                 borderRadius: normalize(10),
                                 resizeMode: "cover",
                             }}
