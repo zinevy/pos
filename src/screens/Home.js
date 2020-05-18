@@ -1,7 +1,5 @@
-import React, { Suspense, useContext, memo, useMemo } from "react"
-import { View, TouchableOpacity, ScrollView } from "react-native"
-import styled from "@emotion/native"
-import * as Updates from "expo-updates"
+import React, { useContext, memo, useMemo } from "react"
+import { View, ScrollView } from "react-native"
 
 import { AppContext } from "../Main"
 import withScreen from "../../utils/hoc/createScreen"
@@ -11,7 +9,7 @@ import { normalize } from "../../utils/scale"
 import Items from "./Products/Items"
 
 const Home = memo(() => {
-    const { activeTheme, actions, appState } = useContext(AppContext)
+    const { activeTheme, appState } = useContext(AppContext)
 
     return useMemo(() => {
         return (
@@ -37,19 +35,7 @@ const Home = memo(() => {
                         </Text>
                     </View>
                 )}
-
                 <Items />
-                <View style={{ marginTop: 60, justifyContent: "center", alignItems: "center" }}>
-                    {appState.userToken && (
-                        <TouchableOpacity
-                            onPress={() => {
-                                actions.signOut()
-                            }}>
-                            <Text>Sign out</Text>
-                        </TouchableOpacity>
-                    )}
-                    <Text>{Updates.manifest.version}</Text>
-                </View>
             </ScrollView>
         )
     }, [activeTheme, appState])
