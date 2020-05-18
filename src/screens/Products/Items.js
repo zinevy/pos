@@ -1,117 +1,81 @@
-import React, { memo, useState, useEffect } from "react"
-import { FlatList, View } from "react-native"
-import { usePaginatedQuery, queryCache, useInfiniteQuery } from "react-query"
+import React, { useState } from "react"
+import useSWR, { useSWRPages } from "swr"
+import { View, FlatList } from "react-native"
 
-import { requests } from "../../../utils/httpClient"
-
-import Item from "./Item"
 import { Button, Text } from "../../components"
+import { requests } from "../../../utils/httpClient"
+import { Fragment } from "react"
 
-const fetchProducts = async (key, page = 1) => {
-    console.log("page", page)
+import { useEffect } from "react"
+import { useMemo } from "react"
+import ProductList from "./List"
+
+const fetchProducts = async (page) => {
     const response = await requests.fetchSampleProducts(page)
     const jsonResponse = await response.json()
 
     if (response.ok) {
-        const products = jsonResponse
+        const products = jsonResponse.result
 
         const items = products.map((item) => ({
             id: item.id,
-            name: item.name,
-            image: item.images[0].src,
-            price: item.price,
+            name: item.title,
+            image: item.thumbnail,
+            price: item.album_id,
         }))
 
         return {
             products: items,
-            page,
+            page: +page,
         }
     }
 
     return {}
 }
 
-const Items = memo(() => {
-    const [page, setPage] = useState(1)
-    // const { data, error } = useSWR(1, fetchProducts, { suspense: true })
+function Items() {
+    const [items, setItems] = useState()
+    const { pages, pageSWRs, isLoadingMore, loadMore } = useSWRPages(
+        "items",
+        ({ offset, withSWR }) => {
+            const response = withSWR(useSWR(offset || 1, fetchProducts, { revalidateOnFocus: false }))
 
-    // const { status, resolvedData, latestData, error, isFetching } = usePaginatedQuery(["page", page], fetchProducts, {})
+            return <Fragment />
+        },
+        (SWR, index) => {
+            if (SWR.data && SWR.data.length === 0) return null
 
-    const { status, data, error, isFetching, isFetchingMore, fetchMore, canFetchMore } = useInfiniteQuery(
-        "projects",
-        fetchProducts,
-        {
-            getFetchMore: (next) => {
-                return next.page + 1
-            },
+            return index + 2
+        },
+        []
+    )
+
+    useEffect(() => {
+        const pagedProducts = pageSWRs.map((swr) => swr.data)
+
+        if (pagedProducts[pagedProducts.length - 1]) {
+            setItems(pagedProducts)
         }
-    )
+    }, [pageSWRs])
 
-    if (status === "loading") {
-        return (
+    return useMemo(
+        () => (
             <View>
-                <Text>loading...</Text>
+                {pages}
+                {items && <ProductList items={items} />}
+                {isLoadingMore && <View style={{ alignItems: "center" }}>{<Text>Loading...</Text>}</View>}
+                {!isLoadingMore && (
+                    <Button
+                        title={isLoadingMore ? "Loading more" : "Load more"}
+                        disabled={isLoadingMore}
+                        isLoadingMore={isLoadingMore}
+                        onPress={() => loadMore()}
+                    />
+                )}
             </View>
-        )
-    }
-
-    // return <Text>2</Text>
-
-    return (
-        <View>
-            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                {data.map((page, i) => (
-                    <React.Fragment key={i}>
-                        {page.products.map((product, index) => (
-                            <Item item={product} key={index} />
-                        ))}
-                    </React.Fragment>
-                ))}
-            </View>
-            <Button
-                disabled={!canFetchMore || isFetchingMore}
-                title={isFetchingMore ? "Loading more..." : canFetchMore ? "Load More" : "Nothing more to load"}
-                onPress={() => {
-                    // setPage((page) => page + 1)
-                    fetchMore()
-                }}
-            />
-        </View>
+        ),
+        [items, isLoadingMore]
     )
-
-    // return (
-    //     <View>
-    //         <FlatList
-    //             data={resolvedData.products}
-    //             keyExtractor={(user) => user.id.toString()}
-    //             horizontal
-    //             bounces={false}
-    //             showsHorizontalScrollIndicator={false}
-    //             onEndReachedThreshold={0.5}
-    //             onEndReached={({ distanceFromEnd }) => {
-    //                 // problem
-    //                 console.log(distanceFromEnd) // 607, 878
-    //                 console.log("reached") // once, and if I scroll about 14% of the screen,
-    //                 // setPage((old) => (!latestData || !latestData.hasMore ? old : old + 1))
-    //             }}
-    //             style={{
-    //                 flexDirection: "row",
-    //                 overscrollBehaviorY: "auto",
-    //                 touchAction: "auto",
-    //                 width: "100%",
-    //             }}
-    //             renderItem={({ item }) => <Item item={item} />}
-    //         />
-    //         <Button
-    //             title="load more"
-    //             onPress={() => {
-    //                 setPage((old) => old + 1)
-    //             }}
-    //             // disabled={!latestData || !latestData.hasMore}
-    //         />
-    //         <Text>{isFetching && "loading..."}</Text>
-    //     </View>
-    // )
-})
+}
 
 export default Items

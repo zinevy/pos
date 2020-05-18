@@ -1,5 +1,5 @@
 import React, { memo, useContext } from "react"
-import { View, TouchableOpacity, Dimensions } from "react-native"
+import { View, TouchableOpacity } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 
 import { LazyImage, Text, Button } from "../../components"
@@ -12,7 +12,7 @@ const Item = memo(({ item }) => {
     const { addToCart } = useContext(AppContext)
 
     return (
-        <View style={{ padding: normalize(5), width: "50%", justifyContent: "space-between" }}>
+        <View style={{ padding: normalize(5), width: "100%", justifyContent: "space-between" }}>
             <TouchableOpacity
                 onPress={() => {
                     navigation.navigate("ProductDetails", { ...item })
