@@ -2382,11 +2382,6 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@scarf/scarf@^1.0.0":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-1.0.5.tgz#accee0bce88a9047672f7c8faf3cada59c996b81"
-  integrity sha512-9WKaGVpQH905Aqkk+BczFEeLQxS07rl04afFRPUG9IcSlOwmo5EVVuuNu0d4M9LMYucObvK0LoAe+5HfMW2QhQ==
-
 "@semantic-release/commit-analyzer@^8.0.0", "@semantic-release/commit-analyzer@^8.0.1":
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/@semantic-release/commit-analyzer/-/commit-analyzer-8.0.1.tgz#5d2a37cd5a3312da0e3ac05b1ca348bf60b90bca"
@@ -6921,6 +6916,11 @@ fancy-log@^1.3.2:
     color-support "^1.1.3"
     parse-node-version "^1.0.0"
     time-stamp "^1.0.0"
+
+fast-deep-equal@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
+  integrity sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk=
 
 fast-deep-equal@^3.1.1:
   version "3.1.1"
@@ -13054,14 +13054,6 @@ react-native-webview@8.1.1:
     stacktrace-parser "^0.1.3"
     whatwg-fetch "^3.0.0"
 
-react-query@^1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/react-query/-/react-query-1.4.3.tgz#3c921ebb182dc833526b3cff0418d0e31439a67e"
-  integrity sha512-BD6T8a7eKrc6OtVmAS/9cunT7mxLsjsgJ/tvLlUia8FhOuhZM7n+kUH+nNOBjW2ec3nuQQJhL7Q/3vnPi5s9oA==
-  dependencies:
-    "@scarf/scarf" "^1.0.0"
-    ts-toolbelt "^6.4.2"
-
 react-refresh@0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.2.tgz#24bb0858eac92b0d7b0dd561747f0c9fd6c60327"
@@ -14865,6 +14857,13 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
+swr@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-0.2.0.tgz#2088271bc0a8044089cf2badde013648f98783ee"
+  integrity sha512-8IZCdM0deUPhDiqOmyaj0BsnNjav1fu83nD0d07PEAzOHOn+lxcJOxwXeDBShwF6qCeZ8u8ab+a2yXkjD8yT3A==
+  dependencies:
+    fast-deep-equal "2.0.1"
+
 symbol-observable@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.1.tgz#8340fc4702c3122df5d22288f88283f513d3fdd4"
@@ -15183,11 +15182,6 @@ ts-pnp@^1.1.6:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/ts-pnp/-/ts-pnp-1.2.0.tgz#a500ad084b0798f1c3071af391e65912c86bca92"
   integrity sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==
-
-ts-toolbelt@^6.4.2:
-  version "6.7.4"
-  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.7.4.tgz#30e6999578a82ed4636563cb525bb3664a255760"
-  integrity sha512-cP8q7BnIyuevMyBpq+TVKf3NvSS70S+BLdhzHVeV/5WNPMoUxN5YWMKgUd54qAwWgk6n2USHi/2XFIxZJa+30g==
 
 tslib@^1.10.0, tslib@^1.9.0:
   version "1.11.1"

@@ -54,7 +54,7 @@
         "react-native-screens": "~2.2.0",
         "react-native-web": "~0.11.7",
         "react-native-webview": "8.1.1",
-        "react-query": "^1.4.3",
+        "swr": "^0.2.0",
         "yup": "^0.28.5"
     },
     "devDependencies": {
