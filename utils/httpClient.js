@@ -19,13 +19,13 @@ api.addAsyncRequestTransform((request) => async () => {
 
 export const requests = {
     fetchSampleProducts: async (page) => {
-        const url = "https://www.tourvotravels.com/wp-json/wc/v2/products"
+        const url = "https://gorest.co.in/public-api/photos"
         const params = {
-            consumer_key: "ck_3ba2bab4f45e2814a6438dc2815681e0078ce32c",
-            consumer_secret: "cs_1e52063b0ba29f341ccbff413b53d2cc26d30b13",
-            per_page: 6,
+            "access-token": "2m5noXbV7VoIav--7HqGDVLk13uEFMumwlGx",
+            _format: "json",
             page,
         }
+
         const qs = Object.keys(params)
             .map((key) => key + "=" + params[key])
             .join("&")
