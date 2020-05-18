@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react"
+import React, { useState } from "react"
 import { Image, View, Text } from "react-native"
 
 const LazyImage = ({ source, ...rest }) => {
