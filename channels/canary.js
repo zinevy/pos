@@ -2,8 +2,8 @@ const options = require("./default")
 const channel = process.env.CHANNEL
 
 module.exports = {
-    name: "One Palengke - Canary",
-    slug: "one-palengke-canary",
+    name: "Zinevy - POS",
+    slug: "zinevy-pos",
     android: {
         config: {
             googleSignIn: {
@@ -11,7 +11,7 @@ module.exports = {
                 certificateHash: process.env.CERTIFICATE_HASH,
             },
         },
-        package: "com.zinevy.onepalengke.canary",
+        package: "com.zinevy.pos.canary",
         versionCode: parseInt(process.env[channel]),
     },
     ios: {
@@ -20,7 +20,7 @@ module.exports = {
                 reservedClientId: process.env.IOS_URL_SCHEME,
             },
         },
-        bundleIdentifier: "com.zinevy.onepalengke.canary",
+        bundleIdentifier: "com.zinevy.pos.canary",
         supportsTablet: true,
         buildNumber: process.env[channel].toString(),
     },
