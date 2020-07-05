@@ -24,6 +24,7 @@
         "@expo/next-adapter": "^2.1.2",
         "@expo/vector-icons": "^10.0.0",
         "@react-native-community/masked-view": "0.1.10",
+        "@react-native-community/picker": "^1.6.5",
         "@react-navigation/bottom-tabs": "^5.2.8",
         "@react-navigation/native": "^5.0.0",
         "@react-navigation/stack": "^5.2.14",

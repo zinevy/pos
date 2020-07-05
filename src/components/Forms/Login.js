@@ -5,6 +5,7 @@ import { object, string } from "yup"
 import styled from "@emotion/native"
 
 import InputField from "../Fields/InputField"
+import SelectField from "../Fields/SelectField"
 import Button from "../Button"
 
 const Text = styled.Text(({ theme }) => ({
@@ -20,7 +21,7 @@ const validationSchema = object().shape({
         .max(10, "We prefer insecure system, try a shorter password."),
 })
 
-const initialValues = { email: "eve.holt@reqres.in", password: "123123" }
+const initialValues = { email: "pabs@zinevy.com", password: "dotty123" }
 
 const renderTitle = ({ processing, loading }) => {
     let title = "Login"
@@ -43,14 +44,31 @@ const LoginForm = memo(({ onSubmit, disabled, loading, hasError, error }) => {
                     )}
 
                     <View style={{ marginBottom: 0 }}>
+                        {/* <SelectField
+                            name="branch_id"
+                            label="Branch"
+                            placeholder="Branch"
+                            onChangeText={handleChange("branch_id")}
+                            value={values.branch}
+                        /> */}
+                        <InputField
+                            name="branch_id"
+                            label="Branch"
+                            placeholder="Branch"
+                            onChangeText={handleChange("branch_id")}
+                            onBlur={handleBlur("branch_id")}
+                            value={values.branch_id}
+                        />
                         <InputField
                             name="email"
+                            label="Email"
                             placeholder="Email"
                             onChangeText={handleChange("email")}
                             onBlur={handleBlur("email")}
                             value={values.email}
                         />
                         <InputField
+                            label="Password"
                             name="password"
                             placeholder="Password"
                             onChangeText={handleChange("password")}

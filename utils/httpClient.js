@@ -3,7 +3,7 @@ import Constants from "expo-constants"
 import { AsyncStorage } from "react-native"
 
 export const api = create({
-    baseURL: Constants.manifest.extra.API_URL,
+    baseURL: Constants.manifest.extra.API_URL + "/api/v1",
     headers: {
         Accept: "application/json",
     },

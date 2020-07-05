@@ -6,6 +6,7 @@ import * as Facebook from "expo-facebook"
 import * as Google from "expo-google-app-auth"
 
 import Constants from "expo-constants"
+import { normalize } from "../../utils/scale"
 
 import { AppContext } from "../Main"
 import LoginForm from "../components/Forms/Login"
@@ -130,13 +131,15 @@ const SignInScreen = memo(({ navigation }) => {
     }, [])
 
     return (
-        <SafeAreaView style={{ flex: 1, justifyContent: "center", margin: 20 }}>
+        <SafeAreaView style={{ flex: 1, justifyContent: "center", margin: normalize(20) }}>
             {!appState.userToken && (
                 <Fragment>
-                    <View>
-                        <View style={{ alignItems: "center", marginBottom: 10 }}>
-                            <Text style={{ fontSize: 30, fontWeight: "bold", marginBottom: 10 }}>Login</Text>
-                            <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit</Text>
+                    <View style={{ maxWidth: "50%", alignSelf: "center" }}>
+                        <View style={{ alignItems: "center", marginBottom: normalize(10) }}>
+                            <Text style={{ fontSize: 30, fontWeight: "bold", marginBottom: normalize(20) }}>Login</Text>
+                            <Text style={{ fontSize: 15, marginBottom: normalize(20) }}>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                            </Text>
                         </View>
                         <LoginForm
                             onSubmit={signIn}
@@ -146,47 +149,12 @@ const SignInScreen = memo(({ navigation }) => {
                             loading={isLoading && client === "email"}
                             processing={isProcessing}
                         />
-                        <View
-                            style={{
-                                alignItems: "center",
-                                marginLeft: 10,
-                                marginRight: 10,
-                                marginTop: 20,
-                                marginBottom: 20,
-                                position: "relative",
-                            }}>
-                            <Divider />
-                            <DividerText>OR</DividerText>
-                        </View>
-                        <Button
-                            disabled={isLoading}
-                            title="Continue with Email"
-                            onPress={() => navigation.navigate("Registration")}
-                        />
                         {device(["android", "ios"]) && (
-                            <Fragment>
-                                <Button
-                                    disabled={isLoading}
-                                    title="Continue with Facebook"
-                                    processing={isProcessing}
-                                    loading={isLoading && client === "facebook"}
-                                    onPress={signInWithFacebook}
-                                />
-                                <Button
-                                    disabled={isLoading}
-                                    title="Continue with Google"
-                                    loading={isLoading && client === "google"}
-                                    processing={isProcessing}
-                                    onPress={signInWithGoogle}
-                                />
-                            </Fragment>
+                            <View style={{ alignItems: "center", marginTop: 10 }}>
+                                <Text style={{ fontSize: 13 }}>v{Updates.manifest.version}</Text>
+                            </View>
                         )}
                     </View>
-                    {device(["android", "ios"]) && (
-                        <View style={{ alignItems: "center", marginTop: 10 }}>
-                            <Text style={{ fontSize: 13 }}>v{Updates.manifest.version}</Text>
-                        </View>
-                    )}
                 </Fragment>
             )}
         </SafeAreaView>

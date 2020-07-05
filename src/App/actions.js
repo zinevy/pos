@@ -16,34 +16,42 @@ const actions = (dispatch) => {
     }
 
     const signInError = (error) => {
+        console.log("ERROR", error)
         return dispatch({ type: "SIGN_IN_ERROR", error })
     }
 
     const signIn = async (data) => {
         try {
             dispatch({ type: "REQUEST_SIGN_IN", client: "email" })
-            const signInRes = await requests.post("/login", data)
+            const signInRes = await requests.authorize("/login", data)
+            console.log("SUCCESS", signInRes)
 
             if (signInRes.ok) {
                 // get user details
                 try {
-                    const userRes = await requests.get("/users/2")
-                    const token = signInRes.data.token
-                    const { id, first_name, avatar, email } = userRes.data.data
-                    const userData = {
-                        id,
-                        first_name,
-                        name: first_name,
-                        email,
-                        image_url: avatar,
-                    }
+                    const token = signInRes.data.success.token
 
                     try {
+                        console.log("TOKEN", token)
+                        // const keys = [["@token", JSON.stringify(token)]]
+                        await AsyncStorage.setItem("@token", token)
+
+                        const userRes = await requests.get("/me")
+                        const { id, name, email, branch } = userRes.data.success
+
+                        const userData = {
+                            id,
+                            first_name: name,
+                            name,
+                            email,
+                            branch,
+                        }
+
                         const keys = [
                             ["@profile", JSON.stringify(userData)],
-                            ["@token", JSON.stringify(token)],
                             ["@key", JSON.stringify(userData.id)],
                         ]
+
                         await AsyncStorage.multiSet(keys)
 
                         dispatch({ type: "SIGN_IN_SUCCESS", token, profile: userData, key: userData.id })
@@ -55,8 +63,14 @@ const actions = (dispatch) => {
                     // console.log(err)
                 }
             } else {
+                let error = "Error"
+
+                if (signInRes.data && signInRes.data.error === "Unauthorised") {
+                    error = "email or password is incorrect"
+                }
+
                 console.log("signInRes", signInRes)
-                dispatch({ type: "SIGN_IN_ERROR", error: "Error" })
+                dispatch({ type: "SIGN_IN_ERROR", error })
             }
         } catch (error) {
             console.warn(error)
