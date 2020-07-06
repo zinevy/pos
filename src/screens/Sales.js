@@ -4,22 +4,19 @@ import { View, ScrollView } from "react-native"
 import { AppContext } from "../Main"
 import withScreen from "../../utils/hoc/createScreen"
 
-import { Text, LazyImage } from "../components/"
 import { normalize } from "../../utils/scale"
-import Items from "./Products/Items"
+import SalesItems from "./Sales/Products"
 
-const Home = memo(() => {
+const Sales = memo(() => {
     const { activeTheme, appState } = useContext(AppContext)
 
     return useMemo(() => {
         return (
-            <ScrollView style={{ marginTop: normalize(20) }}>
-                <View>
-                    <Text>Products</Text>
-                </View>
-            </ScrollView>
+            <View style={{ marginTop: normalize(20), height: "100%" }}>
+                <SalesItems />
+            </View>
         )
     }, [activeTheme, appState])
 })
 
-export default withScreen({ back: false })(Home)
+export default withScreen({ back: false })(Sales)

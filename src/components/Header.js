@@ -11,6 +11,7 @@ import { normalize } from "../../utils/scale"
 const routes = {
     Home: "Home",
     Settings: "Settings",
+    Sales: "Sales",
     Cart: "Cart",
     ProductDetails: "Product Details",
     CartPage: "Cart",

@@ -7,6 +7,7 @@ import TabBar from "./TabBar"
 import Home from "../src/screens/Home"
 import Settings from "../src/screens/Settings"
 import TabCart from "../src/screens/TabCart"
+import Sales from "../src/screens/Sales"
 
 const Tab = createBottomTabNavigator()
 
@@ -14,7 +15,7 @@ const BottomTabNavigator = () => {
     return (
         <Tab.Navigator tabBarOptions={{}} initialRouteName="Home" tabBar={(props) => <TabBar {...props} />}>
             <Tab.Screen name="Home" component={Home} />
-            <Tab.Screen name="Cart" component={TabCart} />
+            <Tab.Screen name="Sales" component={Sales} />
             <Tab.Screen name="Settings" component={Settings} />
         </Tab.Navigator>
     )
