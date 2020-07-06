@@ -19,22 +19,9 @@ const Cart = memo(({ navigation }) => {
                     justifyContent: "space-between",
                     marginBottom: normalize(10),
                 }}>
-                <View style={{ width: "60%", alignItems: "flex-start" }}>
-                    <TouchableOpacity
-                        style={{ flexDirection: "row", alignItems: "flex-start" }}
-                        onPress={() => {
-                            navigation.navigate("ProductDetails", { ...item })
-                        }}>
-                        <LazyImage
-                            source={{ uri: item.image }}
-                            style={{
-                                width: normalize(50),
-                                height: normalize(50),
-                                borderRadius: normalize(10),
-                                resizeMode: "cover",
-                            }}
-                        />
-                        <View style={{ marginLeft: normalize(10) }}>
+                <View style={{ alignItems: "flex-start" }}>
+                    <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+                        <View style={{ marginLeft: normalize(0) }}>
                             <Text style={{ fontWeight: "bold", fontSize: normalize(15), marginBottom: normalize(5) }}>
                                 {item.name}
                             </Text>
@@ -42,7 +29,7 @@ const Cart = memo(({ navigation }) => {
                                 {formatCurrency(item.price)} ({item.quantity}x)
                             </Text>
                         </View>
-                    </TouchableOpacity>
+                    </View>
                 </View>
                 <View>
                     <TouchableOpacity
@@ -64,7 +51,7 @@ const Cart = memo(({ navigation }) => {
 
     return useMemo(() => {
         return (
-            <View style={{ flex: 1, margin: normalize(20) }}>
+            <View style={{ flex: 1 }}>
                 <ScrollView>
                     {!items.length && <Text>Cart is empty</Text>}
                     <View style={{ marginBottom: normalize(100) }}>{items && items.map(renderItems)}</View>
@@ -72,9 +59,8 @@ const Cart = memo(({ navigation }) => {
                 <View style={{ bottom: 0, width: "100%", position: "absolute" }}>
                     <View
                         style={{
-                            margin: 5,
                             backgroundColor: "rgba(255,255,255,0.9)",
-                            padding: 20,
+
                             flexDirection: "row",
                             justifyContent: "space-between",
                             borderRadius: 10,
