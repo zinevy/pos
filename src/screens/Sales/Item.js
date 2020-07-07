@@ -1,4 +1,4 @@
-import React, { memo, useContext } from "react"
+import React, { memo, useContext, useEffect } from "react"
 import { View, TouchableOpacity } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 
@@ -23,8 +23,7 @@ const Item = memo(({ item }) => {
                         width: "100%",
                         height: normalize(200),
                         borderRadius: normalize(10),
-                        marginBottom: 10,
-                        resizeMode: "cover",
+                        marginBottom: 10
                     }}
                 />
                 <View>

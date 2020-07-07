@@ -34,7 +34,7 @@ const Items = memo(() => {
     const { pages, isLoadingMore, loadMore } = useSWRPages(
         "items",
         ({ offset, withSWR }) => {
-            const response = withSWR(useSWR(offset || 1, fetchProducts, { revalidateOnFocus: true, suspense: true }))
+            const response = withSWR(useSWR(offset || 1, fetchProducts, { revalidateOnFocus: false, suspense: true }))
 
             if (!response) return null
 

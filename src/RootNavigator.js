@@ -5,7 +5,7 @@ import { createStackNavigator, TransitionPresets } from "@react-navigation/stack
 import BottomTabNavigator from "../navigation/BottomTabNavigator"
 
 // Screens
-import ProductDetails from "./screens/Products/product"
+import ProductDetails from "./screens/Product/Details"
 import SignInScreen from "./screens/SignIn"
 import RegistrationScreen from "./screens/Register"
 import CartPage from "./screens/CartPage"

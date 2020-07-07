@@ -51,14 +51,14 @@ const Header = memo(({ navigation, withCart, withBack }) => {
                         <Text>Back</Text>
                     </TouchableOpacity>
                 ) : (
-                    <Text />
-                )}
+                        <Text />
+                    )}
             </View>
             <View style={{ ...styles.header, alignItems: "center" }}>
                 <Text>{routes[route.name]}</Text>
             </View>
             <View style={{ ...styles.header, alignItems: "flex-end" }}>
-                <Counter withCart={withCart} />
+
             </View>
         </Container>
     )
