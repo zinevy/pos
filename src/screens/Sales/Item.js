@@ -1,11 +1,10 @@
-import React, { memo, useContext, useEffect } from "react"
+import React, { memo, useContext } from "react"
 import { View, TouchableOpacity } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 
-import { LazyImage, Text, Button } from "../../components"
+import { LazyImage, Text } from "../../components"
 import { normalize } from "../../../utils/scale"
 import { AppContext } from "../../Main"
-import { formatCurrency } from "../../../utils/formatter"
 
 const Item = memo(({ item }) => {
     const navigation = useNavigation()
@@ -23,7 +22,7 @@ const Item = memo(({ item }) => {
                         width: "100%",
                         height: normalize(200),
                         borderRadius: normalize(10),
-                        marginBottom: 10
+                        marginBottom: 10,
                     }}
                 />
                 <View>
