@@ -51,7 +51,7 @@ const ButtonGroupField = ({ label, type, description, onSelect, options, ...prop
 
     const buttons = options.map((value) => {
         return {
-            element: () => renderButtonField(value),
+            element: (param) => renderButtonField(value, param),
         }
     })
 

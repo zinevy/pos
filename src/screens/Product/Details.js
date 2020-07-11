@@ -1,4 +1,4 @@
-import React, { useContext, memo, useState, useCallback } from "react"
+import React, { useContext, memo, useState, useEffect } from "react"
 import { View } from "react-native"
 import useSWR from "swr"
 import { Formik } from "formik"
@@ -38,6 +38,19 @@ const Product = memo(({ route, navigation, disabled, loading, hasError, error })
     const { addToCart } = useContext(AppContext)
     const { data, error: dataError } = useSWR([item.id], fetchProduct)
     const [formValues, setFormValues] = useState({})
+
+    useEffect(() => {
+        if (data && data.type === "simple") {
+            console.log("details", data)
+            const initformValues = {
+                simple: {
+                    price: data.price,
+                },
+            }
+
+            setFormValues(initformValues)
+        }
+    }, [data])
 
     if (dataError) {
         return (
@@ -109,6 +122,7 @@ const Product = memo(({ route, navigation, disabled, loading, hasError, error })
                                 handleChange={handleChange}
                                 handleBlur={handleBlur}
                                 item={{
+                                    type: data.type,
                                     variations: data.variations,
                                 }}
                             />
