@@ -1,26 +1,28 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState, useMemo } from "react"
 import { View } from "react-native"
 import { Text } from "../../components"
 import { formatCurrency } from "../../../utils/formatter"
 
 const Total = ({ values }) => {
-    let total = 0
+    const [total, setTotal] = useState(0)
 
-    if (values.variations && !values.simple) {
-        total += parseFloat(values.variations.price)
-    }
+    useEffect(() => {
+        let total = 0
+        total += parseFloat(values.price)
 
-    if (values.simple && !values.variations) {
-        total += parseFloat(values.simple.price)
-    }
+        total = total * Number(values.quantity)
 
-    console.log("TOTAL", values)
+        setTotal(total)
+    }, [values])
 
-    return (
-        <View>
-            <Text>Total: {formatCurrency(total)}</Text>
-        </View>
-    )
+    return useMemo(() => {
+        console.log("TOTAL", values)
+        return (
+            <View>
+                <Text>Total: {formatCurrency(total)}</Text>
+            </View>
+        )
+    }, [total])
 }
 
 export default Total

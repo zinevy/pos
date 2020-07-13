@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native"
 import { LazyImage, Text } from "../../components"
 import { normalize } from "../../../utils/scale"
 import { AppContext } from "../../Main"
+import { getImageUrl } from "../../../utils/getImageUrl"
 
 const Item = memo(({ item }) => {
     const navigation = useNavigation()
@@ -17,7 +18,7 @@ const Item = memo(({ item }) => {
                     navigation.navigate("ProductDetails", { ...item })
                 }}>
                 <LazyImage
-                    source={{ uri: item.image }}
+                    source={getImageUrl(item.image)}
                     style={{
                         width: "100%",
                         height: normalize(200),

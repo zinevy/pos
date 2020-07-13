@@ -5,10 +5,7 @@ import styled from "@emotion/native"
 import { ButtonGroup } from "react-native-elements"
 
 import { normalize } from "../../../utils/scale"
-
-const Text = styled.Text(({ theme }) => ({
-    color: theme.main.color,
-}))
+import Text from "../Text"
 
 const TextInputField = styled.TextInput(({ theme }) => ({
     color: theme.main.color,
