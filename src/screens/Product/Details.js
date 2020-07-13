@@ -1,21 +1,15 @@
-import React, { useContext, memo, useState, useEffect } from "react"
+import React, { memo } from "react"
 import { View } from "react-native"
 import useSWR from "swr"
-import { Formik } from "formik"
-import { object, string } from "yup"
 
 import withScreen from "../../../utils/hoc/createScreen"
-import { AppContext } from "../../Main"
 
 import { Text } from "../../components"
 import { methods } from "../Sales/methods"
 import SimpleProduct from "./Forms/SimpleProduct"
 import VariableProduct from "./Forms/VariableProduct"
 
-// const validationSchema = object().shape({
-//     variations: string().label("Variations").required(),
-//     addons: string().label("Addons").required(),
-// })
+import { PRODUCT_TYPES } from "./constants"
 
 const fetchProduct = async (id) => {
     const response = await methods.getProduct({ id })
@@ -54,9 +48,8 @@ const Product = memo(({ route }) => {
 
     return (
         <View>
-            <Text>Form</Text>
-            {data.type === "simple" && <SimpleProduct data={data} />}
-            {data.type === "variable" && <VariableProduct data={data} />}
+            {data.type === PRODUCT_TYPES.SIMPLE && <SimpleProduct data={data} />}
+            {data.type === PRODUCT_TYPES.VARIABLE && <VariableProduct data={data} />}
         </View>
     )
 })

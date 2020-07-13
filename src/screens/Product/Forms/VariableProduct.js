@@ -13,6 +13,7 @@ import { getImageUrl } from "../../../../utils/getImageUrl"
 import InputField from "../../../components/Fields/InputField"
 import StepperField from "../../../components/Fields/StepperField"
 import { formatCurrency } from "../../../../utils/formatter"
+import { PRODUCT_TYPES, FORM_FIELDS } from "../constants"
 
 const validationSchema = object().shape({
     addons: string().label("Addons"),
@@ -23,11 +24,6 @@ const initialValues = {
     quantity: "1",
     addons: "",
     variations: "",
-}
-
-const FORM_FIELDS = {
-    VARIATIONS: "variations",
-    QUANTITY: "quantity",
 }
 
 const VariableProduct = memo(({ data, error }) => {
@@ -55,7 +51,7 @@ const VariableProduct = memo(({ data, error }) => {
 
     const onSubmit = (value) => {
         const item = {
-            type: "variable",
+            type: PRODUCT_TYPES.VARIABLE,
             name: data.name,
             price: formatCurrency(data.price),
             quantity: Number(value.quantity),

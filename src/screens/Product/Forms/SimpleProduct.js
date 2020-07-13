@@ -14,6 +14,8 @@ import InputField from "../../../components/Fields/InputField"
 import StepperField from "../../../components/Fields/StepperField"
 import { formatCurrency } from "../../../../utils/formatter"
 
+import { PRODUCT_TYPES } from "../constants"
+
 const validationSchema = object().shape({
     addons: string().label("Addons"),
 })
@@ -46,7 +48,7 @@ const SimpleProduct = memo(({ data, error }) => {
 
     const onSubmit = (value) => {
         const item = {
-            type: "simple",
+            type: PRODUCT_TYPES.SIMPLE,
             name: data.name,
             price: formatCurrency(data.price),
             quantity: Number(value.quantity),

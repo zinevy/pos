@@ -2,21 +2,16 @@ import React, { memo, useCallback } from "react"
 import { View } from "react-native"
 import styled from "@emotion/native"
 
-import InputField from "../../../components/Fields/InputField"
 import ButtonGroupField from "../../../components/Fields/ButtonGroupField"
+import { PRODUCT_TYPES } from "../constants"
 
 const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
 }))
 
-const VARIATION_TYPE = {
-    SIMPLE: "simple",
-    VARIABLE: "variable",
-}
-
 const ProductDetailsForm = ({ item, setFieldValue, values }) => {
     const renderVariations = useCallback(() => {
-        if (item.type === VARIATION_TYPE.VARIABLE && item.variations.length) {
+        if (item.type === PRODUCT_TYPES.VARIABLE && item.variations.length) {
             return (
                 <ButtonGroupField
                     name="variations"
