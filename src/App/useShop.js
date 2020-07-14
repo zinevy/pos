@@ -19,7 +19,7 @@ const useShop = ({ key }) => {
     )
 
     const addToCart = useCallback(
-        async (item) => {
+        async (item, options = {}) => {
             let userItems
             try {
                 userItems = [...items, item]
@@ -28,6 +28,9 @@ const useShop = ({ key }) => {
                 console.warn(err)
             } finally {
                 setItems(userItems)
+                if (typeof options.onSuccess === "function") {
+                    options.onSuccess()
+                }
             }
         },
         [items, key]

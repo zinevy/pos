@@ -25,7 +25,7 @@ const initialValues = {
     addons: "",
 }
 
-const SimpleProduct = memo(({ data, error }) => {
+const SimpleProduct = memo(({ data, navigation, error }) => {
     const { addToCart } = useContext(AppContext)
     const [formValues, setFormValues] = useState({ quantity: 1, price: data.price })
 
@@ -56,7 +56,11 @@ const SimpleProduct = memo(({ data, error }) => {
         }
 
         console.log("value", item)
-        addToCart(item)
+        addToCart(item, {
+            onSuccess: () => {
+                navigation.goBack()
+            },
+        })
     }
 
     return (

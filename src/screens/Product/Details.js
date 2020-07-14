@@ -24,7 +24,7 @@ const fetchProduct = async (id) => {
     return {}
 }
 
-const Product = memo(({ route }) => {
+const Product = memo(({ route, navigation }) => {
     const item = route.params
     const { data, error: dataError } = useSWR([item.id], fetchProduct)
 
@@ -48,8 +48,8 @@ const Product = memo(({ route }) => {
 
     return (
         <View>
-            {data.type === PRODUCT_TYPES.SIMPLE && <SimpleProduct data={data} />}
-            {data.type === PRODUCT_TYPES.VARIABLE && <VariableProduct data={data} />}
+            {data.type === PRODUCT_TYPES.SIMPLE && <SimpleProduct navigation={navigation} data={data} />}
+            {data.type === PRODUCT_TYPES.VARIABLE && <VariableProduct navigation={navigation} data={data} />}
         </View>
     )
 })

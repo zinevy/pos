@@ -26,7 +26,7 @@ const initialValues = {
     variations: "",
 }
 
-const VariableProduct = memo(({ data, error }) => {
+const VariableProduct = memo(({ data, navigation, error }) => {
     const { addToCart } = useContext(AppContext)
     const [formValues, setFormValues] = useState({ quantity: 1, price: 0 })
 
@@ -59,7 +59,11 @@ const VariableProduct = memo(({ data, error }) => {
         }
 
         console.log("value", item)
-        addToCart(item)
+        addToCart(item, {
+            onSuccess: () => {
+                navigation.goBack()
+            },
+        })
     }
 
     return (
