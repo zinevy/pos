@@ -29,7 +29,6 @@
         "@react-navigation/native": "^5.0.0",
         "@react-navigation/stack": "^5.2.14",
         "@react-navigation/web": "~1.0.0-alpha.9",
-        "add": "^2.0.6",
         "apisauce": "^1.1.1",
         "emotion-theming": "^10.0.27",
         "expo": "^38.0.0",
@@ -60,7 +59,6 @@
         "react-native-web": "~0.11.7",
         "react-native-webview": "9.4.0",
         "swr": "^0.2.0",
-        "yarn": "^1.22.4",
         "yup": "^0.28.5"
     },
     "devDependencies": {
