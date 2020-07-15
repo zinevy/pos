@@ -1,6 +1,6 @@
 import React, { useState, useCallback, memo, useRef, useEffect } from "react"
 import { useField } from "formik"
-import { View, CheckBox, StyleSheet } from "react-native"
+import { View, StyleSheet } from "react-native"
 import styled from "@emotion/native"
 import { ButtonGroup } from "react-native-elements"
 
@@ -42,15 +42,14 @@ const renderButtonField = (value) => {
     return <Text>{value.name}</Text>
 }
 
-const ButtonGroupField = ({ label, type, description, onSelect, options, ...props }) => {
+const ButtonGroupField = ({ label, type, description, selectMultiple, onSelect, options, ...props }) => {
     const [field, meta] = useField(props)
     const [selectedIndex, setSelectedIndex] = useState()
+    const [selectedIndexes, setSelectedIndexes] = useState([])
 
-    const buttons = options.map((value) => {
-        return {
-            element: (param) => renderButtonField(value, param),
-        }
-    })
+    const buttons = options.map((value) => ({
+        element: (param) => renderButtonField(value, param),
+    }))
 
     const onButtonSelect = useCallback(
         (index) => {
@@ -60,18 +59,40 @@ const ButtonGroupField = ({ label, type, description, onSelect, options, ...prop
         [options, onSelect, setSelectedIndex]
     )
 
+    const onButtonMultipleSelect = useCallback(
+        (index) => {
+            setSelectedIndexes(index)
+            onSelect(index)
+        },
+        [options, onSelect, setSelectedIndex]
+    )
+
+    let buttonGroupProps = {
+        buttons,
+    }
+
+    if (selectMultiple) {
+        buttonGroupProps = {
+            ...buttonGroupProps,
+            selectMultiple: true,
+            selectedIndexes,
+            onPress: onButtonMultipleSelect,
+        }
+    } else {
+        buttonGroupProps = {
+            ...buttonGroupProps,
+            onPress: onButtonSelect,
+            selectedIndexes: [selectedIndex],
+        }
+    }
+
     return (
         <View style={{ marginBottom: normalize(10) }}>
             <View style={{ marginBottom: normalize(10) }}>
                 {label && <Text>{label}</Text>}
                 {description && <Text>{description}</Text>}
             </View>
-            <ButtonGroup
-                onPress={onButtonSelect}
-                selectedIndex={selectedIndex}
-                buttons={buttons}
-                containerStyle={{ height: 100 }}
-            />
+            <ButtonGroup {...buttonGroupProps} />
             <View style={{ marginBottom: normalize(10) }}>
                 {meta.touched && meta.error && <Text>{meta.error}</Text>}
             </View>

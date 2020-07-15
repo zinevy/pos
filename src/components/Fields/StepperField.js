@@ -10,19 +10,19 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     fieldGroup: {
-        display: "flex",
         flexDirection: "row",
         flexWrap: "wrap",
         position: "relative",
         justifyContent: "space-between",
-        // borderWidth: 3,
         borderRadius: 15,
-        borderColor: "#EEE",
         overflow: "hidden",
+        // borderWidth: 3,
+        margin: 6,
+        marginBottom: 12,
     },
     control: {
-        width: 60,
-        height: 50,
+        width: 50,
+        height: 45,
         justifyContent: "center",
         borderRadius: 15,
     },
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     text: {
         color: "#FFF",
         fontWeight: "bold",
-        fontSize: 16,
+        fontSize: 15,
     },
     label: {
         marginBottom: 6,
@@ -66,7 +66,7 @@ const StepperField = ({ label, type, description, onChange, max, ...props }) => 
     return (
         <View style={styles.group}>
             {label && <Text style={styles.label}>{label}</Text>}
-            <View style={styles.fieldGroup}>
+            <View style={{ ...styles.fieldGroup, borderColor: "#EEE", flexDirection: "row" }}>
                 <View>
                     <Button
                         disabled={Number(field.value) <= 1}
@@ -91,7 +91,6 @@ const StepperField = ({ label, type, description, onChange, max, ...props }) => 
                         inputContainerStyle={{
                             borderTopWidth: 0,
                             borderBottomWidth: 0,
-                            height: 50,
                             marginLeft: -10,
                             marginRight: -10,
                         }}

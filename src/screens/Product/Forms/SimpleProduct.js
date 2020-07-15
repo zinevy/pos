@@ -10,19 +10,18 @@ import { normalizeHeight, normalize } from "../../../../utils/scale"
 import ProductDetailsForm from "./DetailsForm"
 import Total from "../Total"
 import { getImageUrl } from "../../../../utils/getImageUrl"
-import InputField from "../../../components/Fields/InputField"
 import StepperField from "../../../components/Fields/StepperField"
 import { formatCurrency } from "../../../../utils/formatter"
 
-import { PRODUCT_TYPES } from "../constants"
+import { PRODUCT_TYPES, FORM_FIELDS } from "../constants"
 
 const validationSchema = object().shape({
-    addons: string().label("Addons"),
+    add_ons: string().label("Addons"),
 })
 
 const initialValues = {
     quantity: "1",
-    addons: "",
+    add_ons: [],
 }
 
 const SimpleProduct = memo(({ data, navigation, error }) => {
@@ -36,8 +35,10 @@ const SimpleProduct = memo(({ data, navigation, error }) => {
             formValues[key] = data[key][value]
         }
 
-        if (key === "quantity") {
+        if (key === FORM_FIELDS.QUANTITY) {
             formValues.quantity = Number(value)
+        } else if (key === FORM_FIELDS.ADD_ONS) {
+            formValues.add_ons = value
         }
 
         setFormValues((prev) => ({
@@ -53,6 +54,13 @@ const SimpleProduct = memo(({ data, navigation, error }) => {
             price: formatCurrency(data.price),
             quantity: Number(value.quantity),
             product_id: data.id,
+            add_ons: value.add_ons
+                .filter((item) => +item.quantity > 0)
+                .map((item) => ({
+                    quantity: Number(item.quantity),
+                    id: item.id,
+                    name: item.name,
+                })),
         }
 
         console.log("value", item)
@@ -76,7 +84,7 @@ const SimpleProduct = memo(({ data, navigation, error }) => {
                                 flexDirection: "row",
                                 flexWrap: "wrap",
                             }}>
-                            <View style={{ marginBottom: 20, width: "50%" }}>
+                            <View style={{ marginBottom: 20, width: "30%" }}>
                                 <LazyImage
                                     style={{
                                         width: "100%",
@@ -89,6 +97,7 @@ const SimpleProduct = memo(({ data, navigation, error }) => {
                                 <StepperField
                                     name="quantity"
                                     label="Quantity"
+                                    max={data.stock_quantity}
                                     onChange={(value) => {
                                         mapFormValues("quantity", value)
                                         setFieldValue("quantity", value)
@@ -97,19 +106,12 @@ const SimpleProduct = memo(({ data, navigation, error }) => {
                                 />
                                 <Total values={formValues} />
                             </View>
-                            <View style={{ padding: normalize(10) }}>
+                            <View style={{ padding: normalize(10), flexGrow: 1 }}>
                                 {error && (
                                     <View style={{ alignItems: "center", marginBottom: 20 }}>
                                         <Text>{error}</Text>
                                     </View>
                                 )}
-
-                                <InputField
-                                    name="addons"
-                                    label="Add ons"
-                                    onChangeText={handleChange("addons")}
-                                    value={values.addons}
-                                />
 
                                 <ProductDetailsForm
                                     setFieldValue={(key, value) => {
@@ -121,6 +123,7 @@ const SimpleProduct = memo(({ data, navigation, error }) => {
                                     handleBlur={handleBlur}
                                     item={{
                                         type: data.type,
+                                        add_ons: data.add_ons,
                                     }}
                                 />
                             </View>

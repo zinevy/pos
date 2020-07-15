@@ -1,13 +1,15 @@
-import React, { memo, useMemo, useContext, useCallback, useState, useEffect } from "react"
-import { View, TouchableOpacity, ScrollView, Dimensions } from "react-native"
+import React, { memo, useMemo, useContext } from "react"
+import { View, TouchableOpacity, ScrollView } from "react-native"
 
 import { formatCurrency } from "../../utils/formatter"
-import { Text, LazyImage } from "../components"
+import { Text } from "../components"
 import { AppContext } from "../Main"
-import { normalize, normalizeHeight } from "../../utils/scale"
+import { normalize } from "../../utils/scale"
 
-const Cart = memo(({ navigation }) => {
+const Cart = memo(() => {
     const { items, removeItem } = useContext(AppContext)
+
+    console.log("CART_ITEMS", items)
 
     const renderItems = (item, index) => {
         return (
