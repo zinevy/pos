@@ -46,23 +46,26 @@ const Cart = memo(() => {
     }
 
     const calculateTotal = (items) => {
-        const total = items.reduce((total, item) => +total + +item.price, 0)
+        const total = items.reduce((total, item) => {
+            const subtotal = +item.quantity * parseFloat(item.price).toFixed(2)
+            const value = total + subtotal
+
+            return value
+        }, 0)
 
         return formatCurrency(total)
     }
 
     return useMemo(() => {
         return (
-            <View style={{ flex: 1 }}>
-                <ScrollView>
+            <View style={{ height: "90%" }}>
+                <ScrollView style={{ height: "90%" }}>
                     {!items.length && <Text>Cart is empty</Text>}
                     <View style={{ marginBottom: normalize(100) }}>{items && items.map(renderItems)}</View>
                 </ScrollView>
-                <View style={{ bottom: 0, width: "100%", position: "absolute" }}>
+                <View style={{ width: "100%", flexGrow: 1 }}>
                     <View
                         style={{
-                            backgroundColor: "rgba(255,255,255,0.9)",
-
                             flexDirection: "row",
                             justifyContent: "space-between",
                             borderRadius: 10,

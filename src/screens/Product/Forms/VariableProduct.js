@@ -61,9 +61,9 @@ const VariableProduct = memo(({ data, navigation, error }) => {
         const item = {
             type: "variation",
             name: data.name,
-            price: formatCurrency(data.price),
+            price: formatCurrency(value.price),
             quantity: Number(value.quantity),
-            product_id: data.id,
+            product_id: value.variations,
             add_ons: value.add_ons
                 .filter((item) => +item.quantity > 0)
                 .map((item) => ({
@@ -73,7 +73,7 @@ const VariableProduct = memo(({ data, navigation, error }) => {
                 })),
         }
 
-        console.log("value", item)
+        console.log("value", value)
         addToCart(item, {
             onSuccess: () => {
                 navigation.goBack()
