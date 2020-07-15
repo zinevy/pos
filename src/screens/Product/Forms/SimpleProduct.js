@@ -60,6 +60,7 @@ const SimpleProduct = memo(({ data, navigation, error }) => {
                     quantity: Number(item.quantity),
                     id: item.id,
                     name: item.name,
+                    price: item.price,
                 })),
         }
 

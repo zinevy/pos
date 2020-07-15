@@ -1,4 +1,4 @@
-import React, { useContext, memo, useState } from "react"
+import React, { useContext, memo, useState, useCallback } from "react"
 import { View } from "react-native"
 import { Formik } from "formik"
 import { object, string } from "yup"
@@ -57,23 +57,31 @@ const VariableProduct = memo(({ data, navigation, error }) => {
         }))
     }
 
+    const getVariationByIndex = useCallback(
+        (index) => {
+            return data.variations[index]
+        },
+        [data]
+    )
+
     const onSubmit = (value) => {
+        const variation = getVariationByIndex(value.variations)
         const item = {
             type: "variation",
             name: data.name,
-            price: formatCurrency(value.price),
+            price: formatCurrency(variation.price),
             quantity: Number(value.quantity),
-            product_id: value.variations,
+            product_id: variation.product_id,
             add_ons: value.add_ons
                 .filter((item) => +item.quantity > 0)
                 .map((item) => ({
                     quantity: Number(item.quantity),
                     id: item.id,
                     name: item.name,
+                    price: item.price,
                 })),
         }
 
-        console.log("value", value)
         addToCart(item, {
             onSuccess: () => {
                 navigation.goBack()

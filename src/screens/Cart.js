@@ -11,6 +11,34 @@ const Cart = memo(() => {
 
     console.log("CART_ITEMS", items)
 
+    const getTotalAddOn = (values) => {
+        return values.reduce((sum, item) => {
+            const curr = +item.quantity * parseFloat(item.price).toFixed(2)
+            let total = sum + curr
+
+            return total
+        }, 0)
+    }
+
+    const renderAddOns = (add_ons) => {
+        if (add_ons && add_ons.length) {
+            return (
+                <View style={{ marginTop: normalize(5) }}>
+                    <Text style={{ fontWeight: "bold", marginTop: normalize(5) }}>Addons</Text>
+                    {add_ons.map((value, index) => {
+                        return (
+                            <Text style={{ marginTop: normalize(2) }} key={index}>
+                                {value.name} - {formatCurrency(value.price)} ({value.quantity}x)
+                            </Text>
+                        )
+                    })}
+                </View>
+            )
+        }
+
+        return
+    }
+
     const renderItems = (item, index) => {
         return (
             <View
@@ -30,6 +58,7 @@ const Cart = memo(() => {
                             <Text>
                                 {formatCurrency(item.price)} ({item.quantity}x)
                             </Text>
+                            {renderAddOns(item.add_ons)}
                         </View>
                     </View>
                 </View>
@@ -48,7 +77,12 @@ const Cart = memo(() => {
     const calculateTotal = (items) => {
         const total = items.reduce((total, item) => {
             const subtotal = +item.quantity * parseFloat(item.price).toFixed(2)
-            const value = total + subtotal
+            let value = total + subtotal
+
+            if (item.add_ons && item.add_ons.length) {
+                const add_ons_total = getTotalAddOn(item.add_ons)
+                value += add_ons_total
+            }
 
             return value
         }, 0)
