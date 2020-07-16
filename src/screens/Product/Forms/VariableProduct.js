@@ -57,12 +57,7 @@ const VariableProduct = memo(({ data, navigation, error }) => {
         }))
     }
 
-    const getVariationByIndex = useCallback(
-        (index) => {
-            return data.variations[index]
-        },
-        [data]
-    )
+    const getVariationByIndex = useCallback((index) => data.variations[index], [data])
 
     const onSubmit = (value) => {
         const variation = getVariationByIndex(value.variations)
@@ -71,7 +66,7 @@ const VariableProduct = memo(({ data, navigation, error }) => {
             name: data.name,
             price: formatCurrency(variation.price),
             quantity: Number(value.quantity),
-            product_id: variation.product_id,
+            product_id: variation.id,
             add_ons: value.add_ons
                 .filter((item) => +item.quantity > 0)
                 .map((item) => ({

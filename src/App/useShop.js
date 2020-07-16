@@ -28,7 +28,6 @@ const useShop = ({ key }) => {
                 const result = items.find((res) => {
                     return (
                         res.type === item.type &&
-                        res.quantity === item.quantity &&
                         res.product_id === item.product_id &&
                         JSON.stringify(res.add_ons) === JSON.stringify(item.add_ons)
                     )
