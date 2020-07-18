@@ -45,10 +45,7 @@ const ProductDetailsForm = ({ params, item, setFieldValue, values }) => {
                     name="add_ons"
                     id="add_ons"
                     label="Addons"
-                    onChange={(value) => {
-                        console.log("ADD_ON_FIELD", value)
-                        setFieldValue("add_ons", value)
-                    }}
+                    onChange={(value) => setFieldValue("add_ons", value)}
                     value={values.add_ons}
                     params={params}
                     data={item.add_ons

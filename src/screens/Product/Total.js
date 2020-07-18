@@ -2,7 +2,7 @@ import React, { useEffect, memo, useState, useMemo } from "react"
 import { View } from "react-native"
 import { Text } from "../../components"
 import { formatCurrency } from "../../../utils/formatter"
-import { FORM_FIELDS } from "./constants"
+import { FORM_FIELDS, PRODUCT_TYPES } from "./constants"
 
 const Total = memo(({ values, item }) => {
     const [total, setTotal] = useState(0)
@@ -24,6 +24,10 @@ const Total = memo(({ values, item }) => {
 
         if (keys.includes(FORM_FIELDS.ADD_ONS)) {
             formValues.add_ons = values.add_ons
+        }
+
+        if (item.type === PRODUCT_TYPES.SIMPLE) {
+            formValues.price = item.price
         }
 
         calculateTotal(formValues)

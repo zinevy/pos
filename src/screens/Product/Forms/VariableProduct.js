@@ -42,14 +42,12 @@ const VariableProduct = memo(({ data, params, navigation, error }) => {
             price: formatCurrency(variation.price),
             quantity: Number(value.quantity),
             product_id: variation.id,
-            add_ons: value.add_ons
-                .filter((item) => +item.quantity > 0)
-                .map((item) => ({
-                    quantity: Number(item.quantity),
-                    id: item.id,
-                    name: item.name,
-                    price: item.price,
-                })),
+            add_ons: value.add_ons.map((item) => ({
+                quantity: Number(item.quantity),
+                id: item.id,
+                name: item.name,
+                price: item.price,
+            })),
         }
 
         addToCart(item, {
@@ -80,7 +78,6 @@ const VariableProduct = memo(({ data, params, navigation, error }) => {
                         <View
                             style={{
                                 flexDirection: "row",
-                                flexWrap: "wrap",
                             }}>
                             <View style={{ marginBottom: 20, width: "30%" }}>
                                 <LazyImage
@@ -101,7 +98,7 @@ const VariableProduct = memo(({ data, params, navigation, error }) => {
                                 />
                                 <Total item={data} values={values} />
                             </View>
-                            <View style={{ padding: normalize(10), flexGrow: 1 }}>
+                            <View style={{ padding: normalize(10), width: "70%" }}>
                                 {error && (
                                     <View style={{ alignItems: "center", marginBottom: 20 }}>
                                         <Text>{error}</Text>

@@ -26,26 +26,6 @@ const initialValues = {
 
 const SimpleProduct = memo(({ data, navigation, error }) => {
     const { addToCart } = useContext(AppContext)
-    const [formValues, setFormValues] = useState({ quantity: 1, price: data.price })
-
-    const mapFormValues = (key, value) => {
-        let formValues = {}
-
-        if (key && data[key]) {
-            formValues[key] = data[key][value]
-        }
-
-        if (key === FORM_FIELDS.QUANTITY) {
-            formValues.quantity = Number(value)
-        } else if (key === FORM_FIELDS.ADD_ONS) {
-            formValues.add_ons = value
-        }
-
-        setFormValues((prev) => ({
-            ...prev,
-            ...formValues,
-        }))
-    }
 
     const onSubmit = (value) => {
         const item = {
@@ -55,17 +35,14 @@ const SimpleProduct = memo(({ data, navigation, error }) => {
             price: formatCurrency(data.price),
             quantity: Number(value.quantity),
             product_id: data.id,
-            add_ons: value.add_ons
-                .filter((item) => +item.quantity > 0)
-                .map((item) => ({
-                    quantity: Number(item.quantity),
-                    id: item.id,
-                    name: item.name,
-                    price: item.price,
-                })),
+            add_ons: value.add_ons.map((item) => ({
+                quantity: Number(item.quantity),
+                id: item.id,
+                name: item.name,
+                price: item.price,
+            })),
         }
 
-        console.log("value", item)
         addToCart(item, {
             onSuccess: () => {
                 navigation.goBack()
@@ -74,7 +51,11 @@ const SimpleProduct = memo(({ data, navigation, error }) => {
     }
 
     return (
-        <Formik validationSchema={validationSchema} initialValues={initialValues} onSubmit={onSubmit}>
+        <Formik
+            enableReinitialize
+            validationSchema={validationSchema}
+            initialValues={initialValues}
+            onSubmit={onSubmit}>
             {({ handleChange, handleBlur, handleSubmit, setFieldValue, values }) => {
                 return (
                     <View style={{ margin: 20 }}>
@@ -84,7 +65,6 @@ const SimpleProduct = memo(({ data, navigation, error }) => {
                         <View
                             style={{
                                 flexDirection: "row",
-                                flexWrap: "wrap",
                             }}>
                             <View style={{ marginBottom: 20, width: "30%" }}>
                                 <LazyImage
@@ -100,15 +80,12 @@ const SimpleProduct = memo(({ data, navigation, error }) => {
                                     name="quantity"
                                     label="Quantity"
                                     max={data.stock_quantity}
-                                    onChange={(value) => {
-                                        mapFormValues("quantity", value)
-                                        setFieldValue("quantity", value)
-                                    }}
+                                    onChange={(value) => setFieldValue("quantity", value)}
                                     value={values.quantity}
                                 />
-                                <Total values={formValues} />
+                                <Total item={data} values={values} />
                             </View>
-                            <View style={{ padding: normalize(10), flexGrow: 1 }}>
+                            <View style={{ padding: normalize(10), width: "70%" }}>
                                 {error && (
                                     <View style={{ alignItems: "center", marginBottom: 20 }}>
                                         <Text>{error}</Text>
@@ -116,10 +93,7 @@ const SimpleProduct = memo(({ data, navigation, error }) => {
                                 )}
 
                                 <ProductDetailsForm
-                                    setFieldValue={(key, value) => {
-                                        mapFormValues(key, value)
-                                        setFieldValue(key, value)
-                                    }}
+                                    setFieldValue={(key, value) => setFieldValue(key, value)}
                                     values={values}
                                     handleChange={handleChange}
                                     handleBlur={handleBlur}

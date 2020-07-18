@@ -1,9 +1,8 @@
-import React, { useState, useCallback, useEffect, useRef } from "react"
+import React, { useCallback, useEffect, useRef } from "react"
 import { useField } from "formik"
-import { View, StyleSheet } from "react-native"
+import { View } from "react-native"
 import styled from "@emotion/native"
 import { ButtonGroup } from "react-native-elements"
-import findIndex from "lodash/findIndex"
 
 import { normalize } from "../../../utils/scale"
 
@@ -44,7 +43,7 @@ const ButtonGroupField = ({
     )
 
     return (
-        <View style={{ marginBottom: normalize(10) }}>
+        <View style={{ marginBottom: normalize(10), width: "100%" }}>
             <View style={{ marginBottom: normalize(10) }}>
                 {label && <Text>{label}</Text>}
                 {description && <Text>{description}</Text>}

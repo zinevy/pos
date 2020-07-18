@@ -11,8 +11,6 @@ const Cart = memo(() => {
     const { items, removeItem } = useContext(AppContext)
     const navigation = useNavigation()
 
-    console.log("CART_ITEMS", items)
-
     const getTotalAddOn = (values) => {
         return values.reduce((sum, item) => {
             const curr = +item.quantity * parseFloat(item.price).toFixed(2)
@@ -24,10 +22,16 @@ const Cart = memo(() => {
 
     const renderAddOns = (add_ons) => {
         if (add_ons && add_ons.length) {
+            const data = add_ons.filter((item) => +item.quantity > 0)
+
+            if (data.length === 0) {
+                return null
+            }
+
             return (
                 <View style={{ marginTop: normalize(5) }}>
                     <Text style={{ fontWeight: "bold", marginTop: normalize(5) }}>Addons</Text>
-                    {add_ons.map((value, index) => {
+                    {data.map((value, index) => {
                         return (
                             <Text style={{ marginTop: normalize(2) }} key={index}>
                                 {value.name} - {formatCurrency(value.price)} ({value.quantity}x)

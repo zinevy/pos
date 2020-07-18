@@ -65,6 +65,7 @@ const useShop = ({ key }) => {
 
             try {
                 const result = items.find((res, index) => index === item.index)
+
                 if (result) {
                     userItems = userItems.map((value, i) => {
                         if (item.index === i) {

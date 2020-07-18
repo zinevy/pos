@@ -1,4 +1,4 @@
-import React, { useContext, memo, useState, useCallback, useRef } from "react"
+import React, { useContext, memo, useState } from "react"
 import { View } from "react-native"
 import { Formik } from "formik"
 import { object, string } from "yup"
@@ -13,36 +13,28 @@ import { getImageUrl } from "../../../../utils/getImageUrl"
 import StepperField from "../../../components/Fields/StepperField"
 import { formatCurrency } from "../../../../utils/formatter"
 
+import { PRODUCT_TYPES, FORM_FIELDS } from "../constants"
+
 const validationSchema = object().shape({
     add_ons: string().label("Addons"),
-    variations: string().label("Variations").required(),
 })
 
-const EditVariableProductForm = memo(({ data, params, navigation, error }) => {
+const EditSimpleProduct = memo(({ data, params, navigation, error }) => {
     const { updateCart } = useContext(AppContext)
-
     const [initialValues, setInitialValues] = useState({
-        variations: params.variation.index,
         quantity: params.quantity.toString(),
         add_ons: params.add_ons,
     })
 
-    const getVariationByIndex = useCallback((index) => data.variations[index], [data])
-
     const onSubmit = (value) => {
-        const variation = getVariationByIndex(value.variations)
         const item = {
-            type: "variation",
+            type: PRODUCT_TYPES.SIMPLE,
             id: data.id,
             name: data.name,
             index: params.index,
-            variation: {
-                index: value.variations,
-                name: variation.name,
-            },
-            price: formatCurrency(variation.price),
+            price: formatCurrency(data.price),
             quantity: Number(value.quantity),
-            product_id: variation.id,
+            product_id: data.id,
             add_ons: value.add_ons.map((item) => ({
                 quantity: Number(item.quantity),
                 id: item.id,
@@ -65,12 +57,6 @@ const EditVariableProductForm = memo(({ data, params, navigation, error }) => {
             initialValues={initialValues}
             onSubmit={onSubmit}>
             {({ handleChange, handleBlur, handleSubmit, setFieldValue, values }) => {
-                let max = 0
-
-                if (data.variations[values.variations]) {
-                    max = data.variations[values.variations].stock_quantity
-                }
-
                 return (
                     <View style={{ margin: 20 }}>
                         <View style={{ marginBottom: 20 }}>
@@ -93,7 +79,7 @@ const EditVariableProductForm = memo(({ data, params, navigation, error }) => {
                                 <StepperField
                                     name="quantity"
                                     label="Quantity"
-                                    max={max}
+                                    max={data.stock_quantity}
                                     onChange={(value) => setFieldValue("quantity", value)}
                                     value={values.quantity}
                                 />
@@ -115,7 +101,6 @@ const EditVariableProductForm = memo(({ data, params, navigation, error }) => {
                                     item={{
                                         type: data.type,
                                         add_ons: data.add_ons,
-                                        variations: data.variations,
                                     }}
                                 />
                             </View>
@@ -128,4 +113,4 @@ const EditVariableProductForm = memo(({ data, params, navigation, error }) => {
     )
 })
 
-export default EditVariableProductForm
+export default EditSimpleProduct

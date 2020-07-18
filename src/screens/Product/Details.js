@@ -6,7 +6,10 @@ import withScreen from "../../../utils/hoc/createScreen"
 
 import { Text } from "../../components"
 import { methods } from "../Sales/methods"
+
 import SimpleProduct from "./Forms/SimpleProduct"
+import EditSimpleProduct from "./Forms/EditSimpleProduct"
+
 import VariableProduct from "./Forms/VariableProduct"
 import EditVariableProduct from "./Forms/EditVariableProduct"
 
@@ -47,7 +50,10 @@ const Product = memo(({ route, navigation }) => {
 
     return (
         <View>
-            {data.type === PRODUCT_TYPES.SIMPLE && <SimpleProduct navigation={navigation} data={data} />}
+            {data.type === PRODUCT_TYPES.SIMPLE && !item.edit && <SimpleProduct navigation={navigation} data={data} />}
+            {data.type === PRODUCT_TYPES.SIMPLE && item.edit && (
+                <EditSimpleProduct params={item} navigation={navigation} data={data} />
+            )}
             {data.type === PRODUCT_TYPES.VARIABLE && !item.edit && (
                 <VariableProduct params={item} navigation={navigation} data={data} />
             )}

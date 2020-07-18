@@ -65,10 +65,6 @@ const AddOnGroupField = ({ label, type, description, onChange, params, item, ini
 
     useEffect(() => {
         if (params && params.edit && props.value.length) {
-            // const add_ons = data.map((item) => {
-            //     item.quantity = 0
-            //     return item
-            // })
             updateData(props.value)
         }
     }, [props.value])
@@ -149,10 +145,10 @@ const AddOnGroupField = ({ label, type, description, onChange, params, item, ini
     }
 
     return (
-        <View style={styles.group}>
+        <View>
             {label && <Text style={styles.label}>{label}</Text>}
 
-            <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
                 {data.map((value, index) => renderAddOn(value, index))}
             </View>
 
