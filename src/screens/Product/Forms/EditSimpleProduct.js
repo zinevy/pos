@@ -13,7 +13,7 @@ import { getImageUrl } from "../../../../utils/getImageUrl"
 import StepperField from "../../../components/Fields/StepperField"
 import { formatCurrency } from "../../../../utils/formatter"
 
-import { PRODUCT_TYPES, FORM_FIELDS } from "../constants"
+import { PRODUCT_TYPES } from "../constants"
 
 const validationSchema = object().shape({
     add_ons: string().label("Addons"),
