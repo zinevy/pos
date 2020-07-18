@@ -50,6 +50,7 @@ const SimpleProduct = memo(({ data, navigation, error }) => {
     const onSubmit = (value) => {
         const item = {
             type: PRODUCT_TYPES.SIMPLE,
+            id: data.id,
             name: data.name,
             price: formatCurrency(data.price),
             quantity: Number(value.quantity),

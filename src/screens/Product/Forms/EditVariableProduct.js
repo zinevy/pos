@@ -1,4 +1,4 @@
-import React, { useContext, memo, useCallback } from "react"
+import React, { useContext, memo, useState, useCallback, useRef } from "react"
 import { View } from "react-native"
 import { Formik } from "formik"
 import { object, string } from "yup"
@@ -18,14 +18,16 @@ const validationSchema = object().shape({
     variations: string().label("Variations").required(),
 })
 
-const initialValues = {
-    quantity: "1",
-    add_ons: [],
-    variations: null,
-}
+const EditVariableProductForm = memo(({ data, params, navigation, error }) => {
+    const { updateCart } = useContext(AppContext)
 
-const VariableProduct = memo(({ data, params, navigation, error }) => {
-    const { addToCart } = useContext(AppContext)
+    const [initialValues, setInitialValues] = useState({
+        variations: params.variation.index,
+        quantity: params.quantity.toString(),
+        add_ons: params.add_ons,
+    })
+
+    const formRef = useRef()
 
     const getVariationByIndex = useCallback((index) => data.variations[index], [data])
 
@@ -35,6 +37,7 @@ const VariableProduct = memo(({ data, params, navigation, error }) => {
             type: "variation",
             id: data.id,
             name: data.name,
+            index: params.index,
             variation: {
                 index: value.variations,
                 name: variation.name,
@@ -52,7 +55,7 @@ const VariableProduct = memo(({ data, params, navigation, error }) => {
                 })),
         }
 
-        addToCart(item, {
+        updateCart(item, {
             onSuccess: () => {
                 navigation.goBack()
             },
@@ -61,6 +64,7 @@ const VariableProduct = memo(({ data, params, navigation, error }) => {
 
     return (
         <Formik
+            innerRef={formRef}
             enableReinitialize
             validationSchema={validationSchema}
             initialValues={initialValues}
@@ -122,7 +126,7 @@ const VariableProduct = memo(({ data, params, navigation, error }) => {
                                 />
                             </View>
                         </View>
-                        <Button title="Submit" onPress={handleSubmit} />
+                        <Button title="Update" onPress={handleSubmit} />
                     </View>
                 )
             }}
@@ -130,4 +134,4 @@ const VariableProduct = memo(({ data, params, navigation, error }) => {
     )
 })
 
-export default VariableProduct
+export default EditVariableProductForm

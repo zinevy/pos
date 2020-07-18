@@ -59,6 +59,33 @@ const useShop = ({ key }) => {
         [items, key]
     )
 
+    const updateCart = useCallback(
+        async (item, options = {}) => {
+            let userItems = items
+
+            try {
+                const result = items.find((res, index) => index === item.index)
+                if (result) {
+                    userItems = userItems.map((value, i) => {
+                        if (item.index === i) {
+                            value = item
+                        }
+                        return value
+                    })
+                }
+                await AsyncStorage.setItem(JSON.stringify(key), JSON.stringify(userItems))
+            } catch (err) {
+                console.warn(err)
+            } finally {
+                setItems(userItems)
+                if (typeof options.onSuccess === "function") {
+                    options.onSuccess()
+                }
+            }
+        },
+        [items, key]
+    )
+
     useEffect(() => {
         const bootstrapAsync = async () => {
             let userItems
@@ -83,6 +110,7 @@ const useShop = ({ key }) => {
         () => ({
             items,
             addToCart,
+            updateCart,
             removeItem,
         }),
         [items, key]

@@ -9,7 +9,7 @@ import { normalize } from "../../../utils/scale"
 
 const SalesItems = memo(() => {
     return (
-        <View style={{ flexDirection: "row", height: "100%" }}>
+        <View style={{ flexDirection: "row", height: "95%" }}>
             <ScrollView style={{ width: "50%", height: "100%" }}>
                 <Suspense
                     fallback={
@@ -21,6 +21,17 @@ const SalesItems = memo(() => {
                 </Suspense>
             </ScrollView>
             <View style={{ flexGrow: 1, paddingRight: normalize(10) }}>
+                <View>
+                    <Text
+                        style={{
+                            fontSize: normalize(20),
+                            marginBottom: normalize(20),
+                            fontWeight: "bold",
+                            textAlign: "center",
+                        }}>
+                        Checkout
+                    </Text>
+                </View>
                 <Cart />
             </View>
         </View>

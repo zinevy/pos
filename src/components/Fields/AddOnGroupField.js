@@ -49,13 +49,12 @@ const styles = StyleSheet.create({
     },
 })
 
-const AddOnGroupField = ({ label, type, description, onChange, max, ...props }) => {
+const AddOnGroupField = ({ label, type, description, onChange, params, item, initialValues, max, ...props }) => {
     const [field, meta] = useField(props)
     const [data, updateData] = useState(props.data)
 
     useEffect(() => {
         if (data && data.length) {
-            console.log("data", data)
             const add_ons = data.map((item) => {
                 item.quantity = 0
                 return item
@@ -63,6 +62,16 @@ const AddOnGroupField = ({ label, type, description, onChange, max, ...props }) 
             updateData(add_ons)
         }
     }, [])
+
+    useEffect(() => {
+        if (params && params.edit && props.value.length) {
+            // const add_ons = data.map((item) => {
+            //     item.quantity = 0
+            //     return item
+            // })
+            updateData(props.value)
+        }
+    }, [props.value])
 
     const onDecrementValue = (value) => {
         const add_ons = data.map((res) => {
@@ -139,19 +148,17 @@ const AddOnGroupField = ({ label, type, description, onChange, max, ...props }) 
         )
     }
 
-    return useMemo(() => {
-        return (
-            <View style={styles.group}>
-                {label && <Text style={styles.label}>{label}</Text>}
+    return (
+        <View style={styles.group}>
+            {label && <Text style={styles.label}>{label}</Text>}
 
-                <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
-                    {data.map((value, index) => renderAddOn(value, index))}
-                </View>
-
-                {meta.touched && meta.error && <Text style={styles.error}>{meta.error}</Text>}
+            <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+                {data.map((value, index) => renderAddOn(value, index))}
             </View>
-        )
-    }, [data])
+
+            {meta.touched && meta.error && <Text style={styles.error}>{meta.error}</Text>}
+        </View>
+    )
 }
 
 export default AddOnGroupField

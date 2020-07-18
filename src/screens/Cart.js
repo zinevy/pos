@@ -1,5 +1,6 @@
 import React, { memo, useMemo, useContext } from "react"
 import { View, TouchableOpacity, ScrollView } from "react-native"
+import { useNavigation } from "@react-navigation/native"
 
 import { formatCurrency } from "../../utils/formatter"
 import { Text } from "../components"
@@ -8,6 +9,7 @@ import { normalize } from "../../utils/scale"
 
 const Cart = memo(() => {
     const { items, removeItem } = useContext(AppContext)
+    const navigation = useNavigation()
 
     console.log("CART_ITEMS", items)
 
@@ -47,21 +49,26 @@ const Cart = memo(() => {
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    marginBottom: normalize(10),
+                    marginBottom: normalize(20),
                 }}>
-                <View style={{ alignItems: "flex-start" }}>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate("ProductDetails", { ...item, edit: true, index })
+                    }}
+                    style={{ alignItems: "flex-start" }}>
                     <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
                         <View style={{ marginLeft: normalize(0) }}>
                             <Text style={{ fontWeight: "bold", fontSize: normalize(15), marginBottom: normalize(5) }}>
                                 {item.name}
                             </Text>
                             <Text>
+                                {item.variation ? `${item.variation.name} - ` : ""}
                                 {formatCurrency(item.price)} ({item.quantity}x)
                             </Text>
                             {renderAddOns(item.add_ons)}
                         </View>
                     </View>
-                </View>
+                </TouchableOpacity>
                 <View>
                     <TouchableOpacity
                         onPress={() => {
@@ -103,9 +110,11 @@ const Cart = memo(() => {
                             flexDirection: "row",
                             justifyContent: "space-between",
                             borderRadius: 10,
+                            paddingTop: normalize(10),
+                            paddingBottom: normalize(10),
                         }}>
-                        <Text style={{ color: "#000" }}>Total</Text>
-                        <Text style={{ color: "#000" }}>{calculateTotal(items)}</Text>
+                        <Text style={{ fontWeight: "bold", fontSize: 20 }}>Total</Text>
+                        <Text style={{ fontWeight: "bold", fontSize: 20 }}>{calculateTotal(items)}</Text>
                     </View>
                 </View>
             </View>

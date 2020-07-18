@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React, { memo, useEffect, useState } from "react"
 import { View } from "react-native"
 import useSWR from "swr"
 
@@ -8,6 +8,7 @@ import { Text } from "../../components"
 import { methods } from "../Sales/methods"
 import SimpleProduct from "./Forms/SimpleProduct"
 import VariableProduct from "./Forms/VariableProduct"
+import EditVariableProduct from "./Forms/EditVariableProduct"
 
 import { PRODUCT_TYPES } from "./constants"
 
@@ -44,12 +45,15 @@ const Product = memo(({ route, navigation }) => {
         )
     }
 
-    console.log(data)
-
     return (
         <View>
             {data.type === PRODUCT_TYPES.SIMPLE && <SimpleProduct navigation={navigation} data={data} />}
-            {data.type === PRODUCT_TYPES.VARIABLE && <VariableProduct navigation={navigation} data={data} />}
+            {data.type === PRODUCT_TYPES.VARIABLE && !item.edit && (
+                <VariableProduct params={item} navigation={navigation} data={data} />
+            )}
+            {data.type === PRODUCT_TYPES.VARIABLE && item.edit && (
+                <EditVariableProduct params={item} navigation={navigation} data={data} />
+            )}
         </View>
     )
 })

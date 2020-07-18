@@ -1,51 +1,36 @@
-import React, { useState, useCallback, memo, useRef, useEffect } from "react"
+import React, { useState, useCallback, useEffect, useRef } from "react"
 import { useField } from "formik"
 import { View, StyleSheet } from "react-native"
 import styled from "@emotion/native"
 import { ButtonGroup } from "react-native-elements"
+import findIndex from "lodash/findIndex"
 
 import { normalize } from "../../../utils/scale"
-import Text from "../Text"
 
-const TextInputField = styled.TextInput(({ theme }) => ({
+const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
-    borderLeftWidth: 1,
-    borderTopWidth: 1,
-    borderRightWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: "green",
-    padding: normalize(15),
-    borderRadius: normalize(10),
-    fontSize: normalize(15),
-    margin: 0,
 }))
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    checkboxContainer: {
-        flexDirection: "row",
-        marginBottom: 20,
-    },
-    checkbox: {
-        alignSelf: "center",
-    },
-    label: {
-        margin: 8,
-    },
-})
+const TextButton = styled.Text(({ theme }) => ({
+    color: theme.button.color,
+}))
 
 const renderButtonField = (value) => {
-    return <Text>{value.name}</Text>
+    return <TextButton>{value.name}</TextButton>
 }
 
-const ButtonGroupField = ({ label, type, description, selectMultiple, onSelect, options, ...props }) => {
+const ButtonGroupField = ({
+    label,
+    type,
+    description,
+    item,
+    initialValues,
+    selectMultiple,
+    onSelect,
+    options,
+    ...props
+}) => {
     const [field, meta] = useField(props)
-    const [selectedIndex, setSelectedIndex] = useState()
-    const [selectedIndexes, setSelectedIndexes] = useState([])
 
     const buttons = options.map((value) => ({
         element: (param) => renderButtonField(value, param),
@@ -53,38 +38,10 @@ const ButtonGroupField = ({ label, type, description, selectMultiple, onSelect, 
 
     const onButtonSelect = useCallback(
         (index) => {
-            setSelectedIndex(index)
             onSelect(index)
         },
-        [options, onSelect, setSelectedIndex]
+        [options, onSelect]
     )
-
-    const onButtonMultipleSelect = useCallback(
-        (index) => {
-            setSelectedIndexes(index)
-            onSelect(index)
-        },
-        [options, onSelect, setSelectedIndex]
-    )
-
-    let buttonGroupProps = {
-        buttons,
-    }
-
-    if (selectMultiple) {
-        buttonGroupProps = {
-            ...buttonGroupProps,
-            selectMultiple: true,
-            selectedIndexes,
-            onPress: onButtonMultipleSelect,
-        }
-    } else {
-        buttonGroupProps = {
-            ...buttonGroupProps,
-            onPress: onButtonSelect,
-            selectedIndexes: [selectedIndex],
-        }
-    }
 
     return (
         <View style={{ marginBottom: normalize(10) }}>
@@ -92,7 +49,7 @@ const ButtonGroupField = ({ label, type, description, selectMultiple, onSelect, 
                 {label && <Text>{label}</Text>}
                 {description && <Text>{description}</Text>}
             </View>
-            <ButtonGroup {...buttonGroupProps} />
+            <ButtonGroup buttons={buttons} onPress={onButtonSelect} selectedIndex={props.value} />
             <View style={{ marginBottom: normalize(10) }}>
                 {meta.touched && meta.error && <Text>{meta.error}</Text>}
             </View>

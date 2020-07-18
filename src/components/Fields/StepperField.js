@@ -2,6 +2,7 @@ import React from "react"
 import { StyleSheet, View } from "react-native"
 import { Input, Button } from "react-native-elements"
 import { useField } from "formik"
+import { useTheme } from "emotion-theming"
 
 import Text from "../Text"
 
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
 
 const StepperField = ({ label, type, description, onChange, max, ...props }) => {
     const [field, meta] = useField(props)
-    let itemProps = {}
+    const theme = useTheme()
 
     const onDecrementValue = () => {
         const value = Number(field.value) - 1
@@ -96,7 +97,7 @@ const StepperField = ({ label, type, description, onChange, max, ...props }) => 
                         }}
                         inputStyle={{
                             fontSize: 18,
-                            color: "#000",
+                            color: theme.main.color,
                             fontWeight: "bold",
                             textAlign: "center",
                             borderBottomWidth: 0,

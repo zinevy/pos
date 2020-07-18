@@ -1,10 +1,33 @@
-import React, { useEffect, useRef, useState, useMemo } from "react"
+import React, { useEffect, memo, useState, useMemo } from "react"
 import { View } from "react-native"
 import { Text } from "../../components"
 import { formatCurrency } from "../../../utils/formatter"
+import { FORM_FIELDS } from "./constants"
 
-const Total = ({ values }) => {
+const Total = memo(({ values, item }) => {
     const [total, setTotal] = useState(0)
+
+    useEffect(() => {
+        let formValues = {}
+        const keys = Object.keys(values)
+
+        if (keys.includes(FORM_FIELDS.VARIATIONS)) {
+            const variation = FORM_FIELDS.VARIATIONS
+            if (item[variation][values[variation]]) {
+                formValues.price = item[variation][values[variation]].price
+            }
+        }
+
+        if (keys.includes(FORM_FIELDS.QUANTITY)) {
+            formValues.quantity = Number(values.quantity)
+        }
+
+        if (keys.includes(FORM_FIELDS.ADD_ONS)) {
+            formValues.add_ons = values.add_ons
+        }
+
+        calculateTotal(formValues)
+    }, [values])
 
     const getTotalAddOn = (values) => {
         return values.reduce((sum, item) => {
@@ -15,7 +38,7 @@ const Total = ({ values }) => {
         }, 0)
     }
 
-    useEffect(() => {
+    const calculateTotal = (values) => {
         let total = 0
         total += parseFloat(values.price)
 
@@ -25,8 +48,10 @@ const Total = ({ values }) => {
             total += getTotalAddOn(values.add_ons)
         }
 
-        setTotal(total)
-    }, [values])
+        if (total) {
+            setTotal(total)
+        }
+    }
 
     return useMemo(() => {
         return (
@@ -35,6 +60,6 @@ const Total = ({ values }) => {
             </View>
         )
     }, [total])
-}
+})
 
 export default Total

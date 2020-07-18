@@ -11,7 +11,7 @@ const Text = styled.Text(({ theme }) => ({
     color: theme.main.color,
 }))
 
-const ProductDetailsForm = ({ item, setFieldValue, values }) => {
+const ProductDetailsForm = ({ params, item, setFieldValue, values }) => {
     const renderVariations = useCallback(() => {
         if (item.type === PRODUCT_TYPES.VARIABLE && item.variations.length) {
             return (
@@ -24,17 +24,19 @@ const ProductDetailsForm = ({ item, setFieldValue, values }) => {
                         setFieldValue("quantity", "1")
                     }}
                     value={values.variations}
+                    item={item}
                     options={item.variations
                         .filter((value) => value.stock_quantity > 0)
                         .map((value) => ({
                             name: value.name,
+                            id: value.id,
                         }))}
                 />
             )
         }
 
         return
-    }, [item])
+    }, [item, values])
 
     const renderAddOns = useCallback(() => {
         if (item.add_ons) {
@@ -43,8 +45,12 @@ const ProductDetailsForm = ({ item, setFieldValue, values }) => {
                     name="add_ons"
                     id="add_ons"
                     label="Addons"
-                    onChange={(index) => setFieldValue("add_ons", index)}
+                    onChange={(value) => {
+                        console.log("ADD_ON_FIELD", value)
+                        setFieldValue("add_ons", value)
+                    }}
                     value={values.add_ons}
+                    params={params}
                     data={item.add_ons
                         .filter((value) => value.stock_quantity > 0)
                         .map((value) => ({
