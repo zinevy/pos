@@ -1,10 +1,9 @@
-import React, { memo, useState, useEffect, useMemo } from "react"
-import { View, TouchableOpacity, StyleSheet } from "react-native"
+import React, { memo } from "react"
+import { View, TouchableOpacity } from "react-native"
 import { useRoute } from "@react-navigation/native"
 import styled from "@emotion/native"
 
 import { Text } from "../components"
-import Counter from "./Cart/Counter"
 import hexToRGB from "../../utils/hexToRGBA"
 import { normalize } from "../../utils/scale"
 
@@ -37,7 +36,7 @@ const styles = {
     },
 }
 
-const Header = memo(({ navigation, withCart, withBack }) => {
+const Header = memo(({ navigation, withBack }) => {
     const route = useRoute()
 
     return (
@@ -57,9 +56,7 @@ const Header = memo(({ navigation, withCart, withBack }) => {
             <View style={{ ...styles.header, alignItems: "center" }}>
                 <Text>{routes[route.name]}</Text>
             </View>
-            <View style={{ ...styles.header, alignItems: "flex-end" }}>
-                <Counter withCart={withCart} />
-            </View>
+            <View style={{ ...styles.header, alignItems: "flex-end" }}></View>
         </Container>
     )
 })

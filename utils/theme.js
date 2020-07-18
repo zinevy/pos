@@ -12,6 +12,9 @@ const theme = {
                 backgroundColor: "#000000",
             },
         },
+        button: {
+            color: "#000000",
+        },
     },
     dark: {
         color: "hotpink",
@@ -25,6 +28,9 @@ const theme = {
                 color: "#000000",
                 backgroundColor: "#FFFFFF",
             },
+        },
+        button: {
+            color: "#000000",
         },
     },
 }

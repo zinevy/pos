@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useState } from "react"
 import { useField } from "formik"
 import { View, Picker } from "react-native"
 import styled from "@emotion/native"
@@ -24,7 +24,7 @@ const TextInputField = styled.TextInput(({ theme }) => ({
 
 const SelectField = ({ label, type, description, ...props }) => {
     const [field, meta] = useField(props)
-    const [value, setValue] = React.useState()
+    const [value, setValue] = useState()
 
     return (
         <View style={{ marginBottom: normalize(10) }}>

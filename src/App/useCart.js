@@ -57,10 +57,13 @@ const useCart = ({ key }) => {
 
     const actions = useMemo(
         () => ({
-            addToCart: async (item) => {
+            addToCart: async (item, options = {}) => {
                 const items = [...state.items, item]
                 await AsyncStorage.setItem(JSON.stringify(key), JSON.stringify(items))
                 dispatch({ type: "ADD_ITEM", item })
+                if (typeof options.onSuccess === "function") {
+                    options.onSuccess()
+                }
             },
             removeItem: (index) => {
                 dispatch({ type: "REMOVE_ITEM", index })
