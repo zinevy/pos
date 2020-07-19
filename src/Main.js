@@ -2,7 +2,6 @@ import React, { memo, createContext, Fragment, useMemo } from "react"
 import { Platform, StatusBar } from "react-native"
 import { ThemeProvider } from "emotion-theming"
 import { SafeAreaProvider } from "react-native-safe-area-context"
-import { useIsFocused } from "@react-navigation/native"
 
 import useDarkMode from "../utils/hooks/useDarkMode"
 import useAppReducer from "./App/useAppReducer"
@@ -15,20 +14,24 @@ export const AppContext = createContext()
 
 const MainApp = memo(() => {
     const [activeTheme, toggleTheme] = useDarkMode()
-    const [appState, authContext, dispatch] = useAppReducer()
-    const { items, addToCart } = useShop()
+    const [appState, actions, dispatch] = useAppReducer()
+    const { items, addToCart, updateCart, removeItem } = useShop({
+        key: appState.key,
+    })
 
     const values = useMemo(
         () => ({
             appState,
-            authContext,
+            actions,
             activeTheme,
             toggleTheme,
             items,
             addToCart,
+            updateCart,
+            removeItem,
             dispatch,
         }),
-        [appState, authContext, activeTheme, items]
+        [appState, actions, activeTheme, items]
     )
 
     return useMemo(() => {
@@ -46,7 +49,7 @@ const MainApp = memo(() => {
                 </ThemeProvider>
             </AppContext.Provider>
         )
-    }, [appState, authContext, activeTheme, items])
+    }, [appState, actions, activeTheme, items])
 })
 
 export default MainApp

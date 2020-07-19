@@ -3,16 +3,34 @@ const theme = {
         color: "hotpink",
         backgroundColor: "purple",
         main: {
-            color: "#000",
-            backgroundColor: "#FFF",
+            color: "#000000",
+            backgroundColor: "#FFFFFF",
+        },
+        login: {
+            button: {
+                color: "#FFFFFF",
+                backgroundColor: "#000000",
+            },
+        },
+        button: {
+            color: "#000000",
         },
     },
     dark: {
         color: "hotpink",
         backgroundColor: "blue",
         main: {
-            color: "#FFF",
-            backgroundColor: "#000",
+            color: "#FFFFFF",
+            backgroundColor: "#000000",
+        },
+        login: {
+            button: {
+                color: "#000000",
+                backgroundColor: "#FFFFFF",
+            },
+        },
+        button: {
+            color: "#000000",
         },
     },
 }

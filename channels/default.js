@@ -1,8 +1,8 @@
 module.exports = {
     platforms: ["ios", "android"],
-    orientation: "portrait",
+    orientation: "landscape",
     icon: "./assets/images/icon.png",
-    scheme: "myapp",
+    scheme: "zinevy-pos",
     splash: {
         image: "./assets/images/splash.png",
         resizeMode: "contain",

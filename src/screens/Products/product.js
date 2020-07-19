@@ -1,32 +1,46 @@
-/* eslint-disable react/prop-types */
-import React, { useContext } from "react"
-import { Text, View, TouchableOpacity } from "react-native"
-import styled from "@emotion/native"
+import React, { useContext, memo } from "react"
+import { View } from "react-native"
+import { WebView } from "react-native-webview"
 
 import withScreen from "../../../utils/hoc/createScreen"
 import { AppContext } from "../../Main"
 
-const Wrapper = styled(View)({
-    alignItems: "center",
-})
+import { Text, LazyImage, Button } from "../../components"
+import { normalizeHeight } from "../../../utils/scale"
 
-const Product = ({ route }) => {
+const Product = memo(({ route }) => {
     const item = route.params
     const { addToCart } = useContext(AppContext)
 
     return (
-        <Wrapper>
-            <View>
-                <Text>Hello {item.first_name}</Text>
-                <TouchableOpacity
-                    onPress={() => {
-                        addToCart(item)
-                    }}>
-                    <Text>Add to cart</Text>
-                </TouchableOpacity>
+        <View style={{ margin: 20 }}>
+            <View style={{ marginBottom: 20 }}>
+                <Text style={{ fontSize: 20 }}>{item.name}</Text>
             </View>
-        </Wrapper>
+            <View style={{ marginBottom: 20 }}>
+                <LazyImage
+                    style={{
+                        width: "100%",
+                        height: normalizeHeight(200),
+                        borderRadius: 10,
+                        resizeMode: "cover",
+                    }}
+                    source={{ uri: item.image }}
+                />
+            </View>
+            <View>
+                <WebView originWhitelist={["*"]} source={{ html: item.description }} />
+                {/* <Text>{item.description}</Text> */}
+            </View>
+            <Button
+                title="Add to cart"
+                onPress={() => {
+                    item.quantity = 1
+                    addToCart(item)
+                }}
+            />
+        </View>
     )
-}
+})
 
 export default withScreen()(Product)

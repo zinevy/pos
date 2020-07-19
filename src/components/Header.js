@@ -1,44 +1,63 @@
 import React, { memo } from "react"
-import { View, Text, TouchableOpacity } from "react-native"
+import { View, TouchableOpacity } from "react-native"
 import { useRoute } from "@react-navigation/native"
 import styled from "@emotion/native"
 
-import Cart from "./Cart"
+import { Text } from "../components"
+import hexToRGB from "../../utils/hexToRGBA"
+import { normalize } from "../../utils/scale"
 
-const StyledText = styled(Text)(({ theme }) => ({
-    color: theme.main.color,
+const routes = {
+    Home: "Home",
+    Settings: "Settings",
+    Sales: "Sales",
+    Cart: "Cart",
+    ProductDetails: "Product Details",
+    CartPage: "Cart",
+}
+
+const Container = styled.View(({ theme }) => ({
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingTop: normalize(20),
+    paddingLeft: normalize(20),
+    paddingRight: normalize(20),
+    backgroundColor: hexToRGB(theme.main.backgroundColor, 0.8),
+    zIndex: 9,
 }))
 
-const Header = memo(({ navigation }) => {
+const styles = {
+    header: {
+        flexGrow: 1,
+        flexShrink: 1,
+        flexBasis: 0,
+    },
+}
+
+const Header = memo(({ navigation, withBack }) => {
     const route = useRoute()
 
     return (
-        <View
-            style={{
-                alignItems: "center",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                width: "100%",
-                paddingTop: 20,
-                paddingBottom: 20,
-            }}>
-            <View>
-                {navigation.canGoBack() && (
+        <Container>
+            <View style={{ ...styles.header, alignItems: "flex-start" }}>
+                {withBack && navigation.canGoBack() ? (
                     <TouchableOpacity
                         onPress={() => {
                             navigation.goBack()
                         }}>
-                        <StyledText>Back</StyledText>
+                        <Text>Back</Text>
                     </TouchableOpacity>
+                ) : (
+                    <Text />
                 )}
             </View>
-            <View>
-                <StyledText>{route.name}</StyledText>
+            <View style={{ ...styles.header, alignItems: "center" }}>
+                <Text>{routes[route.name]}</Text>
             </View>
-            <View>
-                <Cart />
-            </View>
-        </View>
+            <View style={{ ...styles.header, alignItems: "flex-end" }}></View>
+        </Container>
     )
 })
 

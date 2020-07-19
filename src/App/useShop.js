@@ -1,49 +1,120 @@
 import { useEffect, useState, useCallback, useMemo } from "react"
 import { AsyncStorage } from "react-native"
+import differenceWith from "lodash/differenceWith"
+import isEqual from "lodash/isEqual"
 
-const useShop = () => {
-    const [state, setState] = useState({ items: [] })
+const useShop = ({ key }) => {
+    const [items, setItems] = useState([])
+
+    const removeItem = useCallback(
+        async (index) => {
+            let userItems
+
+            userItems = items.filter((item, cartItemIndex) => cartItemIndex !== index)
+
+            try {
+                await AsyncStorage.setItem(JSON.stringify(key), JSON.stringify(userItems))
+                setItems(userItems)
+            } catch (error) {}
+        },
+        [items, key]
+    )
 
     const addToCart = useCallback(
-        async (item) => {
-            const items = [...state.items, item]
+        async (item, options = {}) => {
+            let userItems = items
+
             try {
-                await AsyncStorage.setItem("@items", JSON.stringify(items))
+                const result = items.find((res) => {
+                    return (
+                        res.type === item.type &&
+                        res.product_id === item.product_id &&
+                        JSON.stringify(res.add_ons) === JSON.stringify(item.add_ons)
+                    )
+                })
+
+                if (result) {
+                    const index = userItems.indexOf(result)
+                    result.quantity = Number(result.quantity) + Number(item.quantity)
+                    userItems = userItems.map((value, i) => {
+                        if (index === i) {
+                            value = result
+                        }
+                        return value
+                    })
+                } else {
+                    userItems = [...userItems, item]
+                }
+
+                await AsyncStorage.setItem(JSON.stringify(key), JSON.stringify(userItems))
             } catch (err) {
-                // eslint-disable-next-line no-console
-                console.fatal(err)
+                console.warn(err)
             } finally {
-                setState({ items })
+                setItems(userItems)
+                if (typeof options.onSuccess === "function") {
+                    options.onSuccess()
+                }
             }
         },
-        [state.items]
+        [items, key]
+    )
+
+    const updateCart = useCallback(
+        async (item, options = {}) => {
+            let userItems = items
+
+            try {
+                const result = items.find((res, index) => index === item.index)
+
+                if (result) {
+                    userItems = userItems.map((value, i) => {
+                        if (item.index === i) {
+                            value = item
+                        }
+                        return value
+                    })
+                }
+                await AsyncStorage.setItem(JSON.stringify(key), JSON.stringify(userItems))
+            } catch (err) {
+                console.warn(err)
+            } finally {
+                setItems(userItems)
+                if (typeof options.onSuccess === "function") {
+                    options.onSuccess()
+                }
+            }
+        },
+        [items, key]
     )
 
     useEffect(() => {
         const bootstrapAsync = async () => {
-            let items
-            try {
-                items = await AsyncStorage.getItem("@items")
-            } catch (e) {
-                // eslint-disable-next-line no-console
-                console.log("ERROR", e)
-            } finally {
-                items = items && JSON.parse(items)
-                if (items) {
-                    setState({ items })
+            let userItems
+            if (key) {
+                try {
+                    userItems = await AsyncStorage.getItem(JSON.stringify(key))
+                    userItems = JSON.parse(userItems)
+
+                    if (userItems) {
+                        setItems(userItems)
+                    }
+                } catch (e) {
+                    console.log("ERROR", e)
                 }
             }
         }
 
         bootstrapAsync()
-    }, [])
+    }, [key])
 
     return useMemo(
         () => ({
-            items: state.items,
+            items,
             addToCart,
+            updateCart,
+            removeItem,
         }),
-        [state]
+        [items, key]
     )
 }
 

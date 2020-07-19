@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react"
 import * as Updates from "expo-updates"
-import { AppState } from "react-native"
+import { AppState, AsyncStorage } from "react-native"
 
 const useUpdates = () => {
     const [state, setState] = useState({
@@ -31,26 +31,31 @@ const useUpdates = () => {
 
     const checkUpdates = useCallback(async () => {
         if (!checkingUpdates) {
-            console.log("Checking for an update...")
-            setCheckingUpdates(true)
+            console.log("Checking for existing token...")
+            const token = await AsyncStorage.getItem("@token")
 
-            try {
-                const update = await Updates.checkForUpdateAsync()
+            if (token) {
+                setCheckingUpdates(true)
+                try {
+                    const update = await Updates.checkForUpdateAsync()
 
-                if (update.isAvailable) {
-                    console.log("An update was found, downloading...")
-                    await Updates.fetchUpdateAsync()
+                    if (update.isAvailable && token) {
+                        console.log("An update was found, downloading...")
+                        await Updates.fetchUpdateAsync()
 
-                    setState((prevState) => ({
-                        ...prevState,
-                        manifest: update.manifest,
-                        isModalVisible: true,
-                    }))
-                } else {
-                    console.log("No updates were found")
+                        setState((prevState) => ({
+                            ...prevState,
+                            manifest: update.manifest,
+                            isModalVisible: true,
+                        }))
+                    } else {
+                        console.log("No updates were found")
+                    }
+                } catch (e) {
+                    console.log("Error while trying to check for updates", e)
                 }
-            } catch (e) {
-                console.log("Error while trying to check for updates", e)
+            } else {
+                console.log("Token does not exists")
             }
 
             setCheckingUpdates(false)
@@ -60,6 +65,7 @@ const useUpdates = () => {
     }, [checkingUpdates])
 
     const handleAppStateChange = (nextAppState) => {
+        console.log("status:", nextAppState)
         if (nextAppState === "active") {
             checkUpdates()
         }

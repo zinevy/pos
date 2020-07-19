@@ -3,7 +3,7 @@ import Constants from "expo-constants"
 import { AsyncStorage } from "react-native"
 
 export const api = create({
-    baseURL: Constants.manifest.extra.API_URL,
+    baseURL: Constants.manifest.extra.API_URL + "/api/v1",
     headers: {
         Accept: "application/json",
     },
@@ -18,6 +18,20 @@ api.addAsyncRequestTransform((request) => async () => {
 })
 
 export const requests = {
+    fetchSampleProducts: async (page) => {
+        const url = "https://gorest.co.in/public-api/photos"
+        const params = {
+            "access-token": "2m5noXbV7VoIav--7HqGDVLk13uEFMumwlGx",
+            _format: "json",
+            page,
+        }
+
+        const qs = Object.keys(params)
+            .map((key) => key + "=" + params[key])
+            .join("&")
+
+        return await fetch(`${url}?${qs}`)
+    },
     get: async (url) => {
         return await api.get(url)
     },

@@ -5,9 +5,10 @@ import { createStackNavigator, TransitionPresets } from "@react-navigation/stack
 import BottomTabNavigator from "../navigation/BottomTabNavigator"
 
 // Screens
-import ProductDetails from "./screens/Products/product"
+import ProductDetails from "./screens/Product/Details"
 import SignInScreen from "./screens/SignIn"
 import RegistrationScreen from "./screens/Register"
+import CartPage from "./screens/CartPage"
 
 const Stack = createStackNavigator()
 
@@ -58,7 +59,9 @@ const RootNavigator = memo(({ app }) => {
                     name="Root"
                     component={BottomTabNavigator}
                 />
-                <Stack.Screen name="ProductDetails" component={ProductDetails} />
+                <Stack.Screen label="Product Details" name="ProductDetails" component={ProductDetails} />
+                <Stack.Screen name="CartPage" component={CartPage} />
+                <Stack.Screen name="CheckoutPage" component={CartPage} />
             </Stack.Navigator>
         </NavigationContainer>
     )
