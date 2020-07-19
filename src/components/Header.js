@@ -2,6 +2,7 @@ import React, { memo } from "react"
 import { View, TouchableOpacity } from "react-native"
 import { useRoute } from "@react-navigation/native"
 import styled from "@emotion/native"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 
 import { Text } from "../components"
 import hexToRGB from "../../utils/hexToRGBA"
@@ -12,6 +13,7 @@ const routes = {
     Settings: "Settings",
     Sales: "Sales",
     Cart: "Cart",
+    CheckoutPage: "Checkout",
     ProductDetails: "Product Details",
     CartPage: "Cart",
 }
@@ -47,7 +49,7 @@ const Header = memo(({ navigation, withBack }) => {
                         onPress={() => {
                             navigation.goBack()
                         }}>
-                        <Text>Back</Text>
+                        <MaterialCommunityIcons name="keyboard-backspace" size={24} color="black" />
                     </TouchableOpacity>
                 ) : (
                     <Text />

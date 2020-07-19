@@ -3,6 +3,7 @@ import { View, TouchableOpacity } from "react-native"
 import { useTheme } from "emotion-theming"
 
 import { Text } from "../src/components"
+import { normalize } from "../utils/scale"
 
 const TabBar = ({ state, descriptors, navigation }) => {
     const theme = useTheme()
@@ -64,6 +65,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
     return (
         <View
             style={{
+                height: normalize(60),
                 flexDirection: "row",
                 backgroundColor: theme.main.backgroundColor,
             }}>

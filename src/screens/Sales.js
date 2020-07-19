@@ -12,7 +12,7 @@ const Sales = memo(() => {
 
     return useMemo(() => {
         return (
-            <View style={{ marginTop: normalize(20), height: "100%" }}>
+            <View style={{ marginTop: normalize(20), height: "100%", flex: 1 }}>
                 <SalesItems />
             </View>
         )

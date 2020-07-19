@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 
 import withScreen from "../../utils/hoc/createScreen"
-import Cart from "./Cart"
+import Cart from "./Sales/Cart"
 
 const CartPage = memo(({ navigation }) => {
     return <Cart navigation={navigation} />

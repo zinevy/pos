@@ -21,7 +21,7 @@ const validationSchema = object().shape({
 const initialValues = {
     quantity: "1",
     add_ons: [],
-    variations: null,
+    variations: "",
 }
 
 const VariableProduct = memo(({ data, params, navigation, error }) => {
@@ -47,6 +47,8 @@ const VariableProduct = memo(({ data, params, navigation, error }) => {
                 id: item.id,
                 name: item.name,
                 price: item.price,
+                quantity_per_item: item.quantity_per_item,
+                stock_quantity: item.stock_quantity,
             })),
         }
 

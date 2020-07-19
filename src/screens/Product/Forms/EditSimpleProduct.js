@@ -40,6 +40,8 @@ const EditSimpleProduct = memo(({ data, params, navigation, error }) => {
                 id: item.id,
                 name: item.name,
                 price: item.price,
+                quantity_per_item: item.quantity_per_item,
+                stock_quantity: item.stock_quantity,
             })),
         }
 

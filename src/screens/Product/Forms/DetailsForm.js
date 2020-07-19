@@ -55,6 +55,7 @@ const ProductDetailsForm = ({ params, item, setFieldValue, values }) => {
                             name: value.name,
                             stock_quantity: value.stock_quantity,
                             price: value.price,
+                            quantity_per_item: value.quantity_per_item,
                         }))}
                 />
             )

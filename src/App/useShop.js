@@ -1,7 +1,5 @@
 import { useEffect, useState, useCallback, useMemo } from "react"
 import { AsyncStorage } from "react-native"
-import differenceWith from "lodash/differenceWith"
-import isEqual from "lodash/isEqual"
 
 const useShop = ({ key }) => {
     const [items, setItems] = useState([])
@@ -46,6 +44,24 @@ const useShop = ({ key }) => {
                     userItems = [...userItems, item]
                 }
 
+                await AsyncStorage.setItem(JSON.stringify(key), JSON.stringify(userItems))
+            } catch (err) {
+                console.warn(err)
+            } finally {
+                setItems(userItems)
+                if (typeof options.onSuccess === "function") {
+                    options.onSuccess()
+                }
+            }
+        },
+        [items, key]
+    )
+
+    const clearCartItems = useCallback(
+        async (options = {}) => {
+            let userItems = []
+
+            try {
                 await AsyncStorage.setItem(JSON.stringify(key), JSON.stringify(userItems))
             } catch (err) {
                 console.warn(err)
@@ -111,6 +127,7 @@ const useShop = ({ key }) => {
         () => ({
             items,
             addToCart,
+            clearCartItems,
             updateCart,
             removeItem,
         }),

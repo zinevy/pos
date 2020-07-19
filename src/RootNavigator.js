@@ -9,6 +9,7 @@ import ProductDetails from "./screens/Product/Details"
 import SignInScreen from "./screens/SignIn"
 import RegistrationScreen from "./screens/Register"
 import CartPage from "./screens/CartPage"
+import CheckoutPage from "./screens/Checkout"
 
 const Stack = createStackNavigator()
 
@@ -61,7 +62,7 @@ const RootNavigator = memo(({ app }) => {
                 />
                 <Stack.Screen label="Product Details" name="ProductDetails" component={ProductDetails} />
                 <Stack.Screen name="CartPage" component={CartPage} />
-                <Stack.Screen name="CheckoutPage" component={CartPage} />
+                <Stack.Screen name="CheckoutPage" component={CheckoutPage} />
             </Stack.Navigator>
         </NavigationContainer>
     )

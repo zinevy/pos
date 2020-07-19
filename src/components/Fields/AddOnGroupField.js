@@ -127,7 +127,7 @@ const AddOnGroupField = ({ label, type, description, onChange, params, item, ini
                     </View>
                     <View>
                         <Button
-                            disabled={Number(value.quantity) >= +value.stock_quantity}
+                            disabled={Number(value.quantity) >= Number(value.stock_quantity)}
                             buttonStyle={{
                                 ...styles.control,
                             }}
