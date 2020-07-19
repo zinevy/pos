@@ -2,10 +2,10 @@ const options = require("./default")
 const channel = process.env.CHANNEL
 
 module.exports = {
-    name: "One Palengke - Beta",
-    slug: "one-palengke-beta",
+    name: "Zinevy - Beta",
+    slug: "zinevy-pos",
     android: {
-        package: "com.zinevy.onepalengke.beta",
+        package: "com.zinevy.pos.beta",
         versionCode: parseInt(process.env[channel]),
     },
     ios: {
