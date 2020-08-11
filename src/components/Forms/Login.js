@@ -1,8 +1,16 @@
 import React, { memo } from "react"
 import { Formik } from "formik"
-import { View, Button, Text } from "react-native"
+import { View } from "react-native"
 import { object, string } from "yup"
+import styled from "@emotion/native"
+
 import InputField from "../Fields/InputField"
+import SelectField from "../Fields/SelectField"
+import { PrimaryButton } from "../Button"
+
+const Text = styled.Text(({ theme }) => ({
+    color: theme.login.field.color,
+}))
 
 const validationSchema = object().shape({
     email: string().label("Email").email().required(),
@@ -13,35 +21,45 @@ const validationSchema = object().shape({
         .max(10, "We prefer insecure system, try a shorter password."),
 })
 
-const initialValues = { email: "eve.holt@reqres.in", password: "123123" }
+// const initialValues = { branch_id: "1", email: "pabs@zinevy.com", password: "dotty123" }
+const initialValues = { branch_id: 0, email: "", password: "" }
 
-const LoginForm = memo(({ onSubmit, loading, hasError, error }) => {
+const LoginForm = memo(({ branches, onSubmit, disabled, loading, hasError, error }) => {
     return (
         <Formik validationSchema={validationSchema} initialValues={initialValues} onSubmit={onSubmit}>
-            {({ handleChange, handleBlur, handleSubmit, values }) => (
+            {({ handleSubmit, setFieldValue, values }) => (
                 <View>
-                    {hasError && error && (
-                        <View>
-                            <Text>{error}</Text>
+                    {error && (
+                        <View style={{ alignItems: "center", marginBottom: 20 }}>
+                            <Text style={{ color: "#F00" }}>{error}</Text>
                         </View>
                     )}
 
-                    <InputField
-                        name="email"
-                        placeholder="Email"
-                        onChangeText={handleChange("email")}
-                        onBlur={handleBlur("email")}
-                        value={values.email}
-                    />
-                    <InputField
-                        name="password"
-                        placeholder="Password"
-                        onChangeText={handleChange("password")}
-                        onBlur={handleBlur("password")}
-                        value={values.password}
-                        secureTextEntry
-                    />
-                    <Button disabled={loading} onPress={handleSubmit} title={`${loading ? "loading" : "Login"}`} />
+                    <View style={{ marginBottom: 0 }}>
+                        <SelectField
+                            name="branch_id"
+                            placeholder="Branch"
+                            onSelect={(value) => setFieldValue("branch_id", value)}
+                            value={values.branch_id}
+                            data={branches}
+                        />
+                        <InputField
+                            name="email"
+                            placeholder="Email"
+                            onChangeText={(value) => setFieldValue("email", value)}
+                            onBlur={(value) => setFieldValue("email", value)}
+                            value={values.email}
+                        />
+                        <InputField
+                            name="password"
+                            placeholder="Password"
+                            onChangeText={(value) => setFieldValue("password", value)}
+                            onBlur={(value) => setFieldValue("password", value)}
+                            value={values.password}
+                            secureTextEntry
+                        />
+                    </View>
+                    <PrimaryButton disabled={disabled} loading={loading} onPress={handleSubmit} title="Login" />
                 </View>
             )}
         </Formik>

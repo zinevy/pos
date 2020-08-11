@@ -1,4 +1,5 @@
-import { AsyncStorage } from "react-native"
+import AsyncStorage from '@react-native-community/async-storage'
+
 import { useEffect, useState } from "react"
 
 const useAsyncStorage = (key, defaultValue, newValue) => {
