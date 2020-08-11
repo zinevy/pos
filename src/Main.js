@@ -31,6 +31,8 @@ const MainApp = memo(() => {
         [appState, authContext, activeTheme, items]
     )
 
+    console.log("MAIN")
+
     return useMemo(() => {
         return (
             <AppContext.Provider value={values}>
