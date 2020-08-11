@@ -1,6 +1,6 @@
 {
     "name": "zinevy-native",
-    "version": "1.0.0-dev.4",
+    "version": "1.0.0",
     "private": true,
     "scripts": {
         "env": "node scripts/set-env.js",
