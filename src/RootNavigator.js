@@ -5,9 +5,12 @@ import { createStackNavigator, TransitionPresets } from "@react-navigation/stack
 import BottomTabNavigator from "../navigation/BottomTabNavigator"
 
 // Screens
-import ProductDetails from "./screens/Products/product"
-import SignInScreen from "./screens/SignIn"
+import ProductDetails from "./screens/Product/Details"
+import LoginScreen from "./screens/Login"
 import RegistrationScreen from "./screens/Register"
+import CartPage from "./screens/CartPage"
+import CheckoutPage from "./screens/Checkout"
+import BluetoothSettings from "./screens/BluetoothSettings"
 
 const Stack = createStackNavigator()
 
@@ -31,7 +34,7 @@ const RootNavigator = memo(({ app }) => {
                 <Stack.Navigator screenOptions={{ headerMode: "none", headerShown: false }}>
                     <Stack.Screen
                         name="SignIn"
-                        component={SignInScreen}
+                        component={LoginScreen}
                         options={{
                             animationTypeForReplace: app.isSignout ? "pop" : "push",
                         }}
@@ -58,7 +61,10 @@ const RootNavigator = memo(({ app }) => {
                     name="Root"
                     component={BottomTabNavigator}
                 />
-                <Stack.Screen name="ProductDetails" component={ProductDetails} />
+                <Stack.Screen label="Product Details" name="ProductDetails" component={ProductDetails} />
+                <Stack.Screen name="CartPage" component={CartPage} />
+                <Stack.Screen name="CheckoutPage" component={CheckoutPage} />
+                <Stack.Screen name="BluetoothDevices" component={BluetoothSettings} />
             </Stack.Navigator>
         </NavigationContainer>
     )

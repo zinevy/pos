@@ -1,7 +1,9 @@
 import React from "react"
-import { View, Text, TouchableOpacity } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { View, TouchableOpacity } from "react-native"
 import { useTheme } from "emotion-theming"
+
+import { Text } from "../src/components"
+import { normalize } from "../utils/scale"
 
 const TabBar = ({ state, descriptors, navigation }) => {
     const theme = useTheme()
@@ -54,7 +56,6 @@ const TabBar = ({ state, descriptors, navigation }) => {
                         display: "flex",
                         alignItems: "center",
                     }}>
-                    <Text style={{ color: theme.main.color }}>Icon</Text>
                     <Text style={{ color: isFocused ? "#673ab7" : theme.main.color }}>{label}</Text>
                 </View>
             </TouchableOpacity>
@@ -64,11 +65,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
     return (
         <View
             style={{
-                // position: "absolute",
-                // left: 0,
-                // right: 0,
-                // bottom: 0,
-                // display: "flex",
+                height: normalize(60),
                 flexDirection: "row",
                 backgroundColor: theme.main.backgroundColor,
             }}>
