@@ -132,7 +132,7 @@ android {
         applicationId APPLICATION_ID
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionName "1.0.0-dev.4"
+        versionName "1.0.1-dev.1"
         versionCode 1
     }
     splits {
