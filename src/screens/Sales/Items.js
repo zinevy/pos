@@ -1,14 +1,15 @@
-import React, { memo, useCallback, useRef, useMemo } from "react"
+import React, { memo, useCallback, useRef, useMemo, useState } from "react"
 import { useSWRInfinite } from "swr"
 import { View, RefreshControl, FlatList } from "react-native"
 import qs from "qs-stringify"
+import { SearchBar } from "react-native-elements"
 
 import { methods } from "./methods"
 import Item from "./Item"
 import { normalize } from "../../../utils/scale"
 import { Text } from "../../components"
 import ListGridPreloader from "../Products/Preloader"
-import { useFocusEffect } from "@react-navigation/native"
+import SearchForm from "./SearchForm"
 
 const PAGE_SIZE = 9
 
@@ -72,11 +73,13 @@ const Footer = ({ isReachingEnd, isLoadingMore }) => {
 }
 
 const Items = () => {
+    const [searchString, setSearchString] = useState("")
     const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
-        (pageIndex) => `/products?page=${pageIndex + 1}`,
+        (pageIndex) => `/products?page=${pageIndex + 1}&search=${searchString}`,
         fetchProducts
     )
     const onEndReachedCalledDuringMomentumRef = useRef(true)
+    const searchTimeoutRef = useRef()
 
     const isLoadingInitialData = !data && !error
     const isLoadingMore = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === "undefined")
@@ -97,9 +100,17 @@ const Items = () => {
         }
     }, [size, isReachingEnd])
 
-    if (isLoadingInitialData) {
-        return <ListGridPreloader items={9} />
+    const onSubmit = (values) => {
+        clearTimeout(searchTimeoutRef.current)
+        searchTimeoutRef.current = setTimeout(() => {
+            console.log("SEARCH_STR", values)
+            setSearchString(values)
+        }, 100)
     }
+
+    // if (isLoadingInitialData || !searchString) {
+    //     return <ListGridPreloader items={9} />
+    // }
 
     return (
         <View
@@ -109,20 +120,25 @@ const Items = () => {
                 marginRight: normalize(10),
                 height: "100%",
             }}>
-            <FlatList
-                data={items}
-                keyExtractor={(_, index) => index.toString()}
-                renderItem={renderItem}
-                onEndReached={handleLoadMore}
-                onEndReachedThreshold={0.1}
-                ListHeaderComponent={<Header isRefreshing={isRefreshing} />}
-                ListFooterComponent={<Footer isReachingEnd={isReachingEnd} isLoadingMore={isLoadingMore} />}
-                onMomentumScrollBegin={() => {
-                    onEndReachedCalledDuringMomentumRef.current = false
-                }}
-                numColumns={3}
-                refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={mutate} />}
-            />
+            <View>
+                <SearchForm onSubmit={onSubmit} isLoadingInitialData={isLoadingInitialData} />
+            </View>
+            {!isLoadingInitialData && (
+                <FlatList
+                    data={items}
+                    keyExtractor={(_, index) => index.toString()}
+                    renderItem={renderItem}
+                    onEndReached={handleLoadMore}
+                    onEndReachedThreshold={0.1}
+                    ListHeaderComponent={<Header isRefreshing={isRefreshing} />}
+                    ListFooterComponent={<Footer isReachingEnd={isReachingEnd} isLoadingMore={isLoadingMore} />}
+                    onMomentumScrollBegin={() => {
+                        onEndReachedCalledDuringMomentumRef.current = false
+                    }}
+                    numColumns={3}
+                    refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={mutate} />}
+                />
+            )}
         </View>
     )
 }
