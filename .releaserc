@@ -3,7 +3,8 @@
         "master", 
         { "name": "beta", "prerelease": true }, 
         { "name": "dev", "prerelease": true }, 
-        { "name": "canary", "prerelease": true }
+        { "name": "canary", "prerelease": true },
+        { "name": "next", "prerelease": true }
     ],
     "ci": false,
     "plugins": [ 
