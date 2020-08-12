@@ -11,7 +11,7 @@ const Sales = memo(() => {
     return useMemo(() => {
         return (
             <View style={{ height: "100%", flex: 1, margin: 20 }}>
-                <Text>Soon</Text>
+                <Text>This is a transaction page</Text>
             </View>
         )
     }, [activeTheme, appState])
