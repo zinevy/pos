@@ -21,7 +21,7 @@ if (channel) {
         ...envFileContent,
     }
 
-    shell.exec(`react-native-version --target android --set-build ${packageVersion.version}`)
+    // shell.exec(`react-native-version --target android --set-build ${packageVersion.version}`)
     //copy the json inside the env.json file
     fs.writeFileSync("env.json", JSON.stringify(data, undefined, 4))
 }
