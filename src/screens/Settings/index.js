@@ -1,6 +1,7 @@
 import React, { useContext, memo } from "react"
-import { View } from "react-native"
+import { View, TouchableOpacity } from "react-native"
 import { ListItem } from "react-native-elements"
+import codePush from "react-native-code-push"
 
 import withScreen from "../../../utils/hoc/createScreen"
 import { AppContext } from "../../Main"
@@ -9,6 +10,13 @@ import { VERSION } from "../../../env.json"
 
 const Settings = memo(({ navigation }) => {
     const { appState, actions } = useContext(AppContext)
+
+    const onButtonPress = () => {
+        codePush.sync({
+            updateDialog: true,
+            installMode: codePush.InstallMode.IMMEDIATE,
+        })
+    }
 
     return (
         <View style={{ flexDirection: "column", flex: 1, justifyContent: "space-between" }}>
@@ -28,8 +36,12 @@ const Settings = memo(({ navigation }) => {
                 <ListItem title="Sign out" onPress={() => actions.signOut()} />
             </View>
 
-            {/* <Button title={activeTheme === "light" ? "Dark Mode" : "Light Mode"} onPress={toggleTheme} /> */}
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <View style={{ justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
+                <View>
+                    <TouchableOpacity onPress={onButtonPress}>
+                        <Text style={{ fontWeight: "bold" }}>Check for updates</Text>
+                    </TouchableOpacity>
+                </View>
                 <Text>{VERSION}</Text>
             </View>
         </View>

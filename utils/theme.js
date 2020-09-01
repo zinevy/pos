@@ -1,13 +1,19 @@
-import { normalize } from "./scale"
-
 const common = {
+    accent: "#4AB577",
     fontFamily: {
         regular: "Nunito-Regular",
         bold: "Nunito-Bold",
     },
+    title: {
+        subtitleText: "#9a9a9a",
+    },
+    button: {
+        height: 60,
+        color: "#000000",
+    },
     buttons: {
         secondary: {
-            color: "#000",
+            color: "#545d65",
             backgroundColor: "#FFF",
             borderColor: "#CCC",
         },
@@ -16,18 +22,39 @@ const common = {
             backgroundColor: "#4AB577",
         },
     },
+    form: {
+        button: {
+            color: "#000",
+            backgroundColor: "#000000",
+            borderColor: "#4AB577",
+        },
+        field: {
+            color: "#545d65",
+            textColor: "#393939",
+            borderColor: "#ececec",
+            activeBorderColor: "#ececec",
+            backgroundColor: "#FFF",
+        },
+    },
     login: {
         button: {
             color: "#FFFFFF",
-            backgroundColor: "#6ed9a0",
-            borderColor: "#6ed9a0",
+            backgroundColor: "#4AB577",
+            borderColor: "#4AB577",
         },
         field: {
             color: "#FFFFFF",
             textColor: "#FFFFFF",
             borderColor: "#545d65",
-            activeBorderColor: "#6ed9a0",
+            activeBorderColor: "#4AB577",
+            placeholderTextColor: "#fefefe",
         },
+    },
+    main: {
+        color: "#393939",
+        focused: "#585858",
+        borderRadius: 8,
+        backgroundColor: "#ececec",
     },
 }
 
@@ -36,27 +63,11 @@ const theme = {
         ...common,
         color: "hotpink",
         backgroundColor: "purple",
-        main: {
-            color: "#000000",
-            backgroundColor: "#FFFFFF",
-        },
-        button: {
-            height: normalize(60),
-            color: "#000000",
-        },
     },
     dark: {
         ...common,
         color: "hotpink",
         backgroundColor: "blue",
-        main: {
-            color: "#FFFFFF",
-            backgroundColor: "#000000",
-        },
-        button: {
-            height: normalize(60),
-            color: "#FFFFFF",
-        },
     },
 }
 

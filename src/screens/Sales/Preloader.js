@@ -4,14 +4,14 @@ import { View } from "react-native"
 import { normalize } from "../../../utils/scale"
 
 const ImageSkeleton = styled.View({
-    backgroundColor: "#ededed",
+    backgroundColor: "#FFF",
     width: "100%",
     height: normalize(180),
     borderRadius: 10,
 })
 
 const TitleSkeleton = styled.View({
-    backgroundColor: "#ededed",
+    backgroundColor: "#FFF",
     width: "70%",
     height: normalize(20),
     marginTop: normalize(10),
@@ -24,7 +24,7 @@ const StepperRow = styled.View({
 })
 
 const DescriptionSkeleton = styled.View({
-    backgroundColor: "#ededed",
+    backgroundColor: "#FFF",
     width: "80%",
     height: normalize(20),
     marginTop: normalize(10),
@@ -32,7 +32,7 @@ const DescriptionSkeleton = styled.View({
 })
 
 const Skeleton = styled.View(({ width }) => ({
-    backgroundColor: "#ededed",
+    backgroundColor: "#FFF",
     width: `${width}%`,
     height: normalize(20),
     marginTop: normalize(10),
@@ -40,7 +40,7 @@ const Skeleton = styled.View(({ width }) => ({
 }))
 
 const DecrementSkeleton = styled.View({
-    backgroundColor: "#ededed",
+    backgroundColor: "#FFF",
     width: "15%",
     height: normalize(40),
     marginTop: normalize(10),
@@ -54,7 +54,7 @@ const InputSkeleton = styled.View({
 })
 
 const IncrementSkeleton = styled.View({
-    backgroundColor: "#ededed",
+    backgroundColor: "#FFF",
     width: "15%",
     height: normalize(40),
     marginTop: normalize(10),
@@ -65,7 +65,7 @@ const ButtonGroupSkeletonRow = styled.View({
 })
 
 const ButtonGroupTitleSkeleton = styled.View({
-    backgroundColor: "#ededed",
+    backgroundColor: "#FFF",
     width: "50%",
     height: normalize(20),
     marginBottom: normalize(10),
@@ -73,7 +73,7 @@ const ButtonGroupTitleSkeleton = styled.View({
 })
 
 const ButtonGroupSkeleton = styled.View({
-    backgroundColor: "#ededed",
+    backgroundColor: "#FFF",
     width: "33%",
     marginRight: 5,
     boxSizing: "border-box",

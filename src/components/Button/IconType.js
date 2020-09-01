@@ -1,7 +1,6 @@
 import React, { memo, useMemo } from "react"
 import styled from "@emotion/native"
 import { View } from "react-native"
-// import { Ionicons } from "@expo/vector-icons"
 
 import { toCurrency } from "../../../utils/formatter"
 import { normalize } from "../../../utils/scale"
@@ -12,9 +11,17 @@ const Text = styled.Text(({ theme }) => ({
 
 const ButtonLayout = styled.TouchableOpacity(({ theme, disabled }) => ({
     backgroundColor: disabled ? "#CCC" : theme.buttons.total.backgroundColor,
-    borderRadius: normalize(16),
+    borderRadius: theme.main.borderRadius,
     touchAction: "none",
-    height: normalize(60),
+    height: 60,
+}))
+
+const ButtonContainer = styled(Text)(({ theme }) => ({
+    borderWidth: 1,
+    borderRadius: theme.main.borderRadius,
+    borderColor: "rgba(255,255,255,0.4)",
+    padding: 10,
+    minWidth: normalize(150),
 }))
 
 const ButtonText = styled(Text)({
@@ -37,21 +44,13 @@ const IconType = memo(({ onPress, title, disabled, total }) => {
         return (
             <ButtonLayout disabled={disabled} style={{ flexGrow: 1 }} onPress={onPress}>
                 <Container>
-                    <View
-                        style={{
-                            borderWidth: 1,
-                            borderRadius: normalize(12),
-                            borderColor: "rgba(255,255,255,0.4)",
-                            padding: normalize(12),
-                            minWidth: normalize(150),
-                        }}>
+                    <ButtonContainer>
                         <ButtonText>{title}</ButtonText>
-                    </View>
+                    </ButtonContainer>
                     <View style={{ flexDirection: "row" }}>
                         <ButtonText style={{ lineHeight: normalize(18), marginRight: 16 }}>
                             {toCurrency(total)}
                         </ButtonText>
-                        {/* <Ionicons name="ios-arrow-forward" size={normalize(18)} color="white" /> */}
                     </View>
                 </Container>
             </ButtonLayout>

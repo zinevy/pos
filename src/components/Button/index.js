@@ -9,7 +9,7 @@ const Text = styled.Text(({ theme }) => ({
 
 const ButtonLayout = styled.TouchableOpacity(({ theme, disabled }) => ({
     backgroundColor: disabled ? "#CCC" : theme.login.button.backgroundColor,
-    borderRadius: normalize(16),
+    borderRadius: 12,
     touchAction: "none",
     height: theme.button.height,
 }))
@@ -18,7 +18,7 @@ const SecondaryButtonLayout = styled.TouchableOpacity(({ theme, disabled }) => (
     backgroundColor: disabled ? "#CCC" : "#FFF",
     borderWidth: 3,
     borderColor: "#EEE",
-    borderRadius: normalize(16),
+    borderRadius: 12,
     touchAction: "none",
     height: theme.button.height,
 }))
@@ -46,6 +46,14 @@ export const SecondaryButton = memo(
         )
     }
 )
+
+export const CustomButton = memo(({ disabled, loading, onPress, processing, title, children, secondary, ...rest }) => {
+    return (
+        <ButtonLayout disabled={disabled} onPress={onPress} style={{ ...rest.buttonStyle }}>
+            <Container style={{ ...rest.containerStyle }}>{children}</Container>
+        </ButtonLayout>
+    )
+})
 
 export const PrimaryButton = memo(({ disabled, loading, onPress, processing, title, children, secondary, ...rest }) => {
     return (

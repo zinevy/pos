@@ -120,23 +120,19 @@ const Items = () => {
                 marginRight: normalize(10),
                 height: "100%",
             }}>
-            <View>
-                <SearchForm onSubmit={onSubmit} isLoadingInitialData={isLoadingInitialData} />
-            </View>
             {!isLoadingInitialData && (
                 <FlatList
                     data={items}
                     keyExtractor={(_, index) => index.toString()}
                     renderItem={renderItem}
-                    onEndReached={handleLoadMore}
-                    onEndReachedThreshold={0.1}
-                    ListHeaderComponent={<Header isRefreshing={isRefreshing} />}
-                    ListFooterComponent={<Footer isReachingEnd={isReachingEnd} isLoadingMore={isLoadingMore} />}
-                    onMomentumScrollBegin={() => {
-                        onEndReachedCalledDuringMomentumRef.current = false
-                    }}
+                    // onEndReached={handleLoadMore}
+                    // onEndReachedThreshold={0.1}
+                    // ListHeaderComponent={<Header isRefreshing={isRefreshing} />}
+                    // ListFooterComponent={<Footer isReachingEnd={isReachingEnd} isLoadingMore={isLoadingMore} />}
+                    // onMomentumScrollBegin={() => {
+                    //     onEndReachedCalledDuringMomentumRef.current = false
+                    // }}
                     numColumns={3}
-                    refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={mutate} />}
                 />
             )}
         </View>

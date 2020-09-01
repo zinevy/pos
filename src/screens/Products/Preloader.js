@@ -16,7 +16,7 @@ const ItemColumn = styled.View({
 })
 
 const ItemSkeleton = styled.View({
-    backgroundColor: "#ededed",
+    backgroundColor: "#FFF",
     height: normalize(200),
     borderRadius: normalize(10),
     marginBottom: normalize(10),
@@ -27,7 +27,7 @@ const TextSkeleton = styled.View({
     height: normalize(10),
     borderRadius: normalize(10),
     marginBottom: normalize(10),
-    backgroundColor: "#ededed",
+    backgroundColor: "#FFF",
 })
 
 const ListGridPreloader = ({ items }) => {

@@ -12,6 +12,8 @@ import CartPage from "./screens/CartPage"
 import CheckoutPage from "./screens/Checkout"
 import BluetoothSettings from "./screens/BluetoothSettings"
 
+import HomeTabs from "./screens/Stacks/Tabs"
+
 const Stack = createStackNavigator()
 
 const withAuth = (InnerComponent) => {
@@ -50,7 +52,6 @@ const RootNavigator = memo(({ app }) => {
             </NavigationContainer>
         )
     }
-
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerMode: "none", headerShown: false }}>
@@ -59,15 +60,29 @@ const RootNavigator = memo(({ app }) => {
                         ...TransitionPresets.ModalTransition,
                     }}
                     name="Root"
-                    component={BottomTabNavigator}
+                    component={HomeTabs}
                 />
-                <Stack.Screen label="Product Details" name="ProductDetails" component={ProductDetails} />
-                <Stack.Screen name="CartPage" component={CartPage} />
-                <Stack.Screen name="CheckoutPage" component={CheckoutPage} />
-                <Stack.Screen name="BluetoothDevices" component={BluetoothSettings} />
             </Stack.Navigator>
         </NavigationContainer>
     )
+
+    // return (
+    //     <NavigationContainer>
+    //         <Stack.Navigator screenOptions={{ headerMode: "none", headerShown: false }}>
+    //             <Stack.Screen
+    //                 options={{
+    //                     ...TransitionPresets.ModalTransition,
+    //                 }}
+    //                 name="Root"
+    //                 component={BottomTabNavigator}
+    //             />
+    //             <Stack.Screen label="Product Details" name="ProductDetails" component={ProductDetails} />
+    //             <Stack.Screen name="CartPage" component={CartPage} />
+    //             <Stack.Screen name="CheckoutPage" component={CheckoutPage} />
+    //             <Stack.Screen name="BluetoothDevices" component={BluetoothSettings} />
+    //         </Stack.Navigator>
+    //     </NavigationContainer>
+    // )
 })
 
 export default withAuth(RootNavigator)
