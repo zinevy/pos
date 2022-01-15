@@ -72,7 +72,7 @@
         "react-native-version": "^4.0.0",
         "react-test-renderer": "16.13.1",
         "semantic-release": "^17.0.7",
-        "shelljs": "^0.8.4"
+        "shelljs": "^0.8.5"
     },
     "husky": {
         "hooks": {
